@@ -1,30 +1,30 @@
 import React from "react";
 import styled from "styled-components";
 
-// example1.jpg의 경우 public 폴더에 기본사진으로 처리
-
 const Picture = ({
-  imgSrc = "example1.jpg",
-  width = 446,
-  height = 446,
-  borderRadius = 0,
+  imgSrc = "logo.png",
+  topBorderRadius = 0,
+  bottomBorderRadius = 0,
+  containerWidth = 0,
+  containerHeight = 0,
 }) => {
   return (
-    <ImgContainer width={width} height={height}>
-      <Img src={imgSrc} borderRadius={borderRadius}></Img>
-    </ImgContainer>
+    <Img
+      containerWidth={containerWidth}
+      containerHeight={containerHeight}
+      topBorderRadius={topBorderRadius}
+      bottomBorderRadius={bottomBorderRadius}
+      src={imgSrc}
+    ></Img>
   );
 };
 
-const ImgContainer = styled.div`
-  width: ${({ width }) => `${width}px`};
-  height: ${({ height }) => `${height}px`};
-`;
-
 const Img = styled.img`
-  width: 100%;
-  height: auto;
-  border-radius: ${({ borderRadius }) => `${borderRadius}px`};
+  width: ${({ containerWidth }) => `${containerWidth}px`};
+  height: ${({ containerWidth }) => `${containerWidth}px`};
+  border-radius: ${({ topBorderRadius, bottomBorderRadius }) =>
+    `${topBorderRadius}px ${topBorderRadius}px ${bottomBorderRadius}px ${bottomBorderRadius}px`};
+  object-fit: cover;
 `;
 
 export default Picture;
