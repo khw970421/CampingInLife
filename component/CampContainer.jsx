@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { DummyData } from "./DummyData";
 import Camp from "./Camp";
+import styled from "styled-components";
 
 const CampContainer = () => {
   const [data, setData] = useState([]);
