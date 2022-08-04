@@ -20,8 +20,8 @@ const Camp = ({
         <Picture
           containerWidth={containerWidth}
           containerHeight={containerHeight}
-          borderRadius={borderRadius}
-          imgSrc={imgSrc}
+          topBorderRadius={borderRadius}
+          imgSrc={imgSrc !== "" ? imgSrc : "logo.png"}
         ></Picture>
       </PictureContainer>
       <TAContainer>
@@ -48,7 +48,7 @@ const TAContainer = styled.div`
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1em;
   margin-bottom: 0.3em;
 `;
 
