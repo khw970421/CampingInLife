@@ -5,10 +5,10 @@ import Picture from "./Picture";
 const Camp = ({
   containerWidth = 223,
   containerHeight = 300,
-  title = "당진해양캠핑공원",
-  address = "충청남도 당진시 신평면 산정길 112",
-  imgSrc = "",
   borderRadius = 30,
+  title = "제목",
+  address = "주소",
+  imgSrc = "logo.png",
 }) => {
   return (
     <CampContainer
@@ -21,6 +21,7 @@ const Camp = ({
           containerWidth={containerWidth}
           containerHeight={containerHeight}
           borderRadius={borderRadius}
+          imgSrc={imgSrc}
         ></Picture>
       </PictureContainer>
       <TAContainer>
