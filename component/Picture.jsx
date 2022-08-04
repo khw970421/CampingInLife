@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 const Picture = ({
   imgSrc = "logo.png",
-  borderRadius = 0,
+  topBorderRadius = 0,
+  bottomBorderRadius = 0,
   containerWidth = 0,
   containerHeight = 0,
 }) => {
@@ -11,7 +12,8 @@ const Picture = ({
     <Img
       containerWidth={containerWidth}
       containerHeight={containerHeight}
-      borderRadius={borderRadius}
+      topBorderRadius={topBorderRadius}
+      bottomBorderRadius={bottomBorderRadius}
       src={imgSrc}
     ></Img>
   );
@@ -20,8 +22,9 @@ const Picture = ({
 const Img = styled.img`
   width: ${({ containerWidth }) => `${containerWidth}px`};
   height: ${({ containerWidth }) => `${containerWidth}px`};
-  border-radius: ${({ borderRadius }) => `${borderRadius}px`};
-  object-fit: contain;
+  border-radius: ${({ topBorderRadius, bottomBorderRadius }) =>
+    `${topBorderRadius}px ${topBorderRadius}px ${bottomBorderRadius}px ${bottomBorderRadius}px`};
+  object-fit: cover;
 `;
 
 export default Picture;
