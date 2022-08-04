@@ -7,14 +7,28 @@ const CampContainer = () => {
   useEffect(() => {
     setData(DummyData.response.body.items.item);
   }, []);
-  console.log(data);
   return (
-    <div>
+    <Container>
       {data.map(({ facltNm, addr1, firstImageUrl }) => (
-        <Camp title={facltNm} address={addr1} imgSrc={firstImageUrl}></Camp>
+        <Camp
+          className="camp"
+          title={facltNm}
+          address={addr1}
+          imgSrc={firstImageUrl}
+        ></Camp>
       ))}
-    </div>
+    </Container>
   );
 };
+
+// 상위 태그의 크기에 영향을 받는다.
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  height: auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 export default CampContainer;
