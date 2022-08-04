@@ -4,26 +4,25 @@ import styled from "styled-components";
 // example1.jpg의 경우 public 폴더에 기본사진으로 처리
 
 const Picture = ({
-  imgSrc = "example1.jpg",
-  width = 446,
-  height = 446,
+  imgSrc = "example2.jpg",
   borderRadius = 0,
+  containerWidth = 0,
+  containerHeight = 0,
 }) => {
   return (
-    <ImgContainer width={width} height={height}>
-      <Img src={imgSrc} borderRadius={borderRadius}></Img>
-    </ImgContainer>
+    <Img
+      src={imgSrc}
+      borderRadius={borderRadius}
+      containerWidth={containerWidth}
+      containerHeight={containerHeight}
+    ></Img>
   );
 };
 
-const ImgContainer = styled.div`
-  width: ${({ width }) => `${width}px`};
-  height: ${({ height }) => `${height}px`};
-`;
-
 const Img = styled.img`
-  width: 100%;
-  height: auto;
+  width: ${({ containerWidth }) => `${containerWidth}px`};
+  height: ${({ containerWidth }) => `${containerWidth}px`};
+  object-fit: contain;
   border-radius: ${({ borderRadius }) => `${borderRadius}px`};
 `;
 
