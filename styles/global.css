@@ -15,12 +15,36 @@ a {
   box-sizing: border-box;
 }
 
+#mainColor {
+  color: #8bc53f;
+}
+
+#lightMainColor {
+  color: #8bc53f50;
+}
+
+#white {
+  color: #ffffff;
+}
+
+#black {
+  color: #000000;
+}
+
+#gray {
+  color: #d9d9d9;
+}
+
+#lightGray {
+  color: #f7f6fb;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
   body {
     color: white;
-    background: black;
+    background: red;
   }
 }
