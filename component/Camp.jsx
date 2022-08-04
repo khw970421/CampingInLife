@@ -39,6 +39,7 @@ const CampContainer = styled.div`
   border-radius: ${({ borderRadius }) => `${borderRadius}px`};
   box-sizing: content-box;
   margin: 10px;
+  justify-self: center;
 `;
 
 const PictureContainer = styled.div``;
