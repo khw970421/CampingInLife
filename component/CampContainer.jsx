@@ -2,11 +2,22 @@ import React, { useState, useEffect } from "react";
 import { DummyData } from "./DummyData";
 import Camp from "./Camp";
 import styled from "styled-components";
+import {
+  getBasedList,
+  getLocationBasedList,
+  getSearchList,
+  getImageList,
+} from "../core/api/axios";
 
 const CampContainer = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
-    setData(DummyData.response.body.items.item);
+    // Todo : 상황에 따라 API 사용 예정
+    async function api() {
+      const data = await getSearchList(1);
+      setData(data);
+    }
+    api();
   }, []);
   return (
     <Container>
