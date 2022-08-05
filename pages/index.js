@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 // import { getLocation } from "../core/location/getLocation";
 
 export default function Home() {
+  // Todos : 추후 gpsData 적용
   const [gpsData, setGpsData] = useState({});
   function getLocation() {
     if (navigator.geolocation) {
@@ -41,12 +42,23 @@ export default function Home() {
         <ImgContainer>
           <Img src="mainlogo.png"></Img>
         </ImgContainer>
-        <Input placeholder="어디로 갈까?"></Input>
+        <Input placeholder="어디로 갈까?" width={30} height={50}></Input>
         <HamburgerContainer>
           <GiHamburgerMenu size="50" />
         </HamburgerContainer>
       </Header>
-      <Body>{/* <CampContainer /> */}</Body>
+      <Body id="backgroundLightGray">
+        <Main>
+          <Title>
+            <div>주변캠핑장</div>
+            <Input
+              placeholder="숫자로 주변 km를 설정"
+              width={15}
+              height={30}
+            ></Input>
+          </Title>
+        </Main>
+      </Body>
     </div>
   );
 }
@@ -76,15 +88,27 @@ const HamburgerContainer = styled.div`
 const Input = styled.input`
   border: 0.3px solid;
   border-radius: 24px;
-  width: 30vw;
-  height: 50px;
+  width: ${({ width }) => `${width}vw`};
+  height: ${({ height }) => `${height}px`};
   margin: 20px;
   padding: 10px;
 `;
 
 const Body = styled.div`
+  width: 100%;
+  height: 700px;
+`;
+
+const Main = styled.div`
   display: flex;
   width: calc(100vw - 22vw * 2);
   height: auto;
-  margin: 22vw;
+  margin: 0vw 22vw;
+`;
+
+const Title = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 `;
