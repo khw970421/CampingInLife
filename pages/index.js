@@ -2,8 +2,39 @@ import styled from "styled-components";
 import Camp from "../component/Camp";
 import CampContainer from "../component/CampContainer";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useEffect, useState } from "react";
+// import { getLocation } from "../core/location/getLocation";
 
 export default function Home() {
+  const [gpsData, setGpsData] = useState({});
+  function getLocation() {
+    if (navigator.geolocation) {
+      // GPS를 지원하면
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          setGpsData({
+            lati: position.coords.latitude,
+            long: position.coords.longitude,
+          });
+        },
+        function (error) {
+          console.error(error);
+        },
+        {
+          enableHighAccuracy: false,
+          maximumAge: 0,
+          timeout: Infinity,
+        }
+      );
+    } else {
+      alert("GPS를 지원하지 않습니다");
+    }
+  }
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
   return (
     <div>
       <Header>
