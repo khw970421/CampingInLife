@@ -57,6 +57,7 @@ export default function Home() {
               height={30}
             ></Input>
           </Title>
+          <CampContainer />
         </Main>
       </Body>
     </div>
@@ -96,11 +97,11 @@ const Input = styled.input`
 
 const Body = styled.div`
   width: 100%;
-  height: 700px;
 `;
 
 const Main = styled.div`
   display: flex;
+  flex-direction: column;
   width: calc(100vw - 22vw * 2);
   height: auto;
   margin: 0vw 22vw;
