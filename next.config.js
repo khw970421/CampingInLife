@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
   swcMinify: true,
   env: {
     SERVICE_KEY: process.env.SERVICE_KEY,
@@ -14,7 +13,5 @@ const nextConfig = {
     ];
   },
 };
-
-module.exports = nextConfig;
 
 module.exports = nextConfig;
