@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { DummyData } from "./DummyData";
-import Camp from "./Camp";
 import styled from "styled-components";
+import Camp from "./Camp";
 import {
   getBasedList,
   getLocationBasedList,
@@ -9,20 +8,16 @@ import {
   getImageList,
 } from "../core/api/axios";
 
-const CampContainer = ({ containerWidth = 223, containerHeight = 300 }) => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    // Todo : 상황에 따라 API 사용 예정
-    async function api() {
-      const data = await getLocationBasedList(1);
-      setData(data);
-    }
-    api();
-  }, []);
+const CampContainer = ({
+  containerWidth = 223,
+  containerHeight = 300,
+  campData = [],
+}) => {
   return (
     <Container containerWidth={containerWidth}>
-      {data.map(({ facltNm, addr1, firstImageUrl }) => (
+      {campData.map(({ facltNm, addr1, firstImageUrl, contentId }) => (
         <Camp
+          key={contentId}
           className="camp"
           title={facltNm}
           address={addr1}
