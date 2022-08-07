@@ -32,7 +32,7 @@ export default function Home() {
 
     // GPS Data 여부에 따라 API 분기 실행
     if (Object.keys(gpsData).length !== 0) locationBasedList();
-    else getBasedList();
+    else basedList();
   }, [gpsData]);
 
   function getLocation() {
