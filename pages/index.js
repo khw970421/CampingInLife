@@ -3,11 +3,30 @@ import Camp from "../component/Camp";
 import CampContainer from "../component/CampContainer";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useEffect, useState } from "react";
-// import { getLocation } from "../core/location/getLocation";
+import {
+  getBasedList,
+  getLocationBasedList,
+  getSearchList,
+  getImageList,
+} from "../core/api/axios";
 
 export default function Home() {
   // Todos : 추후 gpsData 적용
   const [gpsData, setGpsData] = useState({});
+  const [campData, setCampData] = useState([]);
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  useEffect(() => {
+    async function api() {
+      const data = await getLocationBasedList(1, gpsData.long, gpsData.lati);
+      setCampData(data);
+    }
+    api();
+  }, [gpsData]);
+
   function getLocation() {
     if (navigator.geolocation) {
       // GPS를 지원하면
@@ -31,11 +50,6 @@ export default function Home() {
       alert("GPS를 지원하지 않습니다");
     }
   }
-
-  useEffect(() => {
-    getLocation();
-  }, []);
-
   return (
     <div>
       <Header>
@@ -57,7 +71,7 @@ export default function Home() {
               height={30}
             ></Input>
           </Title>
-          <CampContainer />
+          <CampContainer campData={campData} />
         </Main>
       </Body>
     </div>

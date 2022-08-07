@@ -23,6 +23,7 @@ const getLocationBasedList = async (
     `/api/locationBasedList?${essentialParams}&pageNo=${pageNo}&mapX=${mapX}&mapY=${mapY}&radius=${radius}`
   );
   const filteredData = filtering(unFilteredData);
+  console.log(unFilteredData, filteredData, "~~~~~~~~~~~", pageNo, mapX, mapY);
   return filteredData;
 };
 
