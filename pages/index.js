@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Camp from "../component/Camp";
 import CampContainer from "../component/CampContainer";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useEffect, useState } from "react";
@@ -7,7 +6,6 @@ import {
   getBasedList,
   getLocationBasedList,
   getSearchList,
-  getImageList,
 } from "../core/api/axios";
 
 export default function Home() {
@@ -20,11 +18,21 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    async function api() {
+    async function locationBasedList() {
+      console.log("gps api");
       const data = await getLocationBasedList(1, gpsData.long, gpsData.lati);
       setCampData(data);
     }
-    api();
+
+    async function basedList() {
+      console.log("gps api X");
+      const data = await getBasedList(1);
+      setCampData(data);
+    }
+
+    // GPS Data 여부에 따라 API 분기 실행
+    if (Object.keys(gpsData).length !== 0) locationBasedList();
+    else getBasedList();
   }, [gpsData]);
 
   function getLocation() {
