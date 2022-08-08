@@ -8,6 +8,7 @@ import {
   getSearchList,
 } from "../core/api/axios";
 import returnTitle from "../core/utils/mainPage";
+import Button from "../component/Button";
 
 export default function Home() {
   // Todos : 추후 gpsData 적용
@@ -107,6 +108,12 @@ export default function Home() {
             )}
           </Title>
           <CampContainer campData={campData} />
+          <Button
+            id={"backgroundLightMainColor"}
+            width={30}
+            height={60}
+            btnText={"더보기"}
+          ></Button>
         </Main>
       </Body>
     </div>
@@ -158,6 +165,7 @@ const Main = styled.div`
   width: calc(100vw - 22vw * 2);
   height: auto;
   margin: 0vw 22vw;
+  align-items: center;
 `;
 
 const Title = styled.div`
