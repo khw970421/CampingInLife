@@ -7,11 +7,13 @@ import {
   getLocationBasedList,
   getSearchList,
 } from "../core/api/axios";
+import returnTitle from "../core/utils/mainPage";
 
 export default function Home() {
   // Todos : 추후 gpsData 적용
   const [gpsData, setGpsData] = useState({});
   const [campData, setCampData] = useState([]);
+  const [titleTag, setTitleTag] = useState("nogps");
 
   useEffect(() => {
     getLocation();
@@ -21,12 +23,14 @@ export default function Home() {
     async function locationBasedList() {
       console.log("gps api");
       const data = await getLocationBasedList(1, gpsData.long, gpsData.lati);
+      setTitleTag("gps");
       setCampData(data);
     }
 
     async function basedList() {
       console.log("gps api X");
       const data = await getBasedList(1);
+      setTitleTag("nogps");
       setCampData(data);
     }
 
@@ -72,7 +76,7 @@ export default function Home() {
       <Body id="backgroundLightGray">
         <Main>
           <Title>
-            <div>주변캠핑장</div>
+            <TitleText>{returnTitle(titleTag)}</TitleText>
             <Input
               placeholder="숫자로 주변 km를 설정"
               width={15}
@@ -135,3 +139,5 @@ const Title = styled.div`
   align-items: center;
   width: 100%;
 `;
+
+const TitleText = styled.div``;
