@@ -17,13 +17,13 @@ const getLocationBasedList = async (
   pageNo = 1,
   mapX = 127,
   mapY = 37,
-  radius = 50000
+  radius = 10000
 ) => {
   const unFilteredData = await axios.get(
     `/api/locationBasedList?${essentialParams}&pageNo=${pageNo}&mapX=${mapX}&mapY=${mapY}&radius=${radius}`
   );
   const filteredData = filtering(unFilteredData);
-  return filteredData;
+  return filteredData !== undefined ? filteredData : [];
 };
 
 const getSearchList = async (pageNo = 1, keyword = "화성") => {
