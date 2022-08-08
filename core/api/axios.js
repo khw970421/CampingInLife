@@ -22,6 +22,7 @@ const getLocationBasedList = async (
   const unFilteredData = await axios.get(
     `/api/locationBasedList?${essentialParams}&pageNo=${pageNo}&mapX=${mapX}&mapY=${mapY}&radius=${radius}`
   );
+  console.log(unFilteredData, "unFilteredData");
   const filteredData = filtering(unFilteredData);
   return filteredData !== undefined ? filteredData : [];
 };

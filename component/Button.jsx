@@ -8,7 +8,11 @@ const Button = ({
   height,
   borderRadius = 20,
   fSize = 1,
+  click,
 }) => {
+  const clickBtn = () => {
+    click();
+  };
   return (
     <Btn
       id={id}
@@ -16,6 +20,7 @@ const Button = ({
       height={height}
       borderRadius={borderRadius}
       fSize={fSize}
+      onClick={clickBtn}
     >
       {btnText}
     </Btn>

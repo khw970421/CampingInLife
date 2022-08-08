@@ -1,41 +1,46 @@
 import styled from "styled-components";
 import CampContainer from "../component/CampContainer";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   getBasedList,
   getLocationBasedList,
   getSearchList,
 } from "../core/api/axios";
 import returnTitle from "../core/utils/mainPage";
+import Button from "../component/Button";
 
 export default function Home() {
   // Todos : 추후 gpsData 적용
   const [gpsData, setGpsData] = useState({});
   const [campData, setCampData] = useState([]);
   const [titleTag, setTitleTag] = useState("nogps");
+  const gpsRange = useRef(1000);
+  const pageNo = useRef(1);
 
   useEffect(() => {
     getLocation();
   }, []);
 
-  async function locationBasedList(radius = 10000) {
+  async function locationBasedList(pageNo = 1, radius = 10000) {
     console.log("gps api");
     const data = await getLocationBasedList(
-      1,
+      pageNo,
       gpsData.long,
       gpsData.lati,
       radius
     );
     setTitleTag("gps");
-    setCampData(data);
+    if (pageNo === 1) {
+      setCampData(data);
+    } else setCampData([...campData, ...data]);
   }
 
-  async function basedList() {
+  async function basedList(pageNo = 1) {
     console.log("gps api X");
-    const data = await getBasedList(1);
+    const data = await getBasedList(pageNo);
     setTitleTag("nogps");
-    setCampData(data);
+    setCampData([...campData, ...data]);
   }
 
   useEffect(() => {
@@ -71,13 +76,29 @@ export default function Home() {
   const checkEnter = ({ key, target }) => {
     if (key === "Enter") {
       const numValue = Number(target.value);
+
       if (isNaN(numValue)) {
         alert("숫자를 입력하세요. ");
       } else if (numValue < 1000) {
         alert("최소 범위는 1000 이상 입니다. ");
       } else if (numValue > 50000) {
         alert("최대 범위는 50000 이하 입니다. ");
-      } else locationBasedList(numValue);
+      } else {
+        gpsRange.current = numValue;
+        pageNo.current = 1;
+        locationBasedList(pageNo.current, gpsRange.current);
+      }
+    }
+  };
+
+  //  Todos : 더보기가 더는 가져오지 못할때에 대한 alert 처리 필요
+  const click = () => {
+    if (titleTag === "nogps") {
+      pageNo.current++;
+      basedList(pageNo.current);
+    } else if (titleTag === "gps") {
+      pageNo.current++;
+      locationBasedList(pageNo.current, gpsRange.current);
     }
   };
   return (
@@ -107,6 +128,13 @@ export default function Home() {
             )}
           </Title>
           <CampContainer campData={campData} />
+          <Button
+            id={"backgroundLightMainColor"}
+            width={30}
+            height={60}
+            btnText={"더보기"}
+            click={click}
+          ></Button>
         </Main>
       </Body>
     </div>
@@ -158,6 +186,7 @@ const Main = styled.div`
   width: calc(100vw - 22vw * 2);
   height: auto;
   margin: 0vw 22vw;
+  align-items: center;
 `;
 
 const Title = styled.div`
