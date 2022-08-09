@@ -9,12 +9,14 @@ import {
 } from "../core/api/axios";
 import returnTitle from "../core/utils/mainPage";
 import Button from "../component/Button";
+import Input from "../component/Input";
 
 export default function Home() {
   // Todos : 추후 gpsData 적용
   const [gpsData, setGpsData] = useState({});
   const [campData, setCampData] = useState([]);
   const [titleTag, setTitleTag] = useState("nogps");
+  const [searchArr, setSearchArr] = useState([]);
   const gpsRange = useRef(1000);
   const pageNo = useRef(1);
 
@@ -101,13 +103,22 @@ export default function Home() {
       locationBasedList(pageNo.current, gpsRange.current);
     }
   };
+
+  const changeInputValue = async ({ target }) => {
+    const list = await getSearchList(1, target.value);
+    const filterList = list.map(({ facltNm }) => facltNm);
+    setSearchArr(filterList);
+  };
   return (
     <div>
       <Header>
         <ImgContainer>
           <Img src="mainlogo.png"></Img>
         </ImgContainer>
-        <Input placeholder="어디로 갈까?" width={30} height={50}></Input>
+        <Input
+          changeInputValue={changeInputValue}
+          searchArr={searchArr}
+        ></Input>
         <HamburgerContainer>
           <GiHamburgerMenu size="50" />
         </HamburgerContainer>
@@ -119,12 +130,12 @@ export default function Home() {
               {returnTitle(titleTag)}
             </TitleText>
             {titleTag === "gps" && (
-              <Input
+              <RangeInput
                 placeholder="숫자로 주변 km를 설정"
                 width={15}
                 height={30}
                 onKeyUp={checkEnter}
-              ></Input>
+              ></RangeInput>
             )}
           </Title>
           <CampContainer campData={campData} />
@@ -167,7 +178,7 @@ const TitleText = styled.div`
   margin: 20px;
 `;
 
-const Input = styled.input`
+const RangeInput = styled.input`
   border: 0.3px solid;
   border-radius: 24px;
   width: ${({ width }) => `${width}vw`};
