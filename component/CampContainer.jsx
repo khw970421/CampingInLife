@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import Camp from "./Camp";
-import {
-  getBasedList,
-  getLocationBasedList,
-  getSearchList,
-  getImageList,
-} from "../core/api/axios";
 
 const CampContainer = ({
   containerWidth = 223,
