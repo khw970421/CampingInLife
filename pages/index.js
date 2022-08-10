@@ -164,6 +164,7 @@ const Header = styled.div`
 
 const ImgContainer = styled.div`
   width: 10vw;
+  min-width: 100px;
   margin: 20px;
 `;
 
@@ -180,6 +181,7 @@ const HamburgerContainer = styled.div`
 
 const TitleText = styled.div`
   margin: 20px;
+  min-width: 150px;
 `;
 
 const RangeInput = styled.input`
