@@ -3,7 +3,7 @@ import axios from "axios";
 const API = "http://api.visitkorea.or.kr/openapi/service/rest/GoCamping";
 const essentialParams = process.env.SERVICE_KEY;
 
-const filtering = (target) => target.data.response.body.items.item;
+const filtering = (target) => target?.data?.response?.body?.items?.item;
 
 const getBasedList = async (pageNo = 1) => {
   const unFilteredData = await axios.get(
@@ -32,7 +32,7 @@ const getSearchList = async (pageNo = 1, keyword = "화성") => {
     `/api/searchList?${essentialParams}&pageNo=${pageNo}&keyword=${keyword}`
   );
   const filteredData = filtering(unFilteredData);
-  return filteredData;
+  return filteredData !== undefined ? filteredData : [];
 };
 
 const getImageList = async (pageNo = 1, contentId = 3429) => {
