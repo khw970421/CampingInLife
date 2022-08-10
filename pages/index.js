@@ -35,6 +35,8 @@ export default function Home() {
     setTitleTag("gps");
     if (pageNo === 1) {
       setCampData(data);
+    } else if (data.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
     } else setCampData([...campData, ...data]);
   }
 
@@ -42,7 +44,9 @@ export default function Home() {
     console.log("gps api X");
     const data = await getBasedList(pageNo);
     setTitleTag("nogps");
-    setCampData([...campData, ...data]);
+    if (data.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
+    } else setCampData([...campData, ...data]);
   }
 
   useEffect(() => {
