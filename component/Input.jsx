@@ -12,10 +12,20 @@ const Input = ({
   },
   searchArr = [],
 }) => {
+  let timer;
+  const debounce = (e) => {
+    if (timer) {
+      clearTimeout(timer); // 0.5초 미만으로 입력이 주어질 경우 해당 timer를 clear(없앤다)한다.
+    }
+    timer = setTimeout(() => {
+      changeInputValue(e);
+    }, 500);
+  };
+
   return (
     <InputContainer>
       <InputTag
-        onChange={changeInputValue}
+        onChange={debounce}
         width={width}
         height={height}
         borderRadius={borderRadius}
