@@ -96,8 +96,8 @@ const InputTag = styled.input`
 `;
 
 const Ul = styled.ul`
-  position: absolute;
   box-sizing: border-box;
+  position: absolute;
   top: ${({ height }) => `${height}px`};
 
   padding: 0px;
