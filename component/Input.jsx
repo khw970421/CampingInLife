@@ -82,6 +82,7 @@ const InputContainer = styled.div`
 `;
 
 const InputTag = styled.input`
+  box-sizing: border-box;
   width: ${({ width }) => `${width}vw`};
   height: ${({ height }) => `${height}px`};
   border: 0px;
@@ -90,6 +91,7 @@ const InputTag = styled.input`
   }
 `;
 const Ul = styled.ul`
+  box-sizing: border-box;
   position: absolute;
   top: ${({ height }) => `${height}px`};
   padding: 0px;
@@ -104,6 +106,7 @@ const Ul = styled.ul`
   border-right-style: solid;
 `;
 const Li = styled.li`
+  box-sizing: border-box;
   width: ${({ width }) => `${width + 5}vw`};
   height: ${({ height }) => `${height}px`};
   list-style: none;
