@@ -12,12 +12,14 @@ import Button from "../component/Button";
 import Input from "../component/Input";
 
 export default function Home() {
-  const [gpsData, setGpsData] = useState({});
-  const [campData, setCampData] = useState([]);
   const [titleTag, setTitleTag] = useState("nogps");
-  const [searchArr, setSearchArr] = useState([]);
-  const gpsRange = useRef(1000);
+  const [campData, setCampData] = useState([]);
   const pageNo = useRef(1);
+
+  const [gpsData, setGpsData] = useState({});
+  const gpsRange = useRef(1000);
+
+  const [searchArr, setSearchArr] = useState([]);
   const searchKey = useRef("");
 
   useEffect(() => {
@@ -54,8 +56,17 @@ export default function Home() {
     }
   }
 
+  async function basedList(pageNo = 1) {
+    const data = await getBasedList(pageNo);
+    setTitleTag("nogps");
+
+    // 요청받은 API는 없고 pageNo는 첫번째 페이지가 아닐때
+    if (data.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
+    } else setCampData([...campData, ...data]);
+  }
+
   async function locationBasedList(pageNo = 1, radius = 10000) {
-    console.log("gps api");
     const data = await getLocationBasedList(
       pageNo,
       gpsData.long,
@@ -63,6 +74,7 @@ export default function Home() {
       radius
     );
     setTitleTag("gps");
+
     if (pageNo === 1) {
       setCampData(data);
     } else if (data.length === 0 && pageNo !== 1) {
@@ -70,20 +82,14 @@ export default function Home() {
     } else setCampData([...campData, ...data]);
   }
 
-  async function basedList(pageNo = 1) {
-    console.log("gps api X");
-    const data = await getBasedList(pageNo);
-    setTitleTag("nogps");
-    if (data.length === 0 && pageNo !== 1) {
-      alert("더보기 캠핑 목록이 없습니다.");
-    } else setCampData([...campData, ...data]);
-  }
-
   async function searchList(pageNo, value) {
     const list = await getSearchList(pageNo, value);
-    searchKey.current = value;
-    setSearchArr([]);
     setTitleTag("searchKey");
+
+    searchKey.current = value;
+    // Todo : 검색이 좀 더 빠를때 searchArr 수정이 안된다. (useEffect로 처리할 필요 있다.)
+    setSearchArr([]);
+
     if (pageNo === 1) {
       setCampData(list);
     } else if (list.length === 0 && pageNo !== 1) {
@@ -91,7 +97,22 @@ export default function Home() {
     } else setCampData([...campData, ...list]);
   }
 
-  const checkEnter = ({ key, target }) => {
+  // Header 검색 기능
+  const changeSearchValue = async ({ target }) => {
+    const list = await getSearchList(1, target.value);
+    const filterList = list.map(({ facltNm }) => facltNm);
+    console.log(list);
+    setSearchArr(filterList);
+  };
+
+  const checkSearchPressEnter = ({ target, key }) => {
+    if (key === "Enter") {
+      searchList(1, target.value);
+    }
+  };
+
+  // Range GPS 검색 기능
+  const checkRangeEnter = ({ key, target }) => {
     if (key === "Enter") {
       const numValue = Number(target.value);
 
@@ -109,6 +130,7 @@ export default function Home() {
     }
   };
 
+  // 더보기 기능
   const clickAddBtn = () => {
     if (titleTag === "nogps") {
       pageNo.current++;
@@ -122,21 +144,6 @@ export default function Home() {
     }
   };
 
-  const changeInputValue = async ({ target }) => {
-    const list = await getSearchList(1, target.value);
-    const filterList = list.map(({ facltNm }) => facltNm);
-    console.log(list);
-    setSearchArr(filterList);
-  };
-
-  console.log(campData);
-
-  const checkSearchPressEnter = ({ target, key }) => {
-    if (key === "Enter") {
-      searchList(1, target.value);
-    }
-  };
-
   return (
     <div>
       <Header>
@@ -144,7 +151,7 @@ export default function Home() {
           <Img src="mainlogo.png"></Img>
         </ImgContainer>
         <Input
-          changeInputValue={changeInputValue}
+          changeInputValue={changeSearchValue}
           searchArr={searchArr}
           checkSearchPressEnter={checkSearchPressEnter}
         ></Input>
@@ -163,7 +170,7 @@ export default function Home() {
                 placeholder="숫자로 주변 km를 설정"
                 width={15}
                 height={30}
-                onKeyUp={checkEnter}
+                onKeyUp={checkRangeEnter}
               ></RangeInput>
             )}
           </Title>
