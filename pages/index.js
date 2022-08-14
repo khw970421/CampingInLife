@@ -143,13 +143,17 @@ export default function Home() {
             )}
           </Title>
           <CampContainer campData={campData} />
-          <Button
-            id={"backgroundLightMainColor"}
-            width={30}
-            height={60}
-            btnText={"더보기"}
-            click={click}
-          ></Button>
+          {campData.length !== 0 ? (
+            <Button
+              id={"backgroundLightMainColor"}
+              width={30}
+              height={60}
+              btnText={"더보기"}
+              click={click}
+            ></Button>
+          ) : (
+            <div>검색 결과가 없습니다. </div>
+          )}
         </Main>
       </Body>
     </div>
@@ -195,6 +199,7 @@ const RangeInput = styled.input`
 
 const Body = styled.div`
   width: 100%;
+  min-height: 100vh;
 `;
 
 const Main = styled.div`
