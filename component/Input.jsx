@@ -38,7 +38,7 @@ const Input = ({
       ></InputTag>
       {searchArr.length !== 0 && (
         <>
-          <Ul height={height} borderRadius={borderRadius}>
+          <Ul width={width} height={height} borderRadius={borderRadius}>
             {searchArr.map((search) => {
               return (
                 <Li
@@ -66,7 +66,7 @@ const Input = ({
 };
 
 const InputContainer = styled.div`
-  box-sizing: content-box;
+  box-sizing: border-box;
   position: relative;
 
   display: flex;
@@ -96,12 +96,13 @@ const InputTag = styled.input`
 `;
 
 const Ul = styled.ul`
-  box-sizing: border-box;
   position: absolute;
+  box-sizing: border-box;
   top: ${({ height }) => `${height}px`};
 
   padding: 0px;
   margin: 0px;
+  width: ${({ width }) => `${width + 5}vw`};
 
   border-radius: ${({ borderRadius }) =>
     `0px 0px ${borderRadius}px ${borderRadius}px`};
@@ -121,7 +122,7 @@ const Li = styled.li`
   border-radius: ${({ borderRadius = 0 }) =>
     `0px 0px ${borderRadius}px ${borderRadius}px`};
 
-  width: ${({ width }) => `${width + 5}vw`};
+  width: ${({ width }) => `calc(${width + 5}vw - 2px)`};
   height: ${({ height }) => `${height}px`};
 `;
 
