@@ -11,6 +11,7 @@ const Input = ({
     console.log("click");
   },
   searchArr = [],
+  checkSearchPressEnter,
 }) => {
   let timer;
   const debounce = (e) => {
@@ -35,6 +36,7 @@ const Input = ({
         height={height}
         borderRadius={borderRadius}
         searchArr={searchArr}
+        onKeyPress={checkSearchPressEnter}
       ></InputTag>
       {searchArr.length !== 0 && (
         <>

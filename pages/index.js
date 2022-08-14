@@ -12,42 +12,17 @@ import Button from "../component/Button";
 import Input from "../component/Input";
 
 export default function Home() {
-  // Todos : 추후 gpsData 적용
   const [gpsData, setGpsData] = useState({});
   const [campData, setCampData] = useState([]);
   const [titleTag, setTitleTag] = useState("nogps");
   const [searchArr, setSearchArr] = useState([]);
   const gpsRange = useRef(1000);
   const pageNo = useRef(1);
+  const searchKey = useRef("");
 
   useEffect(() => {
     getLocation();
   }, []);
-
-  async function locationBasedList(pageNo = 1, radius = 10000) {
-    console.log("gps api");
-    const data = await getLocationBasedList(
-      pageNo,
-      gpsData.long,
-      gpsData.lati,
-      radius
-    );
-    setTitleTag("gps");
-    if (pageNo === 1) {
-      setCampData(data);
-    } else if (data.length === 0 && pageNo !== 1) {
-      alert("더보기 캠핑 목록이 없습니다.");
-    } else setCampData([...campData, ...data]);
-  }
-
-  async function basedList(pageNo = 1) {
-    console.log("gps api X");
-    const data = await getBasedList(pageNo);
-    setTitleTag("nogps");
-    if (data.length === 0 && pageNo !== 1) {
-      alert("더보기 캠핑 목록이 없습니다.");
-    } else setCampData([...campData, ...data]);
-  }
 
   useEffect(() => {
     // GPS Data 여부에 따라 API 분기 실행
@@ -79,6 +54,43 @@ export default function Home() {
     }
   }
 
+  async function locationBasedList(pageNo = 1, radius = 10000) {
+    console.log("gps api");
+    const data = await getLocationBasedList(
+      pageNo,
+      gpsData.long,
+      gpsData.lati,
+      radius
+    );
+    setTitleTag("gps");
+    if (pageNo === 1) {
+      setCampData(data);
+    } else if (data.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
+    } else setCampData([...campData, ...data]);
+  }
+
+  async function basedList(pageNo = 1) {
+    console.log("gps api X");
+    const data = await getBasedList(pageNo);
+    setTitleTag("nogps");
+    if (data.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
+    } else setCampData([...campData, ...data]);
+  }
+
+  async function searchList(pageNo, value) {
+    const list = await getSearchList(pageNo, value);
+    searchKey.current = value;
+    setSearchArr([]);
+    setTitleTag("searchKey");
+    if (pageNo === 1) {
+      setCampData(list);
+    } else if (list.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
+    } else setCampData([...campData, ...list]);
+  }
+
   const checkEnter = ({ key, target }) => {
     if (key === "Enter") {
       const numValue = Number(target.value);
@@ -97,22 +109,34 @@ export default function Home() {
     }
   };
 
-  //  Todos : 더보기가 더는 가져오지 못할때에 대한 alert 처리 필요
-  const click = () => {
+  const clickAddBtn = () => {
     if (titleTag === "nogps") {
       pageNo.current++;
       basedList(pageNo.current);
     } else if (titleTag === "gps") {
       pageNo.current++;
       locationBasedList(pageNo.current, gpsRange.current);
+    } else if (titleTag === "searchKey") {
+      pageNo.current++;
+      searchList(pageNo.current, searchKey.current);
     }
   };
 
   const changeInputValue = async ({ target }) => {
     const list = await getSearchList(1, target.value);
     const filterList = list.map(({ facltNm }) => facltNm);
+    console.log(list);
     setSearchArr(filterList);
   };
+
+  console.log(campData);
+
+  const checkSearchPressEnter = ({ target, key }) => {
+    if (key === "Enter") {
+      searchList(1, target.value);
+    }
+  };
+
   return (
     <div>
       <Header>
@@ -122,6 +146,7 @@ export default function Home() {
         <Input
           changeInputValue={changeInputValue}
           searchArr={searchArr}
+          checkSearchPressEnter={checkSearchPressEnter}
         ></Input>
         <HamburgerContainer>
           <GiHamburgerMenu size="50" />
@@ -131,7 +156,7 @@ export default function Home() {
         <Main>
           <Title>
             <TitleText width={15} height={30}>
-              {returnTitle(titleTag)}
+              {returnTitle(titleTag, searchKey.current)}
             </TitleText>
             {titleTag === "gps" && (
               <RangeInput
@@ -149,7 +174,7 @@ export default function Home() {
               width={30}
               height={60}
               btnText={"더보기"}
-              click={click}
+              click={clickAddBtn}
             ></Button>
           ) : (
             <div>검색 결과가 없습니다. </div>
