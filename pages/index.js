@@ -12,38 +12,19 @@ import Button from "../component/Button";
 import Input from "../component/Input";
 
 export default function Home() {
-  // Todos : 추후 gpsData 적용
-  const [gpsData, setGpsData] = useState({});
-  const [campData, setCampData] = useState([]);
   const [titleTag, setTitleTag] = useState("nogps");
-  const [searchArr, setSearchArr] = useState([]);
-  const gpsRange = useRef(1000);
+  const [campData, setCampData] = useState([]);
   const pageNo = useRef(1);
+
+  const [gpsData, setGpsData] = useState({});
+  const gpsRange = useRef(1000);
+
+  const [searchArr, setSearchArr] = useState([]);
+  const searchKey = useRef("");
 
   useEffect(() => {
     getLocation();
   }, []);
-
-  async function locationBasedList(pageNo = 1, radius = 10000) {
-    console.log("gps api");
-    const data = await getLocationBasedList(
-      pageNo,
-      gpsData.long,
-      gpsData.lati,
-      radius
-    );
-    setTitleTag("gps");
-    if (pageNo === 1) {
-      setCampData(data);
-    } else setCampData([...campData, ...data]);
-  }
-
-  async function basedList(pageNo = 1) {
-    console.log("gps api X");
-    const data = await getBasedList(pageNo);
-    setTitleTag("nogps");
-    setCampData([...campData, ...data]);
-  }
 
   useEffect(() => {
     // GPS Data 여부에 따라 API 분기 실행
@@ -75,7 +56,63 @@ export default function Home() {
     }
   }
 
-  const checkEnter = ({ key, target }) => {
+  async function basedList(pageNo = 1) {
+    const data = await getBasedList(pageNo);
+    setTitleTag("nogps");
+
+    // 요청받은 API는 없고 pageNo는 첫번째 페이지가 아닐때
+    if (data.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
+    } else setCampData([...campData, ...data]);
+  }
+
+  async function locationBasedList(pageNo = 1, radius = 10000) {
+    const data = await getLocationBasedList(
+      pageNo,
+      gpsData.long,
+      gpsData.lati,
+      radius
+    );
+    setTitleTag("gps");
+
+    if (pageNo === 1) {
+      setCampData(data);
+    } else if (data.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
+    } else setCampData([...campData, ...data]);
+  }
+
+  async function searchList(pageNo, value) {
+    const list = await getSearchList(pageNo, value);
+    setTitleTag("searchKey");
+
+    searchKey.current = value;
+    // Todo : 검색이 좀 더 빠를때 searchArr 수정이 안된다. (useEffect로 처리할 필요 있다.)
+    setSearchArr([]);
+
+    if (pageNo === 1) {
+      setCampData(list);
+    } else if (list.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
+    } else setCampData([...campData, ...list]);
+  }
+
+  // Header 검색 기능
+  const changeSearchValue = async ({ target }) => {
+    const list = await getSearchList(1, target.value);
+    const filterList = list.map(({ facltNm }) => facltNm);
+    console.log(list);
+    setSearchArr(filterList);
+  };
+
+  const checkSearchPressEnter = ({ target, key }) => {
+    if (key === "Enter") {
+      searchList(1, target.value);
+    }
+  };
+
+  // Range GPS 검색 기능
+  const checkRangeEnter = ({ key, target }) => {
     if (key === "Enter") {
       const numValue = Number(target.value);
 
@@ -93,22 +130,20 @@ export default function Home() {
     }
   };
 
-  //  Todos : 더보기가 더는 가져오지 못할때에 대한 alert 처리 필요
-  const click = () => {
+  // 더보기 기능
+  const clickAddBtn = () => {
     if (titleTag === "nogps") {
       pageNo.current++;
       basedList(pageNo.current);
     } else if (titleTag === "gps") {
       pageNo.current++;
       locationBasedList(pageNo.current, gpsRange.current);
+    } else if (titleTag === "searchKey") {
+      pageNo.current++;
+      searchList(pageNo.current, searchKey.current);
     }
   };
 
-  const changeInputValue = async ({ target }) => {
-    const list = await getSearchList(1, target.value);
-    const filterList = list.map(({ facltNm }) => facltNm);
-    setSearchArr(filterList);
-  };
   return (
     <div>
       <Header>
@@ -116,8 +151,9 @@ export default function Home() {
           <Img src="mainlogo.png"></Img>
         </ImgContainer>
         <Input
-          changeInputValue={changeInputValue}
+          changeInputValue={changeSearchValue}
           searchArr={searchArr}
+          checkSearchPressEnter={checkSearchPressEnter}
         ></Input>
         <HamburgerContainer>
           <GiHamburgerMenu size="50" />
@@ -127,25 +163,29 @@ export default function Home() {
         <Main>
           <Title>
             <TitleText width={15} height={30}>
-              {returnTitle(titleTag)}
+              {returnTitle(titleTag, searchKey.current)}
             </TitleText>
             {titleTag === "gps" && (
               <RangeInput
                 placeholder="숫자로 주변 km를 설정"
                 width={15}
                 height={30}
-                onKeyUp={checkEnter}
+                onKeyUp={checkRangeEnter}
               ></RangeInput>
             )}
           </Title>
           <CampContainer campData={campData} />
-          <Button
-            id={"backgroundLightMainColor"}
-            width={30}
-            height={60}
-            btnText={"더보기"}
-            click={click}
-          ></Button>
+          {campData.length !== 0 ? (
+            <Button
+              id={"backgroundLightMainColor"}
+              width={30}
+              height={60}
+              btnText={"더보기"}
+              click={clickAddBtn}
+            ></Button>
+          ) : (
+            <div>검색 결과가 없습니다. </div>
+          )}
         </Main>
       </Body>
     </div>
@@ -160,6 +200,7 @@ const Header = styled.div`
 
 const ImgContainer = styled.div`
   width: 10vw;
+  min-width: 100px;
   margin: 20px;
 `;
 
@@ -176,6 +217,7 @@ const HamburgerContainer = styled.div`
 
 const TitleText = styled.div`
   margin: 20px;
+  min-width: 150px;
 `;
 
 const RangeInput = styled.input`
@@ -189,6 +231,7 @@ const RangeInput = styled.input`
 
 const Body = styled.div`
   width: 100%;
+  min-height: 100vh;
 `;
 
 const Main = styled.div`
