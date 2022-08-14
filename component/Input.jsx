@@ -67,35 +67,42 @@ const Input = ({
 
 const InputContainer = styled.div`
   box-sizing: content-box;
+  position: relative;
+
   display: flex;
   flex-direction: column;
-  position: relative;
   justify-content: center;
   align-items: center;
+
   border-radius: ${({ borderRadius, searchArr }) =>
     searchArr.length === 0
       ? `${borderRadius}px`
       : ` ${borderRadius}px ${borderRadius}px 0px 0px`};
   border: 1px solid;
+
   width: ${({ width }) => `${width + 5}vw`};
   height: auto;
 `;
 
 const InputTag = styled.input`
-  box-sizing: border-box;
+  border: 0px;
+
   width: ${({ width }) => `${width}vw`};
   height: ${({ height }) => `${height}px`};
-  border: 0px;
+
   :focus {
     outline: none;
   }
 `;
+
 const Ul = styled.ul`
   box-sizing: border-box;
   position: absolute;
   top: ${({ height }) => `${height}px`};
+
   padding: 0px;
   margin: 0px;
+
   border-radius: ${({ borderRadius }) =>
     `0px 0px ${borderRadius}px ${borderRadius}px`};
   border-bottom-width: 1px;
@@ -105,21 +112,17 @@ const Ul = styled.ul`
   border-right-width: 1px;
   border-right-style: solid;
 `;
+
 const Li = styled.li`
   box-sizing: border-box;
-  width: ${({ width }) => `${width + 5}vw`};
-  height: ${({ height }) => `${height}px`};
   list-style: none;
   padding: 10px;
+
   border-radius: ${({ borderRadius = 0 }) =>
     `0px 0px ${borderRadius}px ${borderRadius}px`};
+
+  width: ${({ width }) => `${width + 5}vw`};
+  height: ${({ height }) => `${height}px`};
 `;
 
-// const Side = styled.div`
-//   border-radius: ${({ borderRadius }) =>
-//     `0px 0px ${borderRadius}px ${borderRadius}px`};
-//   border: 1px solid;
-//   height: 10px;
-//   width: ${({ width }) => `${width + 5}vw`};
-// `;
 export default Input;
