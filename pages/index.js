@@ -20,7 +20,7 @@ export default function Home() {
   const pageNo = useRef(1);
 
   const [gpsData, setGpsData] = useState({});
-  const gpsRange = useRef(1000);
+  const gpsRange = useRef(10000);
 
   const [searchArr, setSearchArr] = useState([]);
   const searchKey = useRef("");
@@ -69,12 +69,12 @@ export default function Home() {
     } else setCampData([...campData, ...data]);
   }
 
-  async function locationBasedList(pageNo = 1, radius = 10000) {
+  async function locationBasedList(pageNo = 1) {
     const data = await getLocationBasedList(
       pageNo,
       gpsData.long,
       gpsData.lati,
-      radius
+      gpsRange.current
     );
     setTitleTag("gps");
 
@@ -122,7 +122,7 @@ export default function Home() {
         basedList(pageNo.current);
         break;
       case "gps":
-        locationBasedList(pageNo.current, gpsRange.current);
+        locationBasedList(pageNo.current);
         break;
       case "searchKey":
         searchList(pageNo.current, searchKey.current);
@@ -138,7 +138,7 @@ export default function Home() {
   const changeSelectBoxOption = ({ target }) => {
     gpsRange.current = parseInt(target.value) * 1000;
     pageNo.current = 1;
-    locationBasedList(pageNo.current, gpsRange.current);
+    locationBasedList(pageNo.current);
   };
 
   return (
