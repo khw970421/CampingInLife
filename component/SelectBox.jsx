@@ -7,8 +7,8 @@ const SelectBox = ({
   changeSelectBoxOption,
 }) => {
   return (
-    <select name="job" onChange={changeSelectBoxOption}>
-      <option defaultValue={optionsTitle} disabled>
+    <select onChange={changeSelectBoxOption} value={optionsTitle}>
+      <option value={optionsTitle} disabled>
         {optionsTitle}
       </option>
       {options.map((option) => (
