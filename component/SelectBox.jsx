@@ -7,12 +7,14 @@ const SelectBox = ({
   changeSelectBoxOption,
 }) => {
   return (
-    <select name="job" onChange={changeSelectBoxOption}>
-      <option value={optionsTitle} disabled selected>
+    <select onChange={changeSelectBoxOption} value={optionsTitle}>
+      <option value={optionsTitle} disabled>
         {optionsTitle}
       </option>
       {options.map((option) => (
-        <option value={option}>{option}</option>
+        <option value={option} key={option}>
+          {option}
+        </option>
       ))}
     </select>
   );
