@@ -1,16 +1,18 @@
 import styled from "styled-components";
-import CampContainer from "../component/CampContainer";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { useEffect, useState, useRef } from "react";
+import { GiHamburgerMenu } from "react-icons/gi";
+
 import {
   getBasedList,
   getLocationBasedList,
   getSearchList,
 } from "../core/api/axios";
+
 import returnTitle from "../core/utils/mainPage";
 import Button from "../component/Button";
 import Input from "../component/Input";
 import SelectBox from "../component/SelectBox";
+import CampContainer from "../component/CampContainer";
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState("nogps");
@@ -113,15 +115,22 @@ export default function Home() {
 
   // 더보기 기능
   const clickAddBtn = () => {
-    if (titleTag === "nogps") {
-      pageNo.current++;
-      basedList(pageNo.current);
-    } else if (titleTag === "gps") {
-      pageNo.current++;
-      locationBasedList(pageNo.current, gpsRange.current);
-    } else if (titleTag === "searchKey") {
-      pageNo.current++;
-      searchList(pageNo.current, searchKey.current);
+    pageNo.current++;
+
+    switch (titleTag) {
+      case "nogps":
+        basedList(pageNo.current);
+        break;
+      case "gps":
+        locationBasedList(pageNo.current, gpsRange.current);
+        break;
+      case "searchKey":
+        searchList(pageNo.current, searchKey.current);
+        break;
+      default:
+        alert(`더보기 기능에 문제가 발생했습니다.`);
+        pageNo.current--;
+        break;
     }
   };
 
@@ -139,8 +148,8 @@ export default function Home() {
           <Img src="mainlogo.png"></Img>
         </ImgContainer>
         <Input
-          changeInputValue={changeSearchValue}
           searchArr={searchArr}
+          changeInputValue={changeSearchValue}
           checkSearchPressEnter={checkSearchPressEnter}
         ></Input>
         <HamburgerContainer>
