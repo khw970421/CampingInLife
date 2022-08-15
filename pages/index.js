@@ -10,6 +10,7 @@ import {
 import returnTitle from "../core/utils/mainPage";
 import Button from "../component/Button";
 import Input from "../component/Input";
+import SelectBox from "../component/SelectBox";
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState("nogps");
@@ -101,32 +102,12 @@ export default function Home() {
   const changeSearchValue = async ({ target }) => {
     const list = await getSearchList(1, target.value);
     const filterList = list.map(({ facltNm }) => facltNm);
-    console.log(list);
     setSearchArr(filterList);
   };
 
   const checkSearchPressEnter = ({ target, key }) => {
     if (key === "Enter") {
       searchList(1, target.value);
-    }
-  };
-
-  // Range GPS 검색 기능
-  const checkRangeEnter = ({ key, target }) => {
-    if (key === "Enter") {
-      const numValue = Number(target.value);
-
-      if (isNaN(numValue)) {
-        alert("숫자를 입력하세요. ");
-      } else if (numValue < 1000) {
-        alert("최소 범위는 1000 이상 입니다. ");
-      } else if (numValue > 50000) {
-        alert("최대 범위는 50000 이하 입니다. ");
-      } else {
-        gpsRange.current = numValue;
-        pageNo.current = 1;
-        locationBasedList(pageNo.current, gpsRange.current);
-      }
     }
   };
 
@@ -142,6 +123,13 @@ export default function Home() {
       pageNo.current++;
       searchList(pageNo.current, searchKey.current);
     }
+  };
+
+  // GPS 범위 기능
+  const changeSelectBoxOption = ({ target }) => {
+    gpsRange.current = parseInt(target.value) * 1000;
+    pageNo.current = 1;
+    locationBasedList(pageNo.current, gpsRange.current);
   };
 
   return (
@@ -165,14 +153,11 @@ export default function Home() {
             <TitleText width={15} height={30}>
               {returnTitle(titleTag, searchKey.current)}
             </TitleText>
-            {titleTag === "gps" && (
-              <RangeInput
-                placeholder="숫자로 주변 km를 설정"
-                width={15}
-                height={30}
-                onKeyUp={checkRangeEnter}
-              ></RangeInput>
-            )}
+            <SelectBox
+              optionsTitle={"범위 설정"}
+              options={["1km", "5km", "10km", "20km"]}
+              changeSelectBoxOption={changeSelectBoxOption}
+            />
           </Title>
           <CampContainer campData={campData} />
           {campData.length !== 0 ? (
@@ -218,15 +203,6 @@ const HamburgerContainer = styled.div`
 const TitleText = styled.div`
   margin: 20px;
   min-width: 150px;
-`;
-
-const RangeInput = styled.input`
-  border: 0.3px solid;
-  border-radius: 24px;
-  width: ${({ width }) => `${width}vw`};
-  height: ${({ height }) => `${height}px`};
-  margin: 20px;
-  padding: 10px;
 `;
 
 const Body = styled.div`
