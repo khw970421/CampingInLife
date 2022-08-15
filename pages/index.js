@@ -153,11 +153,13 @@ export default function Home() {
             <TitleText width={15} height={30}>
               {returnTitle(titleTag, searchKey.current)}
             </TitleText>
-            <SelectBox
-              optionsTitle={"범위 설정"}
-              options={["1km", "5km", "10km", "20km"]}
-              changeSelectBoxOption={changeSelectBoxOption}
-            />
+            {titleTag === "gps" && (
+              <SelectBox
+                optionsTitle={"범위 설정"}
+                options={["1km", "5km", "10km", "20km"]}
+                changeSelectBoxOption={changeSelectBoxOption}
+              />
+            )}
           </Title>
           <CampContainer campData={campData} />
           {campData.length !== 0 ? (
