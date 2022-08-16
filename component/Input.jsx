@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { ImSearch } from "react-icons/im";
 
 const Input = ({
   width = 20,
@@ -11,6 +12,7 @@ const Input = ({
     console.log("click");
   },
   searchArr = [],
+  checkSearchPressEnter,
 }) => {
   let timer;
   const debounce = (e) => {
@@ -23,58 +25,121 @@ const Input = ({
   };
 
   return (
-    <InputContainer>
-      <InputTag
-        onChange={debounce}
-        width={width}
-        height={height}
-        borderRadius={borderRadius}
-      ></InputTag>
+    <InputContainer
+      width={width}
+      height={height}
+      borderRadius={borderRadius}
+      searchArr={searchArr}
+    >
+      <InputTagContainer>
+        <ImSearch />
+        <InputTag
+          onChange={debounce}
+          width={width}
+          height={height}
+          borderRadius={borderRadius}
+          searchArr={searchArr}
+          onKeyPress={checkSearchPressEnter}
+        ></InputTag>
+      </InputTagContainer>
       {searchArr.length !== 0 && (
-        <Ul height={height} borderRadius={borderRadius}>
-          {searchArr.map((search) => {
-            return (
-              <Li
-                key={search}
-                id="backgroundWhite"
-                onClick={clickSearch}
-                width={width}
-                height={height}
-              >
-                {search}
-              </Li>
-            );
-          })}
-        </Ul>
+        <>
+          <Ul width={width} height={height} borderRadius={borderRadius}>
+            {searchArr.map((search) => {
+              return (
+                <Li
+                  key={search}
+                  id="backgroundWhite"
+                  onClick={clickSearch}
+                  width={width}
+                  height={height}
+                >
+                  {search}
+                </Li>
+              );
+            })}
+            <Li
+              id="backgroundWhite"
+              width={width}
+              height={5}
+              borderRadius={borderRadius}
+            ></Li>
+          </Ul>
+        </>
       )}
     </InputContainer>
   );
 };
 
 const InputContainer = styled.div`
+  box-sizing: border-box;
+  position: relative;
+
   display: flex;
   flex-direction: column;
-  position: relative;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: ${({ borderRadius, searchArr }) =>
+    searchArr.length === 0
+      ? `${borderRadius}px`
+      : ` ${borderRadius}px ${borderRadius}px 0px 0px`};
+  border: 1px solid;
+
+  width: ${({ width }) => `${width + 5}vw`};
+  height: auto;
+  min-width: 200px;
+`;
+
+const InputTagContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const InputTag = styled.input`
+  border: 0px;
+
+  padding: 0px 10px;
   width: ${({ width }) => `${width}vw`};
   height: ${({ height }) => `${height}px`};
-  border-radius: ${({ borderRadius }) => `${borderRadius}px`};
-  border: 0.3px solid;
-  padding: 10px;
+
+  :focus {
+    outline: none;
+  }
 `;
+
 const Ul = styled.ul`
+  box-sizing: border-box;
   position: absolute;
-  margin-top: ${({ height }) => `${height}px`};
+  top: ${({ height }) => `${height}px`};
+
   padding: 0px;
-  border: 1px solid;
-  border-radius: ${({ borderRadius }) => `${borderRadius}px`};
+  margin: 0px;
+  min-width: 200px;
+  width: ${({ width }) => `${width + 5}vw`};
+
+  border-radius: ${({ borderRadius }) =>
+    `0px 0px ${borderRadius}px ${borderRadius}px`};
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-right-width: 1px;
+  border-right-style: solid;
 `;
+
 const Li = styled.li`
-  width: ${({ width }) => `${width}vw`};
-  height: ${({ height }) => `${height}px`};
+  box-sizing: border-box;
   list-style: none;
   padding: 10px;
+  font-size: 1em;
+
+  border-radius: ${({ borderRadius = 0 }) =>
+    `0px 0px ${borderRadius}px ${borderRadius}px`};
+
+  width: ${({ width }) => `calc(${width + 5}vw - 2px)`};
+  min-width: 198px;
+  height: ${({ height }) => `${height}px`};
 `;
+
 export default Input;
