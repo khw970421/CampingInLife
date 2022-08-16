@@ -8,7 +8,7 @@ import {
   getSearchList,
 } from "../core/api/axios";
 
-import returnTitle from "../core/utils/mainPage";
+import { returnTitle, getLocation } from "../core/utils/mainPage";
 import Button from "../component/Button";
 import Input from "../component/Input";
 import SelectBox from "../component/SelectBox";
@@ -26,7 +26,7 @@ export default function Home() {
   const searchKey = useRef("");
 
   useEffect(() => {
-    getLocation();
+    getLocation(setGpsData);
   }, []);
 
   useEffect(() => {
@@ -34,30 +34,6 @@ export default function Home() {
     if (Object.keys(gpsData).length !== 0) locationBasedList();
     else basedList();
   }, [gpsData]);
-
-  function getLocation() {
-    if (navigator.geolocation) {
-      // GPS를 지원하면
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          setGpsData({
-            lati: position.coords.latitude,
-            long: position.coords.longitude,
-          });
-        },
-        function (error) {
-          console.error(error);
-        },
-        {
-          enableHighAccuracy: false,
-          maximumAge: 0,
-          timeout: Infinity,
-        }
-      );
-    } else {
-      alert("GPS를 지원하지 않습니다");
-    }
-  }
 
   async function basedList(pageNo = 1) {
     const data = await getBasedList(pageNo);
@@ -180,7 +156,7 @@ export default function Home() {
               click={clickAddBtn}
             ></Button>
           ) : (
-            <div>검색 결과가 없습니다. </div>
+            <div> 검색 결과가 없습니다. </div>
           )}
         </Main>
       </Body>
