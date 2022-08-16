@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { ImSearch } from "react-icons/im";
 
 const Input = ({
   width = 20,
