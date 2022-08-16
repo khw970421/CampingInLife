@@ -1,16 +1,18 @@
 import styled from "styled-components";
-import CampContainer from "../component/CampContainer";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { useEffect, useState, useRef } from "react";
+import { GiHamburgerMenu } from "react-icons/gi";
+
 import {
   getBasedList,
   getLocationBasedList,
   getSearchList,
 } from "../core/api/axios";
+
 import returnTitle from "../core/utils/mainPage";
 import Button from "../component/Button";
 import Input from "../component/Input";
 import SelectBox from "../component/SelectBox";
+import CampContainer from "../component/CampContainer";
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState("nogps");
@@ -18,7 +20,7 @@ export default function Home() {
   const pageNo = useRef(1);
 
   const [gpsData, setGpsData] = useState({});
-  const gpsRange = useRef(1000);
+  const gpsRange = useRef(10000);
 
   const [searchArr, setSearchArr] = useState([]);
   const searchKey = useRef("");
@@ -67,12 +69,12 @@ export default function Home() {
     } else setCampData([...campData, ...data]);
   }
 
-  async function locationBasedList(pageNo = 1, radius = 10000) {
+  async function locationBasedList(pageNo = 1) {
     const data = await getLocationBasedList(
       pageNo,
       gpsData.long,
       gpsData.lati,
-      radius
+      gpsRange.current
     );
     setTitleTag("gps");
 
@@ -113,15 +115,22 @@ export default function Home() {
 
   // 더보기 기능
   const clickAddBtn = () => {
-    if (titleTag === "nogps") {
-      pageNo.current++;
-      basedList(pageNo.current);
-    } else if (titleTag === "gps") {
-      pageNo.current++;
-      locationBasedList(pageNo.current, gpsRange.current);
-    } else if (titleTag === "searchKey") {
-      pageNo.current++;
-      searchList(pageNo.current, searchKey.current);
+    pageNo.current++;
+
+    switch (titleTag) {
+      case "nogps":
+        basedList(pageNo.current);
+        break;
+      case "gps":
+        locationBasedList(pageNo.current);
+        break;
+      case "searchKey":
+        searchList(pageNo.current, searchKey.current);
+        break;
+      default:
+        alert(`더보기 기능에 문제가 발생했습니다.`);
+        pageNo.current--;
+        break;
     }
   };
 
@@ -129,7 +138,7 @@ export default function Home() {
   const changeSelectBoxOption = ({ target }) => {
     gpsRange.current = parseInt(target.value) * 1000;
     pageNo.current = 1;
-    locationBasedList(pageNo.current, gpsRange.current);
+    locationBasedList(pageNo.current);
   };
 
   return (
@@ -139,8 +148,8 @@ export default function Home() {
           <Img src="mainlogo.png"></Img>
         </ImgContainer>
         <Input
-          changeInputValue={changeSearchValue}
           searchArr={searchArr}
+          changeInputValue={changeSearchValue}
           checkSearchPressEnter={checkSearchPressEnter}
         ></Input>
         <HamburgerContainer>
@@ -153,11 +162,13 @@ export default function Home() {
             <TitleText width={15} height={30}>
               {returnTitle(titleTag, searchKey.current)}
             </TitleText>
-            <SelectBox
-              optionsTitle={"범위 설정"}
-              options={["1km", "5km", "10km", "20km"]}
-              changeSelectBoxOption={changeSelectBoxOption}
-            />
+            {titleTag === "gps" && (
+              <SelectBox
+                optionsTitle={"범위 설정"}
+                options={["1km", "5km", "10km", "20km"]}
+                changeSelectBoxOption={changeSelectBoxOption}
+              />
+            )}
           </Title>
           <CampContainer campData={campData} />
           {campData.length !== 0 ? (

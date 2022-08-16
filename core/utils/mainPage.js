@@ -4,7 +4,6 @@ const returnTitle = (titleTag, searchKey = "") => {
     nogps: "캠핑장 목록",
     searchKey: `검색 결과 : ${searchKey}`,
   };
-  console.log(titleTag, "?", searchKey, "!", titleCase[titleTag]);
   return "🏕️ " + titleCase[titleTag];
 };
 
