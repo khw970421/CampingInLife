@@ -31,14 +31,17 @@ const Input = ({
       borderRadius={borderRadius}
       searchArr={searchArr}
     >
-      <InputTag
-        onChange={debounce}
-        width={width}
-        height={height}
-        borderRadius={borderRadius}
-        searchArr={searchArr}
-        onKeyPress={checkSearchPressEnter}
-      ></InputTag>
+      <InputTagContainer>
+        <ImSearch />
+        <InputTag
+          onChange={debounce}
+          width={width}
+          height={height}
+          borderRadius={borderRadius}
+          searchArr={searchArr}
+          onKeyPress={checkSearchPressEnter}
+        ></InputTag>
+      </InputTagContainer>
       {searchArr.length !== 0 && (
         <>
           <Ul width={width} height={height} borderRadius={borderRadius}>
@@ -85,11 +88,18 @@ const InputContainer = styled.div`
 
   width: ${({ width }) => `${width + 5}vw`};
   height: auto;
+  min-width: 200px;
+`;
+
+const InputTagContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const InputTag = styled.input`
   border: 0px;
 
+  padding: 0px 10px;
   width: ${({ width }) => `${width}vw`};
   height: ${({ height }) => `${height}px`};
 
@@ -105,6 +115,7 @@ const Ul = styled.ul`
 
   padding: 0px;
   margin: 0px;
+  min-width: 200px;
   width: ${({ width }) => `${width + 5}vw`};
 
   border-radius: ${({ borderRadius }) =>
@@ -121,11 +132,13 @@ const Li = styled.li`
   box-sizing: border-box;
   list-style: none;
   padding: 10px;
+  font-size: 1em;
 
   border-radius: ${({ borderRadius = 0 }) =>
     `0px 0px ${borderRadius}px ${borderRadius}px`};
 
   width: ${({ width }) => `calc(${width + 5}vw - 2px)`};
+  min-width: 198px;
   height: ${({ height }) => `${height}px`};
 `;
 
