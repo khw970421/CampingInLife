@@ -11,9 +11,9 @@ a {
   text-decoration: none;
 }
 
-* {
+/* * {
   box-sizing: border-box;
-}
+} */
 
 #mainColor {
   color: #8bc53f;
