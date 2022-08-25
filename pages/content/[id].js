@@ -3,6 +3,7 @@ import { useRouter } from "next/dist/client/router";
 import { getLocationBasedList, getImageList } from "../../core/api/axios";
 import styled from "styled-components";
 import Slider from "../../component/Slider";
+import Intro from "../../component/Intro";
 
 const content = () => {
   const router = useRouter();
@@ -30,7 +31,10 @@ const content = () => {
       <Body>
         <Main>
           <Title>🏕️ {content.facltNm}</Title>
-          <Slider imgs={imageLists} />
+          <Slider imgs={imageLists} width={40} />
+          <IntroContainer>
+            <Intro introText={content.intro} />
+          </IntroContainer>
         </Main>
       </Body>
     </>
@@ -48,8 +52,15 @@ const Main = styled.div`
   width: calc(100vw - 22vw * 2);
   height: auto;
   margin: 0vw 22vw;
+  align-items: center;
 `;
 
-const Title = styled.div``;
+const Title = styled.div`
+  width: 100%;
+`;
+
+const IntroContainer = styled.div`
+  width: 100%;
+`;
 
 export default content;
