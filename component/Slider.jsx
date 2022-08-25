@@ -7,8 +7,7 @@ import styled from "styled-components";
 
 const Slider = ({
   imgs = ["logo.png", "mainlogo.png", "logo.png", "mainlogo.png", "logo.png"],
-  width = 200,
-  height = 100,
+  width = 10,
 }) => {
   const [sliderNo, setSliderNo] = useState(0);
   const [imgsLength, setImgsLength] = useState(1);
@@ -25,16 +24,16 @@ const Slider = ({
 
   return (
     <SliderContainer width={width}>
-      <Left height={height} onClick={clickLeft}>
-        <BsFillArrowLeftCircleFill />
+      <Left onClick={clickLeft}>
+        <BsFillArrowLeftCircleFill size={`${width / 10}vw`} />
       </Left>
-      <Right height={height} onClick={clickRight}>
-        <BsFillArrowRightCircleFill />
+      <Right onClick={clickRight}>
+        <BsFillArrowRightCircleFill size={`${width / 10}vw`} />
       </Right>
       {imgs.map((img, idx) => {
         return (
-          <ImgContainer width={width} height={height} key={idx}>
-            <Img src={img} width={width} height={height} sliderNo={sliderNo} />
+          <ImgContainer width={width} key={idx}>
+            <Img src={img} width={width} sliderNo={sliderNo} />
           </ImgContainer>
         );
       })}
@@ -44,23 +43,22 @@ const Slider = ({
 
 const SliderContainer = styled.div`
   display: flex;
-  width: ${({ width }) => `${width}px`};
+  width: ${({ width }) => `${width}vw`};
   overflow: hidden;
   position: relative;
 `;
 
 const ImgContainer = styled.div`
-  width: ${({ width }) => `${width}px`};
+  width: ${({ width }) => `${width}vw`};
   height: auto;
 `;
 
 const Img = styled.img`
-  width: ${({ width }) => `${width}px`};
+  width: ${({ width }) => `${width}vw`};
   /* width: 100%; */
-  height: ${({ height }) => `${height}px`};
   object-fit: contain;
   transform: ${({ width, sliderNo }) =>
-    `translate(calc(${width}px * -${sliderNo}), 0px);`};
+    `translate(calc(${width}vw * -${sliderNo}), 0px);`};
   transition-duration: 1s;
 `;
 
