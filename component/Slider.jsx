@@ -11,16 +11,17 @@ const Slider = ({
   height = 100,
 }) => {
   const [sliderNo, setSliderNo] = useState(0);
+  const [imgsLength, setImgsLength] = useState(1);
   // Todos : setInterval로 처리 가능한 방법 이해
   // Todos : imgs가 받은게 없을 경우 1로 처리하며 1에는 사진이 없는 이미지형태 처리 필요
-  const imgsLength = useRef(imgs.length !== 0 ? imgs.length : 1);
-  const clickSlide = () => {
-    setSliderNo(sliderNo + 1);
-  };
 
-  const clickLeft = () =>
-    setSliderNo((sliderNo - 1 + imgsLength.current) % imgsLength.current);
-  const clickRight = () => setSliderNo((sliderNo + 1) % imgsLength.current);
+  useEffect(() => {
+    setImgsLength(imgs.length);
+  }, [imgs]);
+
+  const clickLeft = () => setSliderNo((sliderNo - 1 + imgsLength) % imgsLength);
+
+  const clickRight = () => setSliderNo((sliderNo + 1) % imgsLength);
 
   return (
     <SliderContainer width={width}>
@@ -33,13 +34,7 @@ const Slider = ({
       {imgs.map((img, idx) => {
         return (
           <ImgContainer width={width} height={height} key={idx}>
-            <Img
-              src={img}
-              width={width}
-              height={height}
-              sliderNo={sliderNo}
-              onClick={clickSlide}
-            />
+            <Img src={img} width={width} height={height} sliderNo={sliderNo} />
           </ImgContainer>
         );
       })}
