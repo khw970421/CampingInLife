@@ -4,6 +4,8 @@ const API = "http://api.visitkorea.or.kr/openapi/service/rest/GoCamping";
 const essentialParams = process.env.SERVICE_KEY;
 
 const filtering = (target) => target?.data?.response?.body?.items?.item;
+const filteringUrl = (target) =>
+  target?.data?.response?.body?.items?.item.map(({ imageUrl }) => imageUrl);
 
 const getBasedList = async (pageNo = 1) => {
   const unFilteredData = await axios.get(
@@ -38,7 +40,7 @@ const getImageList = async (pageNo = 1, contentId = 3429) => {
   const unFilteredData = await axios.get(
     `/api/imageList?${essentialParams}&pageNo=${pageNo}&contentId=${contentId}`
   );
-  const filteredData = filtering(unFilteredData);
+  const filteredData = filteringUrl(unFilteredData);
   return filteredData;
 };
 
