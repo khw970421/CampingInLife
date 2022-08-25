@@ -3,33 +3,42 @@ import { BiUpArrow, BiDownArrow } from "react-icons/bi";
 import styled from "styled-components";
 
 const Intro = ({ introText = "안녕하세요" }) => {
-  const [arrow, setArrow] = useState("Down");
+  const [isArrowUp, setIsArrowUp] = useState(true);
   const clickUpDown = () => {
-    setArrow(arrow === "Down" ? "Up" : "Down");
+    setIsArrowUp(!isArrowUp);
   };
 
   return (
-    <div>
-      {arrow === "Up" ? (
+    <IntroContainer>
+      {isArrowUp ? (
         <>
           <BiUpArrow onClick={clickUpDown} />
-          <span onClick={clickUpDown}>Intro</span>
+          <IntroSpan onClick={clickUpDown}>Intro</IntroSpan>
         </>
       ) : (
         <>
           <BiDownArrow onClick={clickUpDown} />
-          <span onClick={clickUpDown}>Intro</span>
+          <IntroSpan onClick={clickUpDown}>Intro</IntroSpan>
           <IntroText id="backgroundWhite">{introText}</IntroText>
         </>
       )}
-    </div>
+    </IntroContainer>
   );
 };
+
+const IntroContainer = styled.div`
+  margin: 10px 0px;
+`;
 
 const IntroText = styled.div`
   border-radius: 10px;
   border: 1px solid;
   padding: 10px;
+  margin: 5px 0px;
+`;
+
+const IntroSpan = styled.span`
+  margin: 3px;
 `;
 
 export default Intro;
