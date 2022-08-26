@@ -13,6 +13,7 @@ import Button from "../component/Button";
 import Input from "../component/Input";
 import SelectBox from "../component/SelectBox";
 import CampContainer from "../component/CampContainer";
+import Footer from "../component/Semantic/Footer";
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState("nogps");
@@ -160,6 +161,7 @@ export default function Home() {
           )}
         </Main>
       </Body>
+      <Footer />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Slider from "../../component/Slider";
 import Intro from "../../component/Intro";
 import KakaoAPI from "../../component/KakaoAPI";
+import Footer from "../../component/Semantic/Footer";
 
 const content = () => {
   const router = useRouter();
@@ -43,6 +44,7 @@ const content = () => {
           <KakaoAPI long={router.query.mapX} lati={router.query.mapY} />
         </Main>
       </Body>
+      <Footer />
     </>
   );
 };
