@@ -43,7 +43,11 @@ const content = () => {
             <h3>위치</h3>
             <div>{content.addr1}</div>
           </Location>
-          <KakaoAPI long={router.query.mapX} lati={router.query.mapY} />
+          <KakaoAPI
+            long={router.query.mapX}
+            lati={router.query.mapY}
+            marginH={10}
+          />
         </Main>
       </Body>
       <Footer />
