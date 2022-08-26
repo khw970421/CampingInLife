@@ -4,6 +4,7 @@ import { getLocationBasedList, getImageList } from "../../core/api/axios";
 import styled from "styled-components";
 import Slider from "../../component/Slider";
 import Intro from "../../component/Intro";
+import KakaoAPI from "../../component/KakaoAPI";
 
 const content = () => {
   const router = useRouter();
@@ -35,6 +36,11 @@ const content = () => {
           <IntroContainer>
             <Intro introText={content.intro} />
           </IntroContainer>
+          <Location>
+            <h3>위치</h3>
+            <div>{content.addr1}</div>
+          </Location>
+          <KakaoAPI long={router.query.mapX} lati={router.query.mapY} />
         </Main>
       </Body>
     </>
@@ -60,6 +66,10 @@ const Title = styled.div`
 `;
 
 const IntroContainer = styled.div`
+  width: 100%;
+`;
+
+const Location = styled.div`
   width: 100%;
 `;
 
