@@ -19,7 +19,12 @@ const Intro = ({ introText = "안녕하세요" }) => {
         <>
           <BiDownArrow onClick={clickUpDown} />
           <IntroSpan onClick={clickUpDown}>Intro</IntroSpan>
-          <IntroText id="backgroundWhite">{introText}</IntroText>
+          <IntroText
+            id="backgroundWhite"
+            className={`${!isArrowUp ? "introDisplay" : ""}`}
+          >
+            {introText}
+          </IntroText>
         </>
       )}
     </IntroContainer>
