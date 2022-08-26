@@ -6,6 +6,7 @@ import Slider from "../../component/Slider";
 import Intro from "../../component/Intro";
 import KakaoAPI from "../../component/KakaoAPI";
 import Footer from "../../component/Semantic/Footer";
+import Header from "../../component/Semantic/Header";
 
 const content = () => {
   const router = useRouter();
@@ -30,6 +31,7 @@ const content = () => {
 
   return (
     <>
+      <Header />
       <Body>
         <Main>
           <Title>🏕️ {content.facltNm}</Title>
