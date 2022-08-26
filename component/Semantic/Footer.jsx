@@ -4,7 +4,9 @@ import styled from "styled-components";
 const Footer = () => {
   return (
     <FooterContainer>
-      <div>COPYRIGHT 2022 BY CampInLife ALL RIGHT RESERVED</div>
+      <div id="displayMax700">
+        COPYRIGHT 2022 BY CampInLife ALL RIGHT RESERVED
+      </div>
       <div>
         <Information>💻 개발자 정보</Information>
         <Phone>📱 &nbsp;&nbsp;전화 : 010-3266-1140 </Phone>
