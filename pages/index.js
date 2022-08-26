@@ -14,6 +14,7 @@ import Input from "../component/Input";
 import SelectBox from "../component/SelectBox";
 import CampContainer from "../component/CampContainer";
 import Footer from "../component/Semantic/Footer";
+import Header from "../component/Semantic/Header";
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState("nogps");
@@ -120,19 +121,12 @@ export default function Home() {
 
   return (
     <div>
-      <Header>
-        <ImgContainer>
-          <Img src="mainlogo.png"></Img>
-        </ImgContainer>
-        <Input
-          searchArr={searchArr}
-          changeInputValue={changeSearchValue}
-          checkSearchPressEnter={checkSearchPressEnter}
-        ></Input>
-        <HamburgerContainer>
-          <GiHamburgerMenu size="50" />
-        </HamburgerContainer>
-      </Header>
+      <Header
+        isInputExist={true}
+        searchArr={searchArr}
+        changeInputValue={changeSearchValue}
+        checkSearchPressEnter={checkSearchPressEnter}
+      />
       <Body id="backgroundLightGray">
         <Main>
           <Title>
@@ -165,29 +159,6 @@ export default function Home() {
     </div>
   );
 }
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const ImgContainer = styled.div`
-  width: 10vw;
-  min-width: 100px;
-  margin: 20px;
-`;
-
-const Img = styled.img`
-  width: 100%;
-`;
-
-const HamburgerContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  width: 10vw;
-  margin: 20px;
-`;
 
 const TitleText = styled.div`
   margin: 20px;
