@@ -34,14 +34,14 @@ const content = () => {
       <Header />
       <Body>
         <Main>
-          <Title>🏕️ {content.facltNm}</Title>
+          <Title id="titleText">🏕️ {content.facltNm}</Title>
           <Slider imgs={imageLists} width={40} />
           <IntroContainer>
             <Intro introText={content.intro} />
           </IntroContainer>
           <Location>
-            <h3>위치</h3>
-            <div>{content.addr1}</div>
+            <div id="titleText">위치</div>
+            <div id="subText">{content.addr1}</div>
           </Location>
           <KakaoAPI
             long={router.query.mapX}
@@ -71,14 +71,17 @@ const Main = styled.div`
 
 const Title = styled.div`
   width: 100%;
+  margin: 10px 0px;
 `;
 
 const IntroContainer = styled.div`
   width: 100%;
+  margin: 10px 0px;
 `;
 
 const Location = styled.div`
   width: 100%;
+  margin: 10px 0px;
 `;
 
 export default content;

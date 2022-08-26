@@ -13,12 +13,16 @@ const Intro = ({ introText = "안녕하세요" }) => {
       {isArrowUp ? (
         <>
           <BiUpArrow onClick={clickUpDown} />
-          <IntroSpan onClick={clickUpDown}>Intro</IntroSpan>
+          <IntroSpan onClick={clickUpDown} id="titleText">
+            Intro
+          </IntroSpan>
         </>
       ) : (
         <>
           <BiDownArrow onClick={clickUpDown} />
-          <IntroSpan onClick={clickUpDown}>Intro</IntroSpan>
+          <IntroSpan onClick={clickUpDown} id="titleText">
+            Intro
+          </IntroSpan>
           <IntroText
             id="backgroundWhite"
             className={`${!isArrowUp ? "introDisplay" : ""}`}

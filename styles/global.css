@@ -75,3 +75,13 @@ a {
     background: red;
   }
 }
+
+#titleText {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+#subText {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
