@@ -75,3 +75,19 @@ a {
     background: red;
   }
 }
+
+@media (max-width: 700px) {
+  #displayMax700 {
+    display: none;
+  }
+}
+
+#titleText {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+#subText {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
