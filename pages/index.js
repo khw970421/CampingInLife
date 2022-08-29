@@ -81,7 +81,12 @@ export default function Home() {
   // Header 검색 기능
   const changeSearchValue = async ({ target }) => {
     const list = await getSearchList(1, target.value);
-    const filterList = list.map(({ facltNm }) => facltNm);
+    const filterList = list.map(({ facltNm, contentId, mapX, mapY }) => ({
+      facltNm,
+      contentId,
+      mapX,
+      mapY,
+    }));
     setSearchArr(filterList);
   };
 
@@ -119,6 +124,8 @@ export default function Home() {
     locationBasedList(pageNo.current);
   };
 
+  const clearSearchArr = () => setSearchArr([]);
+
   return (
     <div>
       <Header
@@ -126,6 +133,7 @@ export default function Home() {
         searchArr={searchArr}
         changeInputValue={changeSearchValue}
         checkSearchPressEnter={checkSearchPressEnter}
+        clearSearchArr={clearSearchArr}
       />
       <Body id="backgroundLightGray">
         <Main>

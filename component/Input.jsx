@@ -1,4 +1,5 @@
-import React from "react";
+import { useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { ImSearch } from "react-icons/im";
 
@@ -8,13 +9,13 @@ const Input = ({
   borderRadius = 20,
   placeholder,
   changeInputValue,
-  clickSearch = () => {
-    console.log("click");
-  },
+  clearSearchArr,
   searchArr = [],
   checkSearchPressEnter,
 }) => {
   let timer;
+  const router = useRouter();
+  const inputRef = useRef();
   const debounce = (e) => {
     if (timer) {
       clearTimeout(timer); // 0.5초 미만으로 입력이 주어질 경우 해당 timer를 clear(없앤다)한다.
@@ -23,7 +24,20 @@ const Input = ({
       changeInputValue(e);
     }, 500);
   };
+  // useEffect(() => {
+  //   console.log(searchArr);
+  //   if (searchArr.length === 0) {
+  //     inputRef.current.blur();
+  //   }
+  // }, [searchArr]);
+  // console.log(inputRef.current.style);
+  const focusOut = () => {
+    // clearSearchArr();
+  };
 
+  const clickSearch = ({ contentId, mapX, mapY }) => {
+    router.push(`/content/${contentId}?mapX=${mapX}&mapY=${mapY}&radius=1000`);
+  };
   return (
     <InputContainer
       width={width}
@@ -34,7 +48,9 @@ const Input = ({
       <InputTagContainer>
         <ImSearch />
         <InputTag
+          ref={inputRef}
           onChange={debounce}
+          onBlur={focusOut}
           width={width}
           height={height}
           borderRadius={borderRadius}
@@ -45,16 +61,16 @@ const Input = ({
       {searchArr.length !== 0 && (
         <>
           <Ul width={width} height={height} borderRadius={borderRadius}>
-            {searchArr.map((search) => {
+            {searchArr.map(({ facltNm, contentId, mapX, mapY }) => {
               return (
                 <Li
-                  key={search}
+                  key={contentId}
                   id="backgroundWhite"
-                  onClick={clickSearch}
+                  onClick={() => clickSearch({ contentId, mapX, mapY })}
                   width={width}
                   height={height}
                 >
-                  {search}
+                  {facltNm}
                 </Li>
               );
             })}

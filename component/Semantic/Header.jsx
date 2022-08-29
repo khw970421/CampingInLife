@@ -9,6 +9,7 @@ const Header = ({
   searchArr = [],
   changeInputValue,
   checkSearchPressEnter,
+  clearSearchArr,
 }) => {
   return (
     <HeaderContainer>
@@ -20,6 +21,7 @@ const Header = ({
           searchArr={searchArr}
           changeInputValue={changeInputValue}
           checkSearchPressEnter={checkSearchPressEnter}
+          clearSearchArr={clearSearchArr}
         ></Input>
       )}
       <HamburgerContainer>
