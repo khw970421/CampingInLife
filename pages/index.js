@@ -25,6 +25,7 @@ export default function Home() {
   const gpsRange = useRef(10000);
 
   const [searchArr, setSearchArr] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const searchKey = useRef("");
 
   useEffect(() => {
@@ -87,7 +88,13 @@ export default function Home() {
       mapX,
       mapY,
     }));
-    setSearchArr(filterList);
+    if (target.value === "") {
+      setIsSearching(false);
+      setSearchArr(filterList);
+    } else {
+      setIsSearching(true);
+      setSearchArr(filterList);
+    }
   };
 
   const checkSearchPressEnter = ({ target, key }) => {
@@ -124,8 +131,10 @@ export default function Home() {
     locationBasedList(pageNo.current);
   };
 
-  const clearSearchArr = () => setSearchArr([]);
-
+  const clearSearchArr = () => {
+    setSearchArr([]);
+    setIsSearching(false);
+  };
   return (
     <div>
       <Header
@@ -134,6 +143,7 @@ export default function Home() {
         changeInputValue={changeSearchValue}
         checkSearchPressEnter={checkSearchPressEnter}
         clearSearchArr={clearSearchArr}
+        isSearching={isSearching}
       />
       <Body id="backgroundLightGray">
         <Main>
