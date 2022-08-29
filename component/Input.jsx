@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { ImSearch } from "react-icons/im";
 
@@ -8,14 +9,12 @@ const Input = ({
   borderRadius = 20,
   placeholder,
   changeInputValue,
-  clickSearch = () => {
-    console.log("click");
-  },
   clearSearchArr,
   searchArr = [],
   checkSearchPressEnter,
 }) => {
   let timer;
+  const router = useRouter();
   const inputRef = useRef();
   const debounce = (e) => {
     if (timer) {
@@ -33,8 +32,11 @@ const Input = ({
   // }, [searchArr]);
   // console.log(inputRef.current.style);
   const focusOut = () => {
-    inputRef.current.blur();
-    clearSearchArr();
+    // clearSearchArr();
+  };
+
+  const clickSearch = ({ contentId, mapX, mapY }) => {
+    router.push(`/content/${contentId}?mapX=${mapX}&mapY=${mapY}&radius=1000`);
   };
   return (
     <InputContainer
@@ -59,16 +61,16 @@ const Input = ({
       {searchArr.length !== 0 && (
         <>
           <Ul width={width} height={height} borderRadius={borderRadius}>
-            {searchArr.map((search) => {
+            {searchArr.map(({ facltNm, contentId, mapX, mapY }) => {
               return (
                 <Li
-                  key={search}
+                  key={contentId}
                   id="backgroundWhite"
-                  onClick={clickSearch}
+                  onClick={() => clickSearch({ contentId, mapX, mapY })}
                   width={width}
                   height={height}
                 >
-                  {search}
+                  {facltNm}
                 </Li>
               );
             })}
