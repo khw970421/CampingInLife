@@ -25,6 +25,7 @@ export default function Home() {
   const gpsRange = useRef(10000);
 
   const [searchArr, setSearchArr] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const searchKey = useRef("");
 
   useEffect(() => {
@@ -80,14 +81,21 @@ export default function Home() {
 
   // Header 검색 기능
   const changeSearchValue = async ({ target }) => {
-    const list = await getSearchList(1, target.value);
-    const filterList = list.map(({ facltNm, contentId, mapX, mapY }) => ({
-      facltNm,
-      contentId,
-      mapX,
-      mapY,
-    }));
-    setSearchArr(filterList);
+    if (target.value !== "") {
+      const list = await getSearchList(1, target.value);
+      const filterList = list.map(({ facltNm, contentId, mapX, mapY }) => ({
+        facltNm,
+        contentId,
+        mapX,
+        mapY,
+      }));
+
+      setIsSearching(true);
+      setSearchArr(filterList);
+    } else {
+      setIsSearching(false);
+      setSearchArr([]);
+    }
   };
 
   const checkSearchPressEnter = ({ target, key }) => {
@@ -124,8 +132,10 @@ export default function Home() {
     locationBasedList(pageNo.current);
   };
 
-  const clearSearchArr = () => setSearchArr([]);
-
+  const clearSearchArr = () => {
+    setSearchArr([]);
+    setIsSearching(false);
+  };
   return (
     <div>
       <Header
@@ -134,6 +144,7 @@ export default function Home() {
         changeInputValue={changeSearchValue}
         checkSearchPressEnter={checkSearchPressEnter}
         clearSearchArr={clearSearchArr}
+        isSearching={isSearching}
       />
       <Body id="backgroundLightGray">
         <Main>

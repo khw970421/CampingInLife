@@ -12,6 +12,7 @@ const Input = ({
   clearSearchArr,
   searchArr = [],
   checkSearchPressEnter,
+  isSearching,
 }) => {
   let timer;
   const router = useRouter();
@@ -24,6 +25,7 @@ const Input = ({
       changeInputValue(e);
     }, 500);
   };
+  console.log(isSearching);
   // useEffect(() => {
   //   console.log(searchArr);
   //   if (searchArr.length === 0) {
@@ -44,6 +46,7 @@ const Input = ({
       height={height}
       borderRadius={borderRadius}
       searchArr={searchArr}
+      isSearching={isSearching}
     >
       <InputTagContainer>
         <ImSearch />
@@ -58,22 +61,36 @@ const Input = ({
           onKeyPress={checkSearchPressEnter}
         ></InputTag>
       </InputTagContainer>
-      {searchArr.length !== 0 && (
-        <>
+      {isSearching &&
+        (searchArr.length !== 0 ? (
+          <>
+            <Ul width={width} height={height} borderRadius={borderRadius}>
+              {searchArr.map(({ facltNm, contentId, mapX, mapY }) => {
+                return (
+                  <Li
+                    key={contentId}
+                    id="backgroundWhite"
+                    onMouseDown={() => clickSearch({ contentId, mapX, mapY })}
+                    width={width}
+                    height={height}
+                  >
+                    {facltNm}
+                  </Li>
+                );
+              })}
+              <Li
+                id="backgroundWhite"
+                width={width}
+                height={5}
+                borderRadius={borderRadius}
+              ></Li>
+            </Ul>
+          </>
+        ) : (
           <Ul width={width} height={height} borderRadius={borderRadius}>
-            {searchArr.map(({ facltNm, contentId, mapX, mapY }) => {
-              return (
-                <Li
-                  key={contentId}
-                  id="backgroundWhite"
-                  onMouseDown={() => clickSearch({ contentId, mapX, mapY })}
-                  width={width}
-                  height={height}
-                >
-                  {facltNm}
-                </Li>
-              );
-            })}
+            <Li id="backgroundWhite" width={width} height={height}>
+              검색결과 없음
+            </Li>
             <Li
               id="backgroundWhite"
               width={width}
@@ -81,8 +98,7 @@ const Input = ({
               borderRadius={borderRadius}
             ></Li>
           </Ul>
-        </>
-      )}
+        ))}
     </InputContainer>
   );
 };
@@ -96,10 +112,10 @@ const InputContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  border-radius: ${({ borderRadius, searchArr }) =>
-    searchArr.length === 0
-      ? `${borderRadius}px`
-      : ` ${borderRadius}px ${borderRadius}px 0px 0px`};
+  border-radius: ${({ borderRadius, searchArr, isSearching }) =>
+    isSearching
+      ? ` ${borderRadius}px ${borderRadius}px 0px 0px`
+      : `${borderRadius}px`};
   border: 1px solid;
 
   width: ${({ width }) => `${width + 5}vw`};
