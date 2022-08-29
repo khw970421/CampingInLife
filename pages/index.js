@@ -81,19 +81,20 @@ export default function Home() {
 
   // Header 검색 기능
   const changeSearchValue = async ({ target }) => {
-    const list = await getSearchList(1, target.value);
-    const filterList = list.map(({ facltNm, contentId, mapX, mapY }) => ({
-      facltNm,
-      contentId,
-      mapX,
-      mapY,
-    }));
-    if (target.value === "") {
-      setIsSearching(false);
-      setSearchArr(filterList);
-    } else {
+    if (target.value !== "") {
+      const list = await getSearchList(1, target.value);
+      const filterList = list.map(({ facltNm, contentId, mapX, mapY }) => ({
+        facltNm,
+        contentId,
+        mapX,
+        mapY,
+      }));
+
       setIsSearching(true);
       setSearchArr(filterList);
+    } else {
+      setIsSearching(false);
+      setSearchArr([]);
     }
   };
 
