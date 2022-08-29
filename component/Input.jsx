@@ -32,7 +32,7 @@ const Input = ({
   // }, [searchArr]);
   // console.log(inputRef.current.style);
   const focusOut = () => {
-    // clearSearchArr();
+    clearSearchArr();
   };
 
   const clickSearch = ({ contentId, mapX, mapY }) => {
@@ -66,7 +66,7 @@ const Input = ({
                 <Li
                   key={contentId}
                   id="backgroundWhite"
-                  onClick={() => clickSearch({ contentId, mapX, mapY })}
+                  onMouseDown={() => clickSearch({ contentId, mapX, mapY })}
                   width={width}
                   height={height}
                 >
