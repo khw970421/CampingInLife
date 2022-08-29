@@ -119,6 +119,8 @@ export default function Home() {
     locationBasedList(pageNo.current);
   };
 
+  const clearSearchArr = () => setSearchArr([]);
+
   return (
     <div>
       <Header
@@ -126,6 +128,7 @@ export default function Home() {
         searchArr={searchArr}
         changeInputValue={changeSearchValue}
         checkSearchPressEnter={checkSearchPressEnter}
+        clearSearchArr={clearSearchArr}
       />
       <Body id="backgroundLightGray">
         <Main>

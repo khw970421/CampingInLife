@@ -1,4 +1,4 @@
-import React from "react";
+import { useRef, useEffect } from "react";
 import styled from "styled-components";
 import { ImSearch } from "react-icons/im";
 
@@ -11,10 +11,12 @@ const Input = ({
   clickSearch = () => {
     console.log("click");
   },
+  clearSearchArr,
   searchArr = [],
   checkSearchPressEnter,
 }) => {
   let timer;
+  const inputRef = useRef();
   const debounce = (e) => {
     if (timer) {
       clearTimeout(timer); // 0.5초 미만으로 입력이 주어질 경우 해당 timer를 clear(없앤다)한다.
@@ -23,7 +25,17 @@ const Input = ({
       changeInputValue(e);
     }, 500);
   };
-
+  // useEffect(() => {
+  //   console.log(searchArr);
+  //   if (searchArr.length === 0) {
+  //     inputRef.current.blur();
+  //   }
+  // }, [searchArr]);
+  // console.log(inputRef.current.style);
+  const focusOut = () => {
+    inputRef.current.blur();
+    clearSearchArr();
+  };
   return (
     <InputContainer
       width={width}
@@ -34,7 +46,9 @@ const Input = ({
       <InputTagContainer>
         <ImSearch />
         <InputTag
+          ref={inputRef}
           onChange={debounce}
+          onBlur={focusOut}
           width={width}
           height={height}
           borderRadius={borderRadius}
