@@ -8,6 +8,10 @@ const Button = ({
   height,
   borderRadius = 20,
   fSize = 1,
+  marginH = 0,
+  marginV = 0,
+  paddingH = 0,
+  paddingV = 0,
 }) => {
   return (
     <Btn
@@ -16,6 +20,10 @@ const Button = ({
       height={height}
       borderRadius={borderRadius}
       fSize={fSize}
+      marginH={marginH}
+      marginV={marginV}
+      paddingH={paddingH}
+      paddingV={paddingV}
     >
       {btnText}
     </Btn>
@@ -27,6 +35,8 @@ const Btn = styled.button`
   height: ${({ height }) => `${height}px`};
   border-radius: ${({ borderRadius }) => `${borderRadius}px`};
   font-size: ${({ fSize }) => `${fSize}em`};
+  margin: ${({ marginH, marginV }) => `${marginH}px ${marginV}px`};
+  padding: ${({ paddingH, paddingV }) => `${paddingH}px ${paddingV}px`};
 `;
 
 export default Button;
