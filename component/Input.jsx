@@ -25,14 +25,6 @@ const Input = ({
       changeInputValue(e);
     }, 500);
   };
-  console.log(isSearching);
-  // useEffect(() => {
-  //   console.log(searchArr);
-  //   if (searchArr.length === 0) {
-  //     inputRef.current.blur();
-  //   }
-  // }, [searchArr]);
-  // console.log(inputRef.current.style);
   const focusOut = () => {
     clearSearchArr();
   };
