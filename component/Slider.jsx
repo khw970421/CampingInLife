@@ -40,6 +40,7 @@ const Slider = ({
 const SliderContainer = styled.div`
   display: flex;
   width: ${({ width }) => `${width}vw`};
+  height: ${({ width }) => `${width / 2}vw`};
   overflow: hidden;
   position: relative;
 `;
