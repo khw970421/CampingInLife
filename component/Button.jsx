@@ -24,6 +24,10 @@ const Button = ({
       height={height}
       borderRadius={borderRadius}
       fSize={fSize}
+      marginH={marginH}
+      marginV={marginV}
+      paddingH={paddingH}
+      paddingV={paddingV}
     >
       {btnText}
     </Btn>
