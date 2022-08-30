@@ -28,6 +28,7 @@ const Button = ({
       marginV={marginV}
       paddingH={paddingH}
       paddingV={paddingV}
+      onClick={clickBtn}
     >
       {btnText}
     </Btn>
