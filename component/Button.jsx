@@ -12,7 +12,11 @@ const Button = ({
   marginV = 0,
   paddingH = 0,
   paddingV = 0,
+  click,
 }) => {
+  const clickBtn = () => {
+    click();
+  };
   return (
     <Btn
       id={id}
@@ -20,10 +24,6 @@ const Button = ({
       height={height}
       borderRadius={borderRadius}
       fSize={fSize}
-      marginH={marginH}
-      marginV={marginV}
-      paddingH={paddingH}
-      paddingV={paddingV}
     >
       {btnText}
     </Btn>

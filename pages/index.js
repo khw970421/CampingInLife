@@ -1,42 +1,36 @@
 import styled from "styled-components";
-import CampContainer from "../component/CampContainer";
+import { useEffect, useState, useRef } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useEffect, useState } from "react";
+
 import {
   getBasedList,
   getLocationBasedList,
   getSearchList,
 } from "../core/api/axios";
-import returnTitle from "../core/utils/mainPage";
+
+import { returnTitle, getLocation } from "../core/utils/mainPage";
+import Button from "../component/Button";
+import Input from "../component/Input";
+import SelectBox from "../component/SelectBox";
+import CampContainer from "../component/CampContainer";
+import Footer from "../component/Semantic/Footer";
+import Header from "../component/Semantic/Header";
 
 export default function Home() {
-  // Todos : 추후 gpsData 적용
-  const [gpsData, setGpsData] = useState({});
-  const [campData, setCampData] = useState([]);
   const [titleTag, setTitleTag] = useState("nogps");
+  const [campData, setCampData] = useState([]);
+  const pageNo = useRef(1);
+
+  const [gpsData, setGpsData] = useState({});
+  const gpsRange = useRef(10000);
+
+  const [searchArr, setSearchArr] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchKey = useRef("");
 
   useEffect(() => {
-    getLocation();
+    getLocation(setGpsData);
   }, []);
-
-  async function locationBasedList(radius = 10000) {
-    console.log("gps api");
-    const data = await getLocationBasedList(
-      1,
-      gpsData.long,
-      gpsData.lati,
-      radius
-    );
-    setTitleTag("gps");
-    setCampData(data);
-  }
-
-  async function basedList() {
-    console.log("gps api X");
-    const data = await getBasedList(1);
-    setTitleTag("nogps");
-    setCampData(data);
-  }
 
   useEffect(() => {
     // GPS Data 여부에 따라 API 분기 실행
@@ -44,112 +38,155 @@ export default function Home() {
     else basedList();
   }, [gpsData]);
 
-  function getLocation() {
-    if (navigator.geolocation) {
-      // GPS를 지원하면
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          setGpsData({
-            lati: position.coords.latitude,
-            long: position.coords.longitude,
-          });
-        },
-        function (error) {
-          console.error(error);
-        },
-        {
-          enableHighAccuracy: false,
-          maximumAge: 0,
-          timeout: Infinity,
-        }
-      );
-    } else {
-      alert("GPS를 지원하지 않습니다");
-    }
+  async function basedList(pageNo = 1) {
+    const data = await getBasedList(pageNo);
+    setTitleTag("nogps");
+
+    // 요청받은 API는 없고 pageNo는 첫번째 페이지가 아닐때
+    if (data.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
+    } else setCampData([...campData, ...data]);
   }
 
-  const checkEnter = ({ key, target }) => {
-    if (key === "Enter") {
-      const numValue = Number(target.value);
-      if (isNaN(numValue)) {
-        alert("숫자를 입력하세요. ");
-      } else if (numValue < 1000) {
-        alert("최소 범위는 1000 이상 입니다. ");
-      } else if (numValue > 50000) {
-        alert("최대 범위는 50000 이하 입니다. ");
-      } else locationBasedList(numValue);
+  async function locationBasedList(pageNo = 1) {
+    const data = await getLocationBasedList(
+      pageNo,
+      gpsData.long,
+      gpsData.lati,
+      gpsRange.current
+    );
+    setTitleTag("gps");
+
+    if (pageNo === 1) {
+      setCampData(data);
+    } else if (data.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
+    } else setCampData([...campData, ...data]);
+  }
+
+  async function searchList(pageNo, value) {
+    const list = await getSearchList(pageNo, value);
+    setTitleTag("searchKey");
+
+    searchKey.current = value;
+    // Todo : 검색이 좀 더 빠를때 searchArr 수정이 안된다. (useEffect로 처리할 필요 있다.)
+    setSearchArr([]);
+
+    if (pageNo === 1) {
+      setCampData(list);
+    } else if (list.length === 0 && pageNo !== 1) {
+      alert("더보기 캠핑 목록이 없습니다.");
+    } else setCampData([...campData, ...list]);
+  }
+
+  // Header 검색 기능
+  const changeSearchValue = async ({ target }) => {
+    if (target.value !== "") {
+      const list = await getSearchList(1, target.value);
+      const filterList = list.map(({ facltNm, contentId, mapX, mapY }) => ({
+        facltNm,
+        contentId,
+        mapX,
+        mapY,
+      }));
+
+      setIsSearching(true);
+      setSearchArr(filterList);
+    } else {
+      setIsSearching(false);
+      setSearchArr([]);
     }
+  };
+
+  const checkSearchPressEnter = ({ target, key }) => {
+    if (key === "Enter") {
+      searchList(1, target.value);
+    }
+  };
+
+  // 더보기 기능
+  const clickAddBtn = () => {
+    pageNo.current++;
+
+    switch (titleTag) {
+      case "nogps":
+        basedList(pageNo.current);
+        break;
+      case "gps":
+        locationBasedList(pageNo.current);
+        break;
+      case "searchKey":
+        searchList(pageNo.current, searchKey.current);
+        break;
+      default:
+        alert(`더보기 기능에 문제가 발생했습니다.`);
+        pageNo.current--;
+        break;
+    }
+  };
+
+  // GPS 범위 기능
+  const changeSelectBoxOption = ({ target }) => {
+    gpsRange.current = parseInt(target.value) * 1000;
+    pageNo.current = 1;
+    locationBasedList(pageNo.current);
+  };
+
+  const clearSearchArr = () => {
+    setSearchArr([]);
+    setIsSearching(false);
   };
   return (
     <div>
-      <Header>
-        <ImgContainer>
-          <Img src="mainlogo.png"></Img>
-        </ImgContainer>
-        <Input placeholder="어디로 갈까?" width={30} height={50}></Input>
-        <HamburgerContainer>
-          <GiHamburgerMenu size="50" />
-        </HamburgerContainer>
-      </Header>
+      <Header
+        isInputExist={true}
+        searchArr={searchArr}
+        changeInputValue={changeSearchValue}
+        checkSearchPressEnter={checkSearchPressEnter}
+        clearSearchArr={clearSearchArr}
+        isSearching={isSearching}
+      />
       <Body id="backgroundLightGray">
         <Main>
           <Title>
             <TitleText width={15} height={30}>
-              {returnTitle(titleTag)}
+              {returnTitle(titleTag, searchKey.current)}
             </TitleText>
             {titleTag === "gps" && (
-              <Input
-                placeholder="숫자로 주변 km를 설정"
-                width={15}
-                height={30}
-                onKeyUp={checkEnter}
-              ></Input>
+              <SelectBox
+                optionsTitle={"범위 설정"}
+                options={["1km", "5km", "10km", "20km"]}
+                changeSelectBoxOption={changeSelectBoxOption}
+              />
             )}
           </Title>
           <CampContainer campData={campData} />
+          {campData.length !== 0 ? (
+            <Button
+              id={"backgroundLightMainColor"}
+              width={30}
+              height={60}
+              btnText={"더보기"}
+              click={clickAddBtn}
+            ></Button>
+          ) : (
+            <div> 검색 결과가 없습니다. </div>
+          )}
         </Main>
       </Body>
+      <Footer />
     </div>
   );
 }
 
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const ImgContainer = styled.div`
-  width: 10vw;
-  margin: 20px;
-`;
-
-const Img = styled.img`
-  width: 100%;
-`;
-
-const HamburgerContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  width: 10vw;
-  margin: 20px;
-`;
-
 const TitleText = styled.div`
   margin: 20px;
-`;
-
-const Input = styled.input`
-  border: 0.3px solid;
-  border-radius: 24px;
-  width: ${({ width }) => `${width}vw`};
-  height: ${({ height }) => `${height}px`};
-  margin: 20px;
-  padding: 10px;
+  min-width: 150px;
 `;
 
 const Body = styled.div`
   width: 100%;
+  min-height: 100vh;
 `;
 
 const Main = styled.div`
@@ -158,6 +195,7 @@ const Main = styled.div`
   width: calc(100vw - 22vw * 2);
   height: auto;
   margin: 0vw 22vw;
+  align-items: center;
 `;
 
 const Title = styled.div`
