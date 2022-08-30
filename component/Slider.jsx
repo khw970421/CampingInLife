@@ -31,11 +31,7 @@ const Slider = ({
         <BsFillArrowRightCircleFill size={`${width / 10}vw`} />
       </Right>
       {imgs.map((img, idx) => {
-        return (
-          <ImgContainer key={idx}>
-            <Img src={img} width={width} sliderNo={sliderNo} />
-          </ImgContainer>
-        );
+        return <Img src={img} width={width} sliderNo={sliderNo} />;
       })}
     </SliderContainer>
   );
@@ -46,11 +42,6 @@ const SliderContainer = styled.div`
   width: ${({ width }) => `${width}vw`};
   overflow: hidden;
   position: relative;
-`;
-
-const ImgContainer = styled.div`
-  width: 100%;
-  height: auto;
 `;
 
 const Img = styled.img`
