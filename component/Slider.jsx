@@ -19,7 +19,6 @@ const Slider = ({
   }, [imgs]);
 
   const clickLeft = () => setSliderNo((sliderNo - 1 + imgsLength) % imgsLength);
-
   const clickRight = () => setSliderNo((sliderNo + 1) % imgsLength);
 
   return (
@@ -30,7 +29,7 @@ const Slider = ({
       <Right onClick={clickRight}>
         <BsFillArrowRightCircleFill size={`${width / 10}vw`} />
       </Right>
-      {imgs.map((img, idx) => {
+      {imgs.map((img) => {
         return <Img src={img} width={width} sliderNo={sliderNo} />;
       })}
     </SliderContainer>
@@ -40,14 +39,13 @@ const Slider = ({
 const SliderContainer = styled.div`
   display: flex;
   width: ${({ width }) => `${width}vw`};
-  height: ${({ width }) => `${width / 2}vw`};
+  max-height: 400px;
   overflow: hidden;
   position: relative;
 `;
 
 const Img = styled.img`
-  width: ${({ width }) => `${width}vw`};
-  /* width: 100%; */
+  width: 100%;
   object-fit: contain;
   transform: ${({ width, sliderNo }) =>
     `translate(calc(${width}vw * -${sliderNo}), 0px);`};
