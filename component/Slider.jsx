@@ -32,7 +32,7 @@ const Slider = ({
       </Right>
       {imgs.map((img, idx) => {
         return (
-          <ImgContainer width={width} key={idx}>
+          <ImgContainer key={idx}>
             <Img src={img} width={width} sliderNo={sliderNo} />
           </ImgContainer>
         );
@@ -49,7 +49,7 @@ const SliderContainer = styled.div`
 `;
 
 const ImgContainer = styled.div`
-  width: ${({ width }) => `${width}vw`};
+  width: 100%;
   height: auto;
 `;
 
