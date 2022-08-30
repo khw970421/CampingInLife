@@ -32,7 +32,7 @@ const content = () => {
   return (
     <>
       <Header />
-      <Body>
+      <Body id="backgroundLightGray">
         <Main>
           <Title id="titleText">🏕️ {content.facltNm}</Title>
           <Slider imgs={imageLists} width={40} />
