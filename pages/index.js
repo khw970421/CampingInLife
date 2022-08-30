@@ -166,6 +166,7 @@ export default function Home() {
               id={"backgroundLightMainColor"}
               width={30}
               height={60}
+              marginH={20}
               btnText={"더보기"}
               click={clickAddBtn}
             ></Button>
