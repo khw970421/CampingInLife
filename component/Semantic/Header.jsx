@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Input from "../Input";
+import { useRouter } from "next/router";
 
 const Header = ({
   isInputExist = false,
@@ -12,9 +13,10 @@ const Header = ({
   clearSearchArr,
   isSearching,
 }) => {
+  const router = useRouter();
   return (
     <HeaderContainer>
-      <ImgContainer>
+      <ImgContainer onClick={() => router.push("/")}>
         <Img src="/mainlogo.png"></Img>
       </ImgContainer>
       {isInputExist && (
@@ -43,6 +45,7 @@ const ImgContainer = styled.div`
   width: 10vw;
   min-width: 100px;
   margin: 20px;
+  cursor: pointer;
 `;
 
 const Img = styled.img`
