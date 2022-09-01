@@ -25,21 +25,23 @@ const Input = ({
       changeInputValue(e);
     }, 500);
   };
-  console.log(isSearching);
-  // useEffect(() => {
-  //   console.log(searchArr);
-  //   if (searchArr.length === 0) {
-  //     inputRef.current.blur();
-  //   }
-  // }, [searchArr]);
-  // console.log(inputRef.current.style);
+
   const focusOut = () => {
     clearSearchArr();
   };
 
-  const clickSearch = ({ contentId, mapX, mapY }) => {
-    router.push(`/content/${contentId}?mapX=${mapX}&mapY=${mapY}&radius=1000`);
+  const clickSearch = ({ contentId, facltNm, mapX, mapY }) => {
+    router.push(
+      {
+        pathname: `/content/${contentId}`,
+        query: { facltNm, mapX, mapY },
+      },
+      `/content/${contentId}`
+    );
   };
+  // const clickSearch = ({ contentId, mapX, mapY }) => {
+  //   router.push(`/content/${contentId}?mapX=${mapX}&mapY=${mapY}&radius=1000`);
+  // };
   return (
     <InputContainer
       width={width}
@@ -70,7 +72,9 @@ const Input = ({
                   <Li
                     key={contentId}
                     id="backgroundWhite"
-                    onMouseDown={() => clickSearch({ contentId, mapX, mapY })}
+                    onMouseDown={() =>
+                      clickSearch({ contentId, facltNm, mapX, mapY })
+                    }
                     width={width}
                     height={height}
                   >
