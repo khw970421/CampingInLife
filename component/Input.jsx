@@ -25,7 +25,6 @@ const Input = ({
       changeInputValue(e);
     }, 500);
   };
-
   const focusOut = () => {
     clearSearchArr();
   };
@@ -169,6 +168,7 @@ const Li = styled.li`
   list-style: none;
   padding: 10px;
   font-size: 1em;
+  cursor: pointer;
 
   border-radius: ${({ borderRadius = 0 }) =>
     `0px 0px ${borderRadius}px ${borderRadius}px`};
