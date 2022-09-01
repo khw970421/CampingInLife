@@ -25,14 +25,6 @@ const Input = ({
       changeInputValue(e);
     }, 500);
   };
-  console.log(isSearching);
-  // useEffect(() => {
-  //   console.log(searchArr);
-  //   if (searchArr.length === 0) {
-  //     inputRef.current.blur();
-  //   }
-  // }, [searchArr]);
-  // console.log(inputRef.current.style);
   const focusOut = () => {
     clearSearchArr();
   };
@@ -165,6 +157,7 @@ const Li = styled.li`
   list-style: none;
   padding: 10px;
   font-size: 1em;
+  cursor: pointer;
 
   border-radius: ${({ borderRadius = 0 }) =>
     `0px 0px ${borderRadius}px ${borderRadius}px`};
