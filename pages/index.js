@@ -101,6 +101,8 @@ export default function Home() {
   const checkSearchPressEnter = ({ target, key }) => {
     if (key === "Enter") {
       searchList(1, target.value);
+      setSearchArr([]);
+      setIsSearching(false);
     }
   };
 
