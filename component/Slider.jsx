@@ -6,7 +6,7 @@ import {
 import styled from "styled-components";
 
 const Slider = ({
-  imgs = ["logo.png", "mainlogo.png", "logo.png", "mainlogo.png", "logo.png"],
+  imgs = [],
   width = 10,
 }) => {
   const [sliderNo, setSliderNo] = useState(0);

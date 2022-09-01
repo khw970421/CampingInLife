@@ -35,7 +35,7 @@ const content = () => {
       <Body id="backgroundLightGray">
         <Main>
           <Title id="titleText">🏕️ {content.facltNm}</Title>
-          <Slider imgs={imageLists} width={40} />
+          {imageLists.length !== 0 && <Slider imgs={imageLists} width={40} />}
           <IntroContainer>
             <Intro introText={content.intro} />
           </IntroContainer>
