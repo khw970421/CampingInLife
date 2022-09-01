@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/dist/client/router";
-import { getImageList, getSearchList } from "../../core/api/axios";
+import { getLocationBasedList, getImageList } from "../../core/api/axios";
 import styled from "styled-components";
 import Slider from "../../component/Slider";
 import Intro from "../../component/Intro";
@@ -15,12 +15,12 @@ const content = () => {
 
   useEffect(() => {
     if (!router.isReady) return;
-    searchList(1, router.query.facltNm);
+    locationBasedList(1, router.query.mapX, router.query.mapY);
     imageList(1, router.query.id);
-  }, []);
+  }, [router.isReady]);
 
-  async function searchList(pageNo = 1, facltNm) {
-    const data = await getSearchList(pageNo, facltNm);
+  async function locationBasedList(pageNo = 1, mapX, mapY) {
+    const data = await getLocationBasedList(pageNo, mapX, mapY, 1000);
     setContent(data[0]);
   }
 
@@ -34,14 +34,14 @@ const content = () => {
       <Header />
       <Body id="backgroundLightGray">
         <Main>
-          <Title id="titleText">🏕️ {content?.facltNm}</Title>
+          <Title id="titleText">🏕️ {content.facltNm}</Title>
           {imageLists.length !== 0 && <Slider imgs={imageLists} width={40} />}
           <IntroContainer>
-            <Intro introText={content?.intro} />
+            <Intro introText={content.intro} />
           </IntroContainer>
           <Location>
             <div id="titleText">위치</div>
-            <div id="subText">{content?.addr1}</div>
+            <div id="subText">{content.addr1}</div>
           </Location>
           <KakaoAPI
             long={router.query.mapX}
