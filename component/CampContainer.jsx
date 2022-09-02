@@ -12,6 +12,7 @@ const CampContainer = ({
       {campData.map(({ facltNm, addr1, firstImageUrl, contentId }) => (
         <Camp
           key={contentId}
+          contentId={contentId}
           className="camp"
           title={facltNm}
           address={addr1}
