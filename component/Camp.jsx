@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Picture from "./Picture";
+import { useRouter } from "next/router";
 
 const Camp = ({
   containerWidth = 223,
@@ -9,12 +10,18 @@ const Camp = ({
   title = "제목",
   address = "주소",
   imgSrc = "logo.png",
+  contentId,
 }) => {
+  const router = useRouter();
+  const clickCamp = () => {
+    router.push(`/content/${contentId}?keyword=${title}`);
+  };
   return (
     <CampContainer
       containerWidth={containerWidth}
       containerHeight={containerHeight}
       borderRadius={borderRadius}
+      onClick={clickCamp}
     >
       <PictureContainer>
         <Picture
