@@ -29,9 +29,10 @@ const Input = ({
     clearSearchArr();
   };
 
-  const clickSearch = ({ contentId, mapX, mapY }) => {
-    router.push(`/content/${contentId}?mapX=${mapX}&mapY=${mapY}&radius=1000`);
+  const clickSearch = ({ contentId, facltNm }) => {
+    router.push(`/content/${contentId}?keyword=${facltNm}`);
   };
+
   return (
     <InputContainer
       width={width}
@@ -57,12 +58,12 @@ const Input = ({
         (searchArr.length !== 0 ? (
           <>
             <Ul width={width} height={height} borderRadius={borderRadius}>
-              {searchArr.map(({ facltNm, contentId, mapX, mapY }) => {
+              {searchArr.map(({ facltNm, contentId }) => {
                 return (
                   <Li
                     key={contentId}
                     id="backgroundWhite"
-                    onMouseDown={() => clickSearch({ contentId, mapX, mapY })}
+                    onMouseDown={() => clickSearch({ contentId, facltNm })}
                     width={width}
                     height={height}
                   >

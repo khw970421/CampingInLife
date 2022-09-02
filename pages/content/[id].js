@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/dist/client/router";
-import { getLocationBasedList, getImageList } from "../../core/api/axios";
+import { getSearchList, getImageList } from "../../core/api/axios";
 import styled from "styled-components";
 import Slider from "../../component/Slider";
 import Intro from "../../component/Intro";
@@ -15,12 +15,12 @@ const content = () => {
 
   useEffect(() => {
     if (!router.isReady) return;
-    locationBasedList(1, router.query.mapX, router.query.mapY);
+    searchList(1, router.query.keyword);
     imageList(1, router.query.id);
   }, [router.isReady]);
 
-  async function locationBasedList(pageNo = 1, mapX, mapY) {
-    const data = await getLocationBasedList(pageNo, mapX, mapY, 1000);
+  async function searchList(pageNo = 1, keyword) {
+    const data = await getSearchList(pageNo,keyword);
     setContent(data[0]);
   }
 
