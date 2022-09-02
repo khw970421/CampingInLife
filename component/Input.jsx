@@ -30,7 +30,7 @@ const Input = ({
   };
 
   const clickSearch = ({ contentId, mapX, mapY }) => {
-    router.push(`/content/${contentId}?mapX=${mapX}&mapY=${mapY}&radius=1000`);
+    router.push(`/content/${contentId}?mapX=${mapX}&mapY=${mapY}`);
   };
   return (
     <InputContainer

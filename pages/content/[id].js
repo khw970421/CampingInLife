@@ -20,7 +20,7 @@ const content = () => {
   }, [router.isReady]);
 
   async function locationBasedList(pageNo = 1, mapX, mapY) {
-    const data = await getLocationBasedList(pageNo, mapX, mapY, 1000);
+    const data = await getLocationBasedList(pageNo, mapX, mapY);
     setContent(data[0]);
   }
 
