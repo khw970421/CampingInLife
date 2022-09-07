@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://api.visitkorea.or.kr/openapi/service/rest/GoCamping";
+const API = "http://apis.data.go.kr/B551011/GoCamping";
 const essentialParams = process.env.SERVICE_KEY;
 
 const filtering = (target) => target?.data?.response?.body?.items?.item;
