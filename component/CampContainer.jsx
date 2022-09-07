@@ -3,20 +3,21 @@ import styled from "styled-components";
 import Camp from "./Camp";
 
 const CampContainer = ({
+  campData = [],
   containerWidth = 223,
   containerHeight = 300,
-  campData = [],
 }) => {
+  const returnImageSrc = (url) => (url !== "" ? url : "logo.png");
+
   return (
     <Container containerWidth={containerWidth}>
       {campData.map(({ facltNm, addr1, firstImageUrl, contentId }) => (
         <Camp
           key={contentId}
-          contentId={contentId}
-          className="camp"
           title={facltNm}
           address={addr1}
-          imgSrc={firstImageUrl}
+          imgSrc={returnImageSrc(firstImageUrl)}
+          contentId={contentId}
           containerWidth={containerWidth}
           containerHeight={containerHeight}
         ></Camp>

@@ -2,34 +2,26 @@ import { useState } from "react";
 import { BiUpArrow, BiDownArrow } from "react-icons/bi";
 import styled from "styled-components";
 
-const Intro = ({ introText = "안녕하세요" }) => {
-  const [isArrowUp, setIsArrowUp] = useState(true);
-  const clickUpDown = () => {
-    setIsArrowUp(!isArrowUp);
+const Intro = ({ introText }) => {
+  const [isArrowDown, setIsArrowDown] = useState(true);
+  const clickIntro = () => {
+    setIsArrowDown(!isArrowDown);
   };
 
   return (
     <IntroContainer>
-      {isArrowUp ? (
-        <>
-          <BiUpArrow onClick={clickUpDown} />
-          <IntroSpan onClick={clickUpDown} id="titleText">
-            Intro
-          </IntroSpan>
-        </>
+      {isArrowDown ? (
+        <BiDownArrow onClick={clickIntro} />
       ) : (
-        <>
-          <BiDownArrow onClick={clickUpDown} />
-          <IntroSpan onClick={clickUpDown} id="titleText">
-            Intro
-          </IntroSpan>
-          <IntroText
-            id="backgroundWhite"
-            className={`${!isArrowUp ? "introDisplay" : ""}`}
-          >
-            {introText}
-          </IntroText>
-        </>
+        <BiUpArrow onClick={clickIntro} />
+      )}
+      <IntroSpan onClick={clickIntro} id="titleText">
+        Intro
+      </IntroSpan>
+      {isArrowDown && (
+        <IntroText id="backgroundWhite" isArrowDown={isArrowDown}>
+          {introText}
+        </IntroText>
       )}
     </IntroContainer>
   );
@@ -44,6 +36,18 @@ const IntroText = styled.div`
   border: 1px solid;
   padding: 10px;
   margin: 5px 0px;
+  animation: smoothAppear 1s;
+
+  @keyframes smoothAppear {
+    from {
+      opacity: 0;
+      transform: translateY(-1%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 const IntroSpan = styled.span`

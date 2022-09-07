@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
-
 import {
   getBasedList,
   getLocationBasedList,
@@ -10,7 +8,6 @@ import {
 
 import { returnTitle, getLocation } from "../core/utils/mainPage";
 import Button from "../component/Button";
-import Input from "../component/Input";
 import SelectBox from "../component/SelectBox";
 import CampContainer from "../component/CampContainer";
 import Footer from "../component/Semantic/Footer";
@@ -49,12 +46,13 @@ export default function Home() {
   }
 
   async function locationBasedList(pageNo = 1) {
-    const data = await getLocationBasedList(
-      pageNo,
-      gpsData.long,
-      gpsData.lati,
-      gpsRange.current
-    );
+    const gpsInfo = {
+      mapX: gpsData.long,
+      mapY: gpsData.lati,
+      radius: gpsRange.current,
+    };
+
+    const data = await getLocationBasedList(pageNo, gpsInfo);
     setTitleTag("gps");
 
     if (pageNo === 1) {
@@ -107,7 +105,7 @@ export default function Home() {
   };
 
   // 더보기 기능
-  const clickAddBtn = () => {
+  const clickBtn = () => {
     pageNo.current++;
 
     switch (titleTag) {
@@ -170,7 +168,7 @@ export default function Home() {
               height={60}
               marginH={20}
               btnText={"더보기"}
-              click={clickAddBtn}
+              clickBtn={clickBtn}
             ></Button>
           ) : (
             <div> 검색 결과가 없습니다. </div>
