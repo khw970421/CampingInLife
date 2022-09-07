@@ -105,7 +105,7 @@ export default function Home() {
   };
 
   // 더보기 기능
-  const clickAddBtn = () => {
+  const clickBtn = () => {
     pageNo.current++;
 
     switch (titleTag) {
@@ -168,7 +168,7 @@ export default function Home() {
               height={60}
               marginH={20}
               btnText={"더보기"}
-              click={clickAddBtn}
+              clickBtn={clickBtn}
             ></Button>
           ) : (
             <div> 검색 결과가 없습니다. </div>
