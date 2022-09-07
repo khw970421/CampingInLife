@@ -4,19 +4,20 @@ import styled from "styled-components";
 import { ImSearch } from "react-icons/im";
 
 const Input = ({
+  searchArr = [],
+  isSearching,
+  changeInputValue,
+  checkSearchPressEnter,
+  clearSearchArr,
   width = 20,
   height = 50,
   borderRadius = 20,
   placeholder,
-  changeInputValue,
-  clearSearchArr,
-  searchArr = [],
-  checkSearchPressEnter,
-  isSearching,
 }) => {
   let timer;
   const router = useRouter();
   const inputRef = useRef();
+
   const debounce = (e) => {
     if (timer) {
       clearTimeout(timer); // 0.5초 미만으로 입력이 주어질 경우 해당 timer를 clear(없앤다)한다.
@@ -24,9 +25,6 @@ const Input = ({
     timer = setTimeout(() => {
       changeInputValue(e);
     }, 500);
-  };
-  const focusOut = () => {
-    clearSearchArr();
   };
 
   const clickSearch = ({ contentId, facltNm }) => {
@@ -46,7 +44,7 @@ const Input = ({
         <InputTag
           ref={inputRef}
           onChange={debounce}
-          onBlur={focusOut}
+          onBlur={clearSearchArr}
           width={width}
           height={height}
           borderRadius={borderRadius}
@@ -56,29 +54,27 @@ const Input = ({
       </InputTagContainer>
       {isSearching &&
         (searchArr.length !== 0 ? (
-          <>
-            <Ul width={width} height={height} borderRadius={borderRadius}>
-              {searchArr.map(({ facltNm, contentId }) => {
-                return (
-                  <Li
-                    key={contentId}
-                    id="backgroundWhite"
-                    onMouseDown={() => clickSearch({ contentId, facltNm })}
-                    width={width}
-                    height={height}
-                  >
-                    {facltNm}
-                  </Li>
-                );
-              })}
-              <Li
-                id="backgroundWhite"
-                width={width}
-                height={5}
-                borderRadius={borderRadius}
-              ></Li>
-            </Ul>
-          </>
+          <Ul width={width} height={height} borderRadius={borderRadius}>
+            {searchArr.map(({ facltNm, contentId }) => {
+              return (
+                <Li
+                  key={contentId}
+                  id="backgroundWhite"
+                  onMouseDown={() => clickSearch({ contentId, facltNm })}
+                  width={width}
+                  height={height}
+                >
+                  {facltNm}
+                </Li>
+              );
+            })}
+            <Li
+              id="backgroundWhite"
+              width={width}
+              height={5}
+              borderRadius={borderRadius}
+            ></Li>
+          </Ul>
         ) : (
           <Ul width={width} height={height} borderRadius={borderRadius}>
             <Li id="backgroundWhite" width={width} height={height}>
