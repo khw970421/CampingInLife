@@ -4,31 +4,32 @@ import Picture from "./Picture";
 import { useRouter } from "next/router";
 
 const Camp = ({
-  containerWidth = 223,
-  containerHeight = 300,
-  borderRadius = 30,
   title = "제목",
   address = "주소",
   imgSrc = "logo.png",
   contentId,
+  containerWidth = 223,
+  containerHeight = 300,
+  borderRadius = 30,
 }) => {
   const router = useRouter();
   const clickCamp = () => {
     router.push(`/content/${contentId}?keyword=${title}`);
   };
+
   return (
     <CampContainer
+      onClick={clickCamp}
       containerWidth={containerWidth}
       containerHeight={containerHeight}
       borderRadius={borderRadius}
-      onClick={clickCamp}
     >
       <PictureContainer>
         <Picture
+          imgSrc={imgSrc}
           containerWidth={containerWidth}
           containerHeight={containerHeight}
           topBorderRadius={borderRadius}
-          imgSrc={imgSrc !== "" ? imgSrc : "logo.png"}
         ></Picture>
       </PictureContainer>
       <TAContainer>
