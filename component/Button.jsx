@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 const Button = ({
-  id,
   btnText,
+  clickBtn,
+  id,
   width,
   height,
   borderRadius = 20,
@@ -12,14 +13,11 @@ const Button = ({
   marginV = 0,
   paddingH = 0,
   paddingV = 0,
-  click,
 }) => {
-  const clickBtn = () => {
-    click();
-  };
   return (
     <Btn
       id={id}
+      onClick={clickBtn}
       width={width}
       height={height}
       borderRadius={borderRadius}
@@ -28,7 +26,6 @@ const Button = ({
       marginV={marginV}
       paddingH={paddingH}
       paddingV={paddingV}
-      onClick={clickBtn}
     >
       {btnText}
     </Btn>

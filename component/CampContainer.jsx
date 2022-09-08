@@ -3,19 +3,23 @@ import styled from "styled-components";
 import Camp from "./Camp";
 
 const CampContainer = ({
+  campData = [],
+  isHoverActive = true,
   containerWidth = 223,
   containerHeight = 300,
-  campData = [],
 }) => {
+  const returnImageSrc = (url) => (url !== "" ? url : "logo.png");
+
   return (
     <Container containerWidth={containerWidth}>
       {campData.map(({ facltNm, addr1, firstImageUrl, contentId }) => (
         <Camp
           key={contentId}
-          className="camp"
           title={facltNm}
           address={addr1}
-          imgSrc={firstImageUrl}
+          imgSrc={returnImageSrc(firstImageUrl)}
+          contentId={contentId}
+          isHoverActive={isHoverActive}
           containerWidth={containerWidth}
           containerHeight={containerHeight}
         ></Camp>

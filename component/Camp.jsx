@@ -1,27 +1,37 @@
 import React from "react";
 import styled from "styled-components";
 import Picture from "./Picture";
+import { useRouter } from "next/router";
 
 const Camp = ({
-  containerWidth = 223,
-  containerHeight = 300,
-  borderRadius = 30,
   title = "제목",
   address = "주소",
   imgSrc = "logo.png",
+  contentId,
+  isHoverActive,
+  containerWidth = 223,
+  containerHeight = 300,
+  borderRadius = 30,
 }) => {
+  const router = useRouter();
+  const clickCamp = () => {
+    router.push(`/content/${contentId}?keyword=${title}`);
+  };
+
   return (
     <CampContainer
+      onClick={clickCamp}
+      isHoverActive={isHoverActive}
       containerWidth={containerWidth}
       containerHeight={containerHeight}
       borderRadius={borderRadius}
     >
       <PictureContainer>
         <Picture
+          imgSrc={imgSrc}
           containerWidth={containerWidth}
           containerHeight={containerHeight}
           topBorderRadius={borderRadius}
-          imgSrc={imgSrc !== "" ? imgSrc : "logo.png"}
         ></Picture>
       </PictureContainer>
       <TAContainer>
@@ -40,6 +50,14 @@ const CampContainer = styled.div`
   box-sizing: content-box;
   margin: 10px;
   justify-self: center;
+
+  transition: all ease 0.2s;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  :hover {
+    transform: ${({ isHoverActive }) => isHoverActive && `translateY(-5px)`};
+    box-shadow: ${({ isHoverActive }) =>
+      isHoverActive && ` 0px 10px 20px 2px rgba(0, 0, 0, 0.25)`};
+  }
 `;
 
 const PictureContainer = styled.div``;
