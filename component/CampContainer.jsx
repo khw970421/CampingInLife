@@ -4,6 +4,7 @@ import Camp from "./Camp";
 
 const CampContainer = ({
   campData = [],
+  isHoverActive = true,
   containerWidth = 223,
   containerHeight = 300,
 }) => {
@@ -18,6 +19,7 @@ const CampContainer = ({
           address={addr1}
           imgSrc={returnImageSrc(firstImageUrl)}
           contentId={contentId}
+          isHoverActive={isHoverActive}
           containerWidth={containerWidth}
           containerHeight={containerHeight}
         ></Camp>
