@@ -160,7 +160,7 @@ export default function Home() {
               />
             )}
           </Title>
-          <CampContainer campData={campData} />
+          <CampContainer campData={campData} isHoverActive = {!isSearching}/>
           {campData.length !== 0 ? (
             <Button
               id={"backgroundLightMainColor"}

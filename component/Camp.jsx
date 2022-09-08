@@ -8,6 +8,7 @@ const Camp = ({
   address = "주소",
   imgSrc = "logo.png",
   contentId,
+  isHoverActive,
   containerWidth = 223,
   containerHeight = 300,
   borderRadius = 30,
@@ -20,6 +21,7 @@ const Camp = ({
   return (
     <CampContainer
       onClick={clickCamp}
+      isHoverActive={isHoverActive}
       containerWidth={containerWidth}
       containerHeight={containerHeight}
       borderRadius={borderRadius}
@@ -52,8 +54,9 @@ const CampContainer = styled.div`
   transition: all ease 0.2s;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   :hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 10px 20px 2px rgba(0, 0, 0, 0.25);
+    transform: ${({ isHoverActive }) => isHoverActive && `translateY(-5px)`};
+    box-shadow: ${({ isHoverActive }) =>
+      isHoverActive && ` 0px 10px 20px 2px rgba(0, 0, 0, 0.25)`};
   }
 `;
 
