@@ -20,7 +20,7 @@ const content = () => {
   }, [router.isReady]);
 
   async function searchList(pageNo = 1, keyword) {
-    const data = await getSearchList(pageNo,keyword);
+    const data = await getSearchList(pageNo, keyword);
     setContent(data[0]);
   }
 
@@ -43,11 +43,7 @@ const content = () => {
             <div id="titleText">위치</div>
             <div id="subText">{content.addr1}</div>
           </Location>
-          <KakaoAPI
-            long={router.query.mapX}
-            lati={router.query.mapY}
-            marginH={10}
-          />
+          <KakaoAPI long={content.mapX} lati={content.mapY} marginH={10} />
         </Main>
       </Body>
       <Footer />
