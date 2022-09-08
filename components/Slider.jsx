@@ -26,12 +26,8 @@ const Slider = ({ imgs = [], width = 10 }) => {
       <Right onClick={clickRight}>
         <BsFillArrowRightCircleFill size={`${width / 10}vw`} />
       </Right>
-      {imgs.map((img, idx) => {
-        return (
-          <ImgContainer width={width} key={idx}>
-            <Img src={img} width={width} sliderNo={sliderNo} />
-          </ImgContainer>
-        );
+      {imgs.map((img) => {
+        return <Img src={img} width={width} sliderNo={sliderNo} />;
       })}
     </SliderContainer>
   );
@@ -40,13 +36,9 @@ const Slider = ({ imgs = [], width = 10 }) => {
 const SliderContainer = styled.div`
   display: flex;
   width: ${({ width }) => `${width}vw`};
+  max-height: 400px;
   overflow: hidden;
   position: relative;
-`;
-
-const ImgContainer = styled.div`
-  width: ${({ width }) => `${width}vw`};
-  height: auto;
 `;
 
 const Img = styled.img`
@@ -61,7 +53,7 @@ const Left = styled.div`
   position: absolute;
   left: 0px;
   top: 50%;
-  transform: translate(0, -50%);
+  transform: translate(15px, -50%);
   z-index: 1000;
 `;
 
@@ -69,7 +61,7 @@ const Right = styled.div`
   position: absolute;
   right: 0px;
   top: 50%;
-  transform: translate(0, -50%);
+  transform: translate(-15px, -50%);
   z-index: 1000;
 `;
 
