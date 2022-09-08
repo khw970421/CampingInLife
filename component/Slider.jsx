@@ -53,7 +53,7 @@ const Left = styled.div`
   position: absolute;
   left: 0px;
   top: 50%;
-  transform: translate(0, -50%);
+  transform: translate(15px, -50%);
   z-index: 1000;
 `;
 
@@ -61,7 +61,7 @@ const Right = styled.div`
   position: absolute;
   right: 0px;
   top: 50%;
-  transform: translate(0, -50%);
+  transform: translate(-15px, -50%);
   z-index: 1000;
 `;
 
