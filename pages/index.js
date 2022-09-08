@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
-
 import {
   getBasedList,
   getLocationBasedList,
@@ -10,9 +8,10 @@ import {
 
 import { returnTitle, getLocation } from "../core/utils/mainPage";
 import Button from "../component/Button";
-import Input from "../component/Input";
 import SelectBox from "../component/SelectBox";
 import CampContainer from "../component/CampContainer";
+import Footer from "../component/Semantic/Footer";
+import Header from "../component/Semantic/Header";
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState("nogps");
@@ -23,6 +22,7 @@ export default function Home() {
   const gpsRange = useRef(10000);
 
   const [searchArr, setSearchArr] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const searchKey = useRef("");
 
   useEffect(() => {
@@ -46,12 +46,13 @@ export default function Home() {
   }
 
   async function locationBasedList(pageNo = 1) {
-    const data = await getLocationBasedList(
-      pageNo,
-      gpsData.long,
-      gpsData.lati,
-      gpsRange.current
-    );
+    const gpsInfo = {
+      mapX: gpsData.long,
+      mapY: gpsData.lati,
+      radius: gpsRange.current,
+    };
+
+    const data = await getLocationBasedList(pageNo, gpsInfo);
     setTitleTag("gps");
 
     if (pageNo === 1) {
@@ -78,19 +79,33 @@ export default function Home() {
 
   // Header 검색 기능
   const changeSearchValue = async ({ target }) => {
-    const list = await getSearchList(1, target.value);
-    const filterList = list.map(({ facltNm }) => facltNm);
-    setSearchArr(filterList);
+    if (target.value !== "") {
+      const list = await getSearchList(1, target.value);
+      const filterList = list.map(({ facltNm, contentId, mapX, mapY }) => ({
+        facltNm,
+        contentId,
+        mapX,
+        mapY,
+      }));
+
+      setIsSearching(true);
+      setSearchArr(filterList);
+    } else {
+      setIsSearching(false);
+      setSearchArr([]);
+    }
   };
 
   const checkSearchPressEnter = ({ target, key }) => {
     if (key === "Enter") {
       searchList(1, target.value);
+      setSearchArr([]);
+      setIsSearching(false);
     }
   };
 
   // 더보기 기능
-  const clickAddBtn = () => {
+  const clickBtn = () => {
     pageNo.current++;
 
     switch (titleTag) {
@@ -117,21 +132,20 @@ export default function Home() {
     locationBasedList(pageNo.current);
   };
 
+  const clearSearchArr = () => {
+    setSearchArr([]);
+    setIsSearching(false);
+  };
   return (
     <div>
-      <Header>
-        <ImgContainer>
-          <Img src="mainlogo.png"></Img>
-        </ImgContainer>
-        <Input
-          searchArr={searchArr}
-          changeInputValue={changeSearchValue}
-          checkSearchPressEnter={checkSearchPressEnter}
-        ></Input>
-        <HamburgerContainer>
-          <GiHamburgerMenu size="50" />
-        </HamburgerContainer>
-      </Header>
+      <Header
+        isInputExist={true}
+        searchArr={searchArr}
+        changeInputValue={changeSearchValue}
+        checkSearchPressEnter={checkSearchPressEnter}
+        clearSearchArr={clearSearchArr}
+        isSearching={isSearching}
+      />
       <Body id="backgroundLightGray">
         <Main>
           <Title>
@@ -146,46 +160,25 @@ export default function Home() {
               />
             )}
           </Title>
-          <CampContainer campData={campData} />
+          <CampContainer campData={campData} isHoverActive = {!isSearching}/>
           {campData.length !== 0 ? (
             <Button
               id={"backgroundLightMainColor"}
               width={30}
               height={60}
+              marginH={20}
               btnText={"더보기"}
-              click={clickAddBtn}
+              clickBtn={clickBtn}
             ></Button>
           ) : (
             <div> 검색 결과가 없습니다. </div>
           )}
         </Main>
       </Body>
+      <Footer />
     </div>
   );
 }
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const ImgContainer = styled.div`
-  width: 10vw;
-  min-width: 100px;
-  margin: 20px;
-`;
-
-const Img = styled.img`
-  width: 100%;
-`;
-
-const HamburgerContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  width: 10vw;
-  margin: 20px;
-`;
 
 const TitleText = styled.div`
   margin: 20px;

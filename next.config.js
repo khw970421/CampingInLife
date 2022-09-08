@@ -8,7 +8,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `http://api.visitkorea.or.kr/openapi/service/rest/GoCamping/:path*`,
+        destination: `http://apis.data.go.kr/B551011/GoCamping/:path*`,
       },
     ];
   },

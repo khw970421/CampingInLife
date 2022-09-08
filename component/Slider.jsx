@@ -5,21 +5,17 @@ import {
 } from "react-icons/Bs";
 import styled from "styled-components";
 
-const Slider = ({
-  imgs = ["logo.png", "mainlogo.png", "logo.png", "mainlogo.png", "logo.png"],
-  width = 10,
-}) => {
+const Slider = ({ imgs = [], width = 10 }) => {
   const [sliderNo, setSliderNo] = useState(0);
   const [imgsLength, setImgsLength] = useState(1);
+
   // Todos : setInterval로 처리 가능한 방법 이해
   // Todos : imgs가 받은게 없을 경우 1로 처리하며 1에는 사진이 없는 이미지형태 처리 필요
-
   useEffect(() => {
     setImgsLength(imgs.length);
   }, [imgs]);
 
   const clickLeft = () => setSliderNo((sliderNo - 1 + imgsLength) % imgsLength);
-
   const clickRight = () => setSliderNo((sliderNo + 1) % imgsLength);
 
   return (
@@ -55,7 +51,6 @@ const ImgContainer = styled.div`
 
 const Img = styled.img`
   width: ${({ width }) => `${width}vw`};
-  /* width: 100%; */
   object-fit: contain;
   transform: ${({ width, sliderNo }) =>
     `translate(calc(${width}vw * -${sliderNo}), 0px);`};

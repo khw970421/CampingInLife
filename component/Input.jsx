@@ -1,20 +1,23 @@
-import React from "react";
+import { useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { ImSearch } from "react-icons/im";
 
 const Input = ({
+  searchArr = [],
+  isSearching,
+  changeInputValue,
+  checkSearchPressEnter,
+  clearSearchArr,
   width = 20,
   height = 50,
   borderRadius = 20,
   placeholder,
-  changeInputValue,
-  clickSearch = () => {
-    console.log("click");
-  },
-  searchArr = [],
-  checkSearchPressEnter,
 }) => {
   let timer;
+  const router = useRouter();
+  const inputRef = useRef();
+
   const debounce = (e) => {
     if (timer) {
       clearTimeout(timer); // 0.5초 미만으로 입력이 주어질 경우 해당 timer를 clear(없앤다)한다.
@@ -24,17 +27,24 @@ const Input = ({
     }, 500);
   };
 
+  const clickSearch = ({ contentId, facltNm }) => {
+    router.push(`/content/${contentId}?keyword=${facltNm}`);
+  };
+
   return (
     <InputContainer
       width={width}
       height={height}
       borderRadius={borderRadius}
       searchArr={searchArr}
+      isSearching={isSearching}
     >
       <InputTagContainer>
         <ImSearch />
         <InputTag
+          ref={inputRef}
           onChange={debounce}
+          onBlur={clearSearchArr}
           width={width}
           height={height}
           borderRadius={borderRadius}
@@ -42,19 +52,19 @@ const Input = ({
           onKeyPress={checkSearchPressEnter}
         ></InputTag>
       </InputTagContainer>
-      {searchArr.length !== 0 && (
-        <>
+      {isSearching &&
+        (searchArr.length !== 0 ? (
           <Ul width={width} height={height} borderRadius={borderRadius}>
-            {searchArr.map((search) => {
+            {searchArr.map(({ facltNm, contentId }) => {
               return (
                 <Li
-                  key={search}
+                  key={contentId}
                   id="backgroundWhite"
-                  onClick={clickSearch}
+                  onMouseDown={() => clickSearch({ contentId, facltNm })}
                   width={width}
                   height={height}
                 >
-                  {search}
+                  {facltNm}
                 </Li>
               );
             })}
@@ -65,8 +75,19 @@ const Input = ({
               borderRadius={borderRadius}
             ></Li>
           </Ul>
-        </>
-      )}
+        ) : (
+          <Ul width={width} height={height} borderRadius={borderRadius}>
+            <Li id="backgroundWhite" width={width} height={height}>
+              검색결과 없음
+            </Li>
+            <Li
+              id="backgroundWhite"
+              width={width}
+              height={5}
+              borderRadius={borderRadius}
+            ></Li>
+          </Ul>
+        ))}
     </InputContainer>
   );
 };
@@ -80,10 +101,10 @@ const InputContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  border-radius: ${({ borderRadius, searchArr }) =>
-    searchArr.length === 0
-      ? `${borderRadius}px`
-      : ` ${borderRadius}px ${borderRadius}px 0px 0px`};
+  border-radius: ${({ borderRadius, searchArr, isSearching }) =>
+    isSearching
+      ? ` ${borderRadius}px ${borderRadius}px 0px 0px`
+      : `${borderRadius}px`};
   border: 1px solid;
 
   width: ${({ width }) => `${width + 5}vw`};
@@ -133,6 +154,7 @@ const Li = styled.li`
   list-style: none;
   padding: 10px;
   font-size: 1em;
+  cursor: pointer;
 
   border-radius: ${({ borderRadius = 0 }) =>
     `0px 0px ${borderRadius}px ${borderRadius}px`};

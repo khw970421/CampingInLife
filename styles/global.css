@@ -51,21 +51,6 @@ a {
   background-color: #f7f6fb;
 }
 
-@keyframes smoothAppear {
-  from {
-    opacity: 0;
-    transform: translateY(-1%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.introDisplay {
-  animation: smoothAppear 1s;
-}
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -74,4 +59,20 @@ a {
     color: white;
     background: red;
   }
+}
+
+@media (max-width: 700px) {
+  #displayMax700 {
+    display: none;
+  }
+}
+
+#titleText {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+#subText {
+  font-weight: bold;
+  font-size: 0.8rem;
 }

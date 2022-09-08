@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/dist/client/router";
-import { getLocationBasedList, getImageList } from "../../core/api/axios";
+import { getSearchList, getImageList } from "../../core/api/axios";
 import styled from "styled-components";
 import Slider from "../../component/Slider";
 import Intro from "../../component/Intro";
 import KakaoAPI from "../../component/KakaoAPI";
+import Footer from "../../component/Semantic/Footer";
+import Header from "../../component/Semantic/Header";
 
 const content = () => {
   const router = useRouter();
@@ -13,12 +15,12 @@ const content = () => {
 
   useEffect(() => {
     if (!router.isReady) return;
-    locationBasedList(1, router.query.mapX, router.query.mapY);
+    searchList(1, router.query.keyword);
     imageList(1, router.query.id);
   }, [router.isReady]);
 
-  async function locationBasedList(pageNo = 1, mapX, mapY) {
-    const data = await getLocationBasedList(pageNo, mapX, mapY, 1000);
+  async function searchList(pageNo = 1, keyword) {
+    const data = await getSearchList(pageNo, keyword);
     setContent(data[0]);
   }
 
@@ -29,20 +31,22 @@ const content = () => {
 
   return (
     <>
-      <Body>
+      <Header />
+      <Body id="backgroundLightGray">
         <Main>
-          <Title>🏕️ {content.facltNm}</Title>
-          <Slider imgs={imageLists} width={40} />
+          <Title id="titleText">🏕️ {content.facltNm}</Title>
+          {imageLists.length !== 0 && <Slider imgs={imageLists} width={40} />}
           <IntroContainer>
             <Intro introText={content.intro} />
           </IntroContainer>
           <Location>
-            <h3>위치</h3>
-            <div>{content.addr1}</div>
+            <div id="titleText">위치</div>
+            <div id="subText">{content.addr1}</div>
           </Location>
-          <KakaoAPI long={router.query.mapX} lati={router.query.mapY} />
+          <KakaoAPI long={content.mapX} lati={content.mapY} marginH={10} />
         </Main>
       </Body>
+      <Footer />
     </>
   );
 };
@@ -63,14 +67,17 @@ const Main = styled.div`
 
 const Title = styled.div`
   width: 100%;
+  margin: 10px 0px;
 `;
 
 const IntroContainer = styled.div`
   width: 100%;
+  margin: 10px 0px;
 `;
 
 const Location = styled.div`
   width: 100%;
+  margin: 10px 0px;
 `;
 
 export default content;

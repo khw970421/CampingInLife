@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const API = "http://api.visitkorea.or.kr/openapi/service/rest/GoCamping";
+const API = "http://apis.data.go.kr/B551011/GoCamping";
 const essentialParams = process.env.SERVICE_KEY;
 
 const filtering = (target) => target?.data?.response?.body?.items?.item;
 const filteringUrl = (target) =>
-  target?.data?.response?.body?.items?.item.map(({ imageUrl }) => imageUrl);
+  target?.data?.response?.body?.items?.item?.map(({ imageUrl }) => imageUrl);
 
 const getBasedList = async (pageNo = 1) => {
   const unFilteredData = await axios.get(
@@ -17,9 +17,7 @@ const getBasedList = async (pageNo = 1) => {
 
 const getLocationBasedList = async (
   pageNo = 1,
-  mapX = 127,
-  mapY = 37,
-  radius = 10000
+  { mapX = 127, mapY = 37, radius = 1000 }
 ) => {
   const unFilteredData = await axios.get(
     `/api/locationBasedList?${essentialParams}&pageNo=${pageNo}&mapX=${mapX}&mapY=${mapY}&radius=${radius}`
@@ -40,7 +38,7 @@ const getImageList = async (pageNo = 1, contentId = 3429) => {
   const unFilteredData = await axios.get(
     `/api/imageList?${essentialParams}&pageNo=${pageNo}&contentId=${contentId}`
   );
-  const filteredData = filteringUrl(unFilteredData);
+  const filteredData = filteringUrl(unFilteredData) || [];
   return filteredData;
 };
 

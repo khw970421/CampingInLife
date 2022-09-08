@@ -2,25 +2,30 @@ import React from "react";
 import styled from "styled-components";
 
 const Button = ({
-  id,
   btnText,
+  clickBtn,
+  id,
   width,
   height,
   borderRadius = 20,
   fSize = 1,
-  click,
+  marginH = 0,
+  marginV = 0,
+  paddingH = 0,
+  paddingV = 0,
 }) => {
-  const clickBtn = () => {
-    click();
-  };
   return (
     <Btn
       id={id}
+      onClick={clickBtn}
       width={width}
       height={height}
       borderRadius={borderRadius}
       fSize={fSize}
-      onClick={clickBtn}
+      marginH={marginH}
+      marginV={marginV}
+      paddingH={paddingH}
+      paddingV={paddingV}
     >
       {btnText}
     </Btn>
@@ -32,6 +37,8 @@ const Btn = styled.button`
   height: ${({ height }) => `${height}px`};
   border-radius: ${({ borderRadius }) => `${borderRadius}px`};
   font-size: ${({ fSize }) => `${fSize}em`};
+  margin: ${({ marginH, marginV }) => `${marginH}px ${marginV}px`};
+  padding: ${({ paddingH, paddingV }) => `${paddingH}px ${paddingV}px`};
 `;
 
 export default Button;
