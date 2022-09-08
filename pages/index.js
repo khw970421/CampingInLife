@@ -4,14 +4,14 @@ import {
   getBasedList,
   getLocationBasedList,
   getSearchList,
-} from "../core/api/axios";
+} from "@/core/api/axios";
 
-import { returnTitle, getLocation } from "../core/utils/mainPage";
-import Button from "../component/Button";
-import SelectBox from "../component/SelectBox";
-import CampContainer from "../component/CampContainer";
-import Footer from "../component/Semantic/Footer";
-import Header from "../component/Semantic/Header";
+import { returnTitle, getLocation } from "@/core/utils/mainPage";
+import Button from "@/components/Button";
+import SelectBox from "@/components/SelectBox";
+import CampContainer from "@/components/CampContainer";
+import Footer from "@/components/Semantic/Footer";
+import Header from "@/components/Semantic/Header";
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState("nogps");
@@ -160,7 +160,7 @@ export default function Home() {
               />
             )}
           </Title>
-          <CampContainer campData={campData} isHoverActive = {!isSearching}/>
+          <CampContainer campData={campData} isHoverActive={!isSearching} />
           {campData.length !== 0 ? (
             <Button
               id={"backgroundLightMainColor"}
