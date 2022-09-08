@@ -2,6 +2,8 @@ import { useState } from "react";
 import { BiUpArrow, BiDownArrow } from "react-icons/bi";
 import styled from "styled-components";
 
+const noIntroMessage = "Intro 내용이 존재하지 않습니다.";
+
 const Intro = ({ introText }) => {
   const [isArrowDown, setIsArrowDown] = useState(true);
   const clickIntro = () => {
@@ -20,7 +22,7 @@ const Intro = ({ introText }) => {
       </IntroSpan>
       {isArrowDown && (
         <IntroText id="backgroundWhite" isArrowDown={isArrowDown}>
-          {introText}
+          {introText ? introText : noIntroMessage}
         </IntroText>
       )}
     </IntroContainer>
