@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
+import { useQuery } from "react-query";
 import {
   getBasedList,
   getLocationBasedList,
   getSearchList,
 } from "@/core/api/axios";
+import axios from "axios";
 
 import { returnTitle, getLocation } from "@/core/utils/mainPage";
 import Button from "@/components/Button";
@@ -12,6 +14,7 @@ import SelectBox from "@/components/SelectBox";
 import CampContainer from "@/components/CampContainer";
 import Footer from "@/components/Semantic/Footer";
 import Header from "@/components/Semantic/Header";
+import { getPageFiles } from "next/dist/server/get-page-files";
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState("nogps");
@@ -25,9 +28,35 @@ export default function Home() {
   const [isSearching, setIsSearching] = useState(false);
   const searchKey = useRef("");
 
-  useEffect(() => {
-    getLocation(setGpsData);
-  }, []);
+  const { isLoading, error, data, isFetching } = useQuery(
+    "repoData",
+    async () => {
+      const res = await getGPSCoordinates();
+      // resolve에 따라 처리
+      console.log(res, "@@@");
+
+      return axios
+        .get(`https://jsonplaceholder.typicode.com/todos/1`)
+        .then((res) => res.data);
+    }
+  );
+
+  const getGPSCoordinates = async () =>
+    new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     // GPS Data 여부에 따라 API 분기 실행

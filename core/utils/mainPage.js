@@ -8,14 +8,18 @@ const returnTitle = (titleTag, searchKey = "") => {
 };
 
 function getLocation(setData) {
+  let pos = {};
+  let p = 1000;
   if (navigator.geolocation) {
     // GPS를 지원하면
     navigator.geolocation.getCurrentPosition(
-      function (position) {
+      function (position, p) {
         setData({
           lati: position.coords.latitude,
           long: position.coords.longitude,
         });
+        pos.lati = position.coords.latitude;
+        pos.long = position.coords.longitude;
       },
       function (error) {
         console.error(error);
@@ -29,6 +33,8 @@ function getLocation(setData) {
   } else {
     alert("GPS를 지원하지 않습니다");
   }
+  console.log(pos, "??");
+  return pos;
 }
 
 export { returnTitle, getLocation };
