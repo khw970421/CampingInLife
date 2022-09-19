@@ -34,16 +34,16 @@ const Content = () => {
       <Header />
       <Body id="backgroundLightGray">
         <Main>
-          <Title id="titleText">🏕️ {content.facltNm}</Title>
+          <Title id="titleText">🏕️ {content?.facltNm}</Title>
           {imageLists.length !== 0 && <Slider imgs={imageLists} width={40} />}
           <IntroContainer>
-            <Intro introText={content.intro} />
+            <Intro introText={content?.intro} />
           </IntroContainer>
           <Location>
             <div id="titleText">위치</div>
-            <div id="subText">{content.addr1}</div>
+            <div id="subText">{content?.addr1}</div>
           </Location>
-          <KakaoAPI long={content.mapX} lati={content.mapY} marginH={10} />
+          <KakaoAPI long={content?.mapX} lati={content?.mapY} marginH={10} />
         </Main>
       </Body>
       <Footer />
