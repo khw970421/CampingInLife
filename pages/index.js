@@ -40,7 +40,7 @@ export default function Home() {
     setTitleTag("nogps");
 
     // 요청받은 API는 없고 pageNo는 첫번째 페이지가 아닐때
-    if (data.length === 0 && pageNo !== 1) {
+    if (data?.length === 0 && pageNo !== 1) {
       alert("더보기 캠핑 목록이 없습니다.");
     } else setCampData([...campData, ...data]);
   }
