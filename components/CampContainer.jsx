@@ -9,10 +9,9 @@ const CampContainer = ({
   containerHeight = 300,
 }) => {
   const returnImageSrc = (url) => (url !== "" ? url : "logo.png");
-
   return (
     <Container containerWidth={containerWidth}>
-      {campData.map(({ facltNm, addr1, firstImageUrl, contentId }) => (
+      {campData?.map(({ facltNm, addr1, firstImageUrl, contentId }) => (
         <Camp
           key={contentId}
           title={facltNm}
