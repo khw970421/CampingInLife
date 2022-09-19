@@ -31,13 +31,20 @@ export default function Home() {
   const { isLoading, error, data, isFetching } = useQuery(
     "repoData",
     async () => {
-      const res = await getGPSCoordinates();
-      // resolve에 따라 처리
-      console.log(res, "@@@");
-
-      return axios
-        .get(`https://jsonplaceholder.typicode.com/todos/1`)
-        .then((res) => res.data);
+      let gpsData = {},
+        campData;
+      try {
+        gpsData = await getGPSCoordinates();
+        campData = await getLocationBasedList(1, {
+          mapX: gpsData.longtude,
+          mapY: gpsData.latitude,
+          radius: gpsRange.current,
+        });
+      } catch (e) {
+        campData = await getBasedList();
+        console.log(e);
+      }
+      return { gpsData, campData };
     }
   );
 
@@ -56,14 +63,6 @@ export default function Home() {
       );
     });
 
-  useEffect(() => {}, []);
-
-  useEffect(() => {
-    // GPS Data 여부에 따라 API 분기 실행
-    if (Object.keys(gpsData).length !== 0) locationBasedList();
-    else basedList();
-  }, [gpsData]);
-
   async function basedList(pageNo = 1) {
     const data = await getBasedList(pageNo);
     setTitleTag("nogps");
@@ -71,10 +70,10 @@ export default function Home() {
     // 요청받은 API는 없고 pageNo는 첫번째 페이지가 아닐때
     if (data.length === 0 && pageNo !== 1) {
       alert("더보기 캠핑 목록이 없습니다.");
-    } else setCampData([...campData, ...data]);
+    } else return [...campData, ...data];
   }
 
-  async function locationBasedList(pageNo = 1) {
+  async function locationBasedList(gpsData, pageNo = 1) {
     const gpsInfo = {
       mapX: gpsData.long,
       mapY: gpsData.lati,
@@ -85,10 +84,10 @@ export default function Home() {
     setTitleTag("gps");
 
     if (pageNo === 1) {
-      setCampData(data);
+      return data;
     } else if (data.length === 0 && pageNo !== 1) {
       alert("더보기 캠핑 목록이 없습니다.");
-    } else setCampData([...campData, ...data]);
+    } else return [...campData, ...data];
   }
 
   async function searchList(pageNo, value) {
@@ -142,7 +141,7 @@ export default function Home() {
         basedList(pageNo.current);
         break;
       case "gps":
-        locationBasedList(pageNo.current);
+        locationBasedList(data.gpsData, pageNo.current);
         break;
       case "searchKey":
         searchList(pageNo.current, searchKey.current);
@@ -158,7 +157,7 @@ export default function Home() {
   const changeSelectBoxOption = ({ target }) => {
     gpsRange.current = parseInt(target.value) * 1000;
     pageNo.current = 1;
-    locationBasedList(pageNo.current);
+    locationBasedList(data.gpsData, pageNo.current);
   };
 
   const clearSearchArr = () => {
@@ -189,8 +188,11 @@ export default function Home() {
               />
             )}
           </Title>
-          <CampContainer campData={campData} isHoverActive={!isSearching} />
-          {campData.length !== 0 ? (
+          <CampContainer
+            campData={data?.campData}
+            isHoverActive={!isSearching}
+          />
+          {data?.campData?.length !== 0 ? (
             <Button
               id={"backgroundLightMainColor"}
               width={30}
