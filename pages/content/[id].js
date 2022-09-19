@@ -8,7 +8,7 @@ import KakaoAPI from "@/components/KakaoAPI";
 import Footer from "@/components/Semantic/Footer";
 import Header from "@/components/Semantic/Header";
 
-const content = () => {
+const Content = () => {
   const router = useRouter();
   const [content, setContent] = useState([]);
   const [imageLists, setImageLists] = useState([]);
@@ -80,4 +80,4 @@ const Location = styled.div`
   margin: 10px 0px;
 `;
 
-export default content;
+export default Content;

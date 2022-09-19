@@ -26,8 +26,8 @@ const Slider = ({ imgs = [], width = 10 }) => {
       <Right onClick={clickRight}>
         <BsFillArrowRightCircleFill size={`${width / 10}vw`} />
       </Right>
-      {imgs.map((img) => {
-        return <Img src={img} width={width} sliderNo={sliderNo} />;
+      {imgs.map((img,idx) => {
+        return <Img key={idx} src={img} width={width} sliderNo={sliderNo} />;
       })}
     </SliderContainer>
   );
