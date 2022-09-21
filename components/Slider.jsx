@@ -5,18 +5,52 @@ import {
 } from "react-icons/Bs";
 import styled from "styled-components";
 
-const Slider = ({ imgs = [], width = 10 }) => {
-  const [sliderNo, setSliderNo] = useState(0);
-  const [imgsLength, setImgsLength] = useState(1);
+const transitionTime = 500;
+const transitionStyle = `${transitionTime}ms ease 0s`;
 
-  // Todos : setInterval로 처리 가능한 방법 이해
-  // Todos : imgs가 받은게 없을 경우 1로 처리하며 1에는 사진이 없는 이미지형태 처리 필요
+const Slider = ({ imgs = [], width = 10 }) => {
+  // imgs + 양옆 2개
+  const [infiniteImgs, setInfiniteImgs] = useState([]);
+  // imgs의 크기
+  const [imgsLength, setImgsLength] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1);
+  const [transition, setTransition] = useState("");
+
+  function replaceSlide(index) {
+    setTimeout(() => {
+      setTransition("");
+      setCurrentIndex(index);
+    }, transitionTime);
+  }
+
+  function clickLeft() {
+    let index = currentIndex - 1;
+    setCurrentIndex(index);
+    if (index < 2) {
+      index += imgsLength;
+      replaceSlide(index);
+    }
+    setTransition(transitionStyle);
+  }
+
+  function clickRight() {
+    let index = currentIndex + 1;
+    setCurrentIndex(index);
+    if (index >= imgsLength) {
+      index -= imgsLength;
+      replaceSlide(index);
+    }
+    setTransition(transitionStyle);
+  }
+
   useEffect(() => {
     setImgsLength(imgs.length);
+    const infinite = [];
+    infinite.push(imgs[imgs.length - 1]);
+    infinite.push(...imgs);
+    infinite.push(imgs[0]);
+    setInfiniteImgs(infinite);
   }, [imgs]);
-
-  const clickLeft = () => setSliderNo((sliderNo - 1 + imgsLength) % imgsLength);
-  const clickRight = () => setSliderNo((sliderNo + 1) % imgsLength);
 
   return (
     <SliderContainer width={width}>
@@ -26,51 +60,58 @@ const Slider = ({ imgs = [], width = 10 }) => {
       <Right onClick={clickRight} width={width}>
         <BsFillArrowRightCircleFill className="ArrowIcon" />
       </Right>
-      {imgs.map((img, idx) => {
-        return <Img key={idx} src={img} width={width} sliderNo={sliderNo} />;
+      {infiniteImgs.map((img, idx) => {
+        return (
+          <Img
+            key={idx}
+            src={img}
+            width={width}
+            currentIndex={currentIndex}
+            transitionStyle={transition}
+          />
+        );
       })}
     </SliderContainer>
   );
 };
 
+const Img = styled.img`
+  transition: ${({ transitionStyle }) => transitionStyle};
+  object-fit: contain;
+
+  @media (max-width: 900px) {
+    width: 80vw;
+    transform: ${({ width, currentIndex }) =>
+      `translate(calc(80vw * -${currentIndex}), 0px);`};
+  }
+
+  @media (min-width: 900px) {
+    width: ${({ width }) => `${width}vw`};
+    transform: ${({ width, currentIndex }) =>
+      `translate(calc(${width}vw * -${currentIndex}), 0px);`};
+  }
+`;
+
 const SliderContainer = styled.div`
   display: flex;
 
-  max-height: 600px;
-  min-height: 300px;
-
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     width: 80vw;
     .ArrowIcon {
       font-size: ${({ width }) => `${width / 5}vw`};
     }
+    max-height: 300px;
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: 900px) {
     width: ${({ width }) => `${width}vw`};
     .ArrowIcon {
       font-size: ${({ width }) => `${width / 10}vw`};
     }
+    max-height: 400px;
   }
   overflow: hidden;
   position: relative;
-`;
-
-const Img = styled.img`
-  transition-duration: 1s;
-  object-fit: contain;
-
-  @media (max-width: 600px) {
-    width: 80vw;
-    transform: ${({ width, sliderNo }) =>
-      `translate(calc(80vw * -${sliderNo}), 0px);`};
-  }
-
-  @media (min-width: 600px) {
-    width: ${({ width }) => `${width}vw`};
-    transform: ${({ width, sliderNo }) =>
-      `translate(calc(${width}vw * -${sliderNo}), 0px);`};
-  }
 `;
 
 const Left = styled.div`

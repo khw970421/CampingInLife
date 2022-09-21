@@ -62,12 +62,12 @@ const Main = styled.div`
   height: auto;
   align-items: center;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     min-width: 300px;
     margin: 0vw 5vw;
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: 900px) {
     width: calc(100vw - 22vw * 2);
     margin: 0vw 22vw;
   }
