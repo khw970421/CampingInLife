@@ -36,21 +36,20 @@ const Slider = ({ imgs = [], width = 10 }) => {
 const SliderContainer = styled.div`
   display: flex;
 
-  max-height: 600px;
-  min-height: 300px;
-
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     width: 80vw;
     .ArrowIcon {
       font-size: ${({ width }) => `${width / 5}vw`};
     }
+    max-height: 300px;
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: 900px) {
     width: ${({ width }) => `${width}vw`};
     .ArrowIcon {
       font-size: ${({ width }) => `${width / 10}vw`};
     }
+    max-height: 400px;
   }
   overflow: hidden;
   position: relative;
@@ -60,13 +59,13 @@ const Img = styled.img`
   transition-duration: 1s;
   object-fit: contain;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     width: 80vw;
     transform: ${({ width, sliderNo }) =>
       `translate(calc(80vw * -${sliderNo}), 0px);`};
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: 900px) {
     width: ${({ width }) => `${width}vw`};
     transform: ${({ width, sliderNo }) =>
       `translate(calc(${width}vw * -${sliderNo}), 0px);`};
