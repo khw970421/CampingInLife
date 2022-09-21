@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { ImSearch } from "react-icons/im";
@@ -17,7 +17,7 @@ const Input = ({
   let timer;
   const router = useRouter();
   const inputRef = useRef();
-
+  const [idx, setIdx] = useState(-1);
   const debounce = (e) => {
     if (timer) {
       clearTimeout(timer); // 0.5초 미만으로 입력이 주어질 경우 해당 timer를 clear(없앤다)한다.
@@ -27,9 +27,36 @@ const Input = ({
     }, 500);
   };
 
+  function keyUp(e) {
+    if (searchArr.length !== 0) {
+      if (e.key === "ArrowDown") {
+        const nIdx = (idx + 1) % searchArr.length;
+        setIdx(nIdx);
+      } else if (e.key === "ArrowUp") {
+        const nIdx = (idx - 1) % searchArr.length;
+        setIdx(nIdx < 0 ? nIdx + searchArr.length : nIdx);
+      } else if (e.key === "Enter") {
+        if (idx === -1) {
+          checkSearchPressEnter(e, idx);
+        } else {
+          checkSearchPressEnter(
+            e,
+            idx,
+            searchArr[idx].facltNm,
+            searchArr[idx].contentId
+          );
+        }
+      }
+    }
+  }
+
   const clickSearch = ({ contentId, facltNm }) => {
     router.push(`/content/${contentId}?keyword=${facltNm}`);
   };
+
+  useEffect(() => {
+    setIdx(-1);
+  }, [searchArr]);
 
   return (
     <InputContainer
@@ -49,20 +76,20 @@ const Input = ({
           height={height}
           borderRadius={borderRadius}
           searchArr={searchArr}
-          onKeyPress={checkSearchPressEnter}
+          onKeyUp={keyUp}
         ></InputTag>
       </InputTagContainer>
       {isSearching &&
         (searchArr.length !== 0 ? (
           <Ul width={width} height={height} borderRadius={borderRadius}>
-            {searchArr.map(({ facltNm, contentId }) => {
+            {searchArr.map(({ facltNm, contentId }, liIdx) => {
               return (
                 <Li
                   key={contentId}
-                  id="backgroundWhite"
                   onMouseDown={() => clickSearch({ contentId, facltNm })}
                   width={width}
                   height={height}
+                  isFocus={idx == liIdx}
                 >
                   {facltNm}
                 </Li>
@@ -154,8 +181,8 @@ const Li = styled.li`
   list-style: none;
   padding: 10px;
   font-size: 1em;
+  background: ${({ isFocus }) => (isFocus ? "#d9d9d9" : "#fff")};
   cursor: pointer;
-
   border-radius: ${({ borderRadius = 0 }) =>
     `0px 0px ${borderRadius}px ${borderRadius}px`};
 

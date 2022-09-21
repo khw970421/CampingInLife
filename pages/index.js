@@ -5,6 +5,7 @@ import {
   getLocationBasedList,
   getSearchList,
 } from "@/core/api/axios";
+import { useRouter } from "next/router";
 
 import { returnTitle, getLocation } from "@/core/utils/mainPage";
 import Button from "@/components/Button";
@@ -26,6 +27,7 @@ export default function Home() {
   const searchKey = useRef("");
 
   const isMounted = useRef(false);
+  const router = useRouter();
 
   useEffect(() => {
     getLocation(setGpsData);
@@ -101,11 +103,13 @@ export default function Home() {
     }
   };
 
-  const checkSearchPressEnter = ({ target, key }) => {
-    if (key === "Enter") {
+  const checkSearchPressEnter = ({ target, key }, idx, facltNm, contentId) => {
+    if (idx === -1) {
       searchList(1, target.value);
       setSearchArr([]);
       setIsSearching(false);
+    } else {
+      router.push(`/content/${contentId}?keyword=${facltNm}`);
     }
   };
 
