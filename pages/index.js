@@ -25,24 +25,29 @@ export default function Home() {
   const [isSearching, setIsSearching] = useState(false);
   const searchKey = useRef("");
 
+  const isMounted = useRef(false);
+
   useEffect(() => {
     getLocation(setGpsData);
   }, []);
 
   useEffect(() => {
-    // GPS Data 여부에 따라 API 분기 실행
-    if (Object.keys(gpsData).length !== 0) locationBasedList();
-    else basedList();
+    if (isMounted.current) {
+      // GPS Data 여부에 따라 API 분기 실행
+      if (Object.keys(gpsData).length !== 0) locationBasedList();
+      else basedList();
+    } else {
+      isMounted.current = true;
+    }
   }, [gpsData]);
 
   async function basedList(pageNo = 1) {
     const data = await getBasedList(pageNo);
     setTitleTag("nogps");
-
     // 요청받은 API는 없고 pageNo는 첫번째 페이지가 아닐때
     if (data?.length === 0 && pageNo !== 1) {
       alert("더보기 캠핑 목록이 없습니다.");
-    } else setCampData([...campData, ...data]);
+    } else if (data !== undefined) setCampData([...campData, ...data]);
   }
 
   async function locationBasedList(pageNo = 1) {
