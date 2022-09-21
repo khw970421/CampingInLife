@@ -20,13 +20,13 @@ const Slider = ({ imgs = [], width = 10 }) => {
 
   return (
     <SliderContainer width={width}>
-      <Left onClick={clickLeft}>
-        <BsFillArrowLeftCircleFill size={`${width / 10}vw`} />
+      <Left onClick={clickLeft} width={width}>
+        <BsFillArrowLeftCircleFill className="ArrowIcon" />
       </Left>
-      <Right onClick={clickRight}>
-        <BsFillArrowRightCircleFill size={`${width / 10}vw`} />
+      <Right onClick={clickRight} width={width}>
+        <BsFillArrowRightCircleFill className="ArrowIcon" />
       </Right>
-      {imgs.map((img,idx) => {
+      {imgs.map((img, idx) => {
         return <Img key={idx} src={img} width={width} sliderNo={sliderNo} />;
       })}
     </SliderContainer>
@@ -35,18 +35,42 @@ const Slider = ({ imgs = [], width = 10 }) => {
 
 const SliderContainer = styled.div`
   display: flex;
-  width: ${({ width }) => `${width}vw`};
-  max-height: 400px;
+
+  max-height: 600px;
+  min-height: 300px;
+
+  @media (max-width: 600px) {
+    width: 80vw;
+    .ArrowIcon {
+      font-size: ${({ width }) => `${width / 5}vw`};
+    }
+  }
+
+  @media (min-width: 600px) {
+    width: ${({ width }) => `${width}vw`};
+    .ArrowIcon {
+      font-size: ${({ width }) => `${width / 10}vw`};
+    }
+  }
   overflow: hidden;
   position: relative;
 `;
 
 const Img = styled.img`
-  width: ${({ width }) => `${width}vw`};
-  object-fit: contain;
-  transform: ${({ width, sliderNo }) =>
-    `translate(calc(${width}vw * -${sliderNo}), 0px);`};
   transition-duration: 1s;
+  object-fit: contain;
+
+  @media (max-width: 600px) {
+    width: 80vw;
+    transform: ${({ width, sliderNo }) =>
+      `translate(calc(80vw * -${sliderNo}), 0px);`};
+  }
+
+  @media (min-width: 600px) {
+    width: ${({ width }) => `${width}vw`};
+    transform: ${({ width, sliderNo }) =>
+      `translate(calc(${width}vw * -${sliderNo}), 0px);`};
+  }
 `;
 
 const Left = styled.div`
