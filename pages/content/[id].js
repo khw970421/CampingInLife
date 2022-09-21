@@ -59,10 +59,18 @@ const Body = styled.div`
 const Main = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc(100vw - 22vw * 2);
   height: auto;
-  margin: 0vw 22vw;
   align-items: center;
+
+  @media (max-width: 600px) {
+    min-width: 300px;
+    margin: 0vw 5vw;
+  }
+
+  @media (min-width: 600px) {
+    width: calc(100vw - 22vw * 2);
+    margin: 0vw 22vw;
+  }
 `;
 
 const Title = styled.div`
