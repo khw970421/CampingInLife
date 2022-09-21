@@ -1,20 +1,17 @@
 import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
-
 import {
   getBasedList,
   getLocationBasedList,
   getSearchList,
-} from "../core/api/axios";
+} from "@/core/api/axios";
 
-import { returnTitle, getLocation } from "../core/utils/mainPage";
-import Button from "../component/Button";
-import Input from "../component/Input";
-import SelectBox from "../component/SelectBox";
-import CampContainer from "../component/CampContainer";
-import Footer from "../component/Semantic/Footer";
-import Header from "../component/Semantic/Header";
+import { returnTitle, getLocation } from "@/core/utils/mainPage";
+import Button from "@/components/Button";
+import SelectBox from "@/components/SelectBox";
+import CampContainer from "@/components/CampContainer";
+import Footer from "@/components/Semantic/Footer";
+import Header from "@/components/Semantic/Header";
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState("nogps");
@@ -28,33 +25,39 @@ export default function Home() {
   const [isSearching, setIsSearching] = useState(false);
   const searchKey = useRef("");
 
+  const isMounted = useRef(false);
+
   useEffect(() => {
     getLocation(setGpsData);
   }, []);
 
   useEffect(() => {
-    // GPS Data 여부에 따라 API 분기 실행
-    if (Object.keys(gpsData).length !== 0) locationBasedList();
-    else basedList();
+    if (isMounted.current) {
+      // GPS Data 여부에 따라 API 분기 실행
+      if (Object.keys(gpsData).length !== 0) locationBasedList();
+      else basedList();
+    } else {
+      isMounted.current = true;
+    }
   }, [gpsData]);
 
   async function basedList(pageNo = 1) {
     const data = await getBasedList(pageNo);
     setTitleTag("nogps");
-
     // 요청받은 API는 없고 pageNo는 첫번째 페이지가 아닐때
-    if (data.length === 0 && pageNo !== 1) {
+    if (data?.length === 0 && pageNo !== 1) {
       alert("더보기 캠핑 목록이 없습니다.");
-    } else setCampData([...campData, ...data]);
+    } else if (data !== undefined) setCampData([...campData, ...data]);
   }
 
   async function locationBasedList(pageNo = 1) {
-    const data = await getLocationBasedList(
-      pageNo,
-      gpsData.long,
-      gpsData.lati,
-      gpsRange.current
-    );
+    const gpsInfo = {
+      mapX: gpsData.long,
+      mapY: gpsData.lati,
+      radius: gpsRange.current,
+    };
+
+    const data = await getLocationBasedList(pageNo, gpsInfo);
     setTitleTag("gps");
 
     if (pageNo === 1) {
@@ -101,11 +104,13 @@ export default function Home() {
   const checkSearchPressEnter = ({ target, key }) => {
     if (key === "Enter") {
       searchList(1, target.value);
+      setSearchArr([]);
+      setIsSearching(false);
     }
   };
 
   // 더보기 기능
-  const clickAddBtn = () => {
+  const clickBtn = () => {
     pageNo.current++;
 
     switch (titleTag) {
@@ -160,7 +165,7 @@ export default function Home() {
               />
             )}
           </Title>
-          <CampContainer campData={campData} />
+          <CampContainer campData={campData} isHoverActive={!isSearching} />
           {campData.length !== 0 ? (
             <Button
               id={"backgroundLightMainColor"}
@@ -168,7 +173,7 @@ export default function Home() {
               height={60}
               marginH={20}
               btnText={"더보기"}
-              click={clickAddBtn}
+              clickBtn={clickBtn}
             ></Button>
           ) : (
             <div> 검색 결과가 없습니다. </div>

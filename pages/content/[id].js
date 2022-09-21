@@ -1,26 +1,26 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/dist/client/router";
-import { getLocationBasedList, getImageList } from "../../core/api/axios";
+import { getSearchList, getImageList } from "@/core/api/axios";
 import styled from "styled-components";
-import Slider from "../../component/Slider";
-import Intro from "../../component/Intro";
-import KakaoAPI from "../../component/KakaoAPI";
-import Footer from "../../component/Semantic/Footer";
-import Header from "../../component/Semantic/Header";
+import Slider from "@/components/Slider";
+import Intro from "@/components/Intro";
+import KakaoAPI from "@/components/KakaoAPI";
+import Footer from "@/components/Semantic/Footer";
+import Header from "@/components/Semantic/Header";
 
-const content = () => {
+const Content = () => {
   const router = useRouter();
   const [content, setContent] = useState([]);
   const [imageLists, setImageLists] = useState([]);
 
   useEffect(() => {
     if (!router.isReady) return;
-    locationBasedList(1, router.query.mapX, router.query.mapY);
+    searchList(1, router.query.keyword);
     imageList(1, router.query.id);
   }, [router.isReady]);
 
-  async function locationBasedList(pageNo = 1, mapX, mapY) {
-    const data = await getLocationBasedList(pageNo, mapX, mapY, 1000);
+  async function searchList(pageNo = 1, keyword) {
+    const data = await getSearchList(pageNo, keyword);
     setContent(data[0]);
   }
 
@@ -34,20 +34,16 @@ const content = () => {
       <Header />
       <Body id="backgroundLightGray">
         <Main>
-          <Title id="titleText">🏕️ {content.facltNm}</Title>
-          <Slider imgs={imageLists} width={40} />
+          <Title id="titleText">🏕️ {content?.facltNm}</Title>
+          {imageLists.length !== 0 && <Slider imgs={imageLists} width={40} />}
           <IntroContainer>
-            <Intro introText={content.intro} />
+            <Intro introText={content?.intro} />
           </IntroContainer>
           <Location>
             <div id="titleText">위치</div>
-            <div id="subText">{content.addr1}</div>
+            <div id="subText">{content?.addr1}</div>
           </Location>
-          <KakaoAPI
-            long={router.query.mapX}
-            lati={router.query.mapY}
-            marginH={10}
-          />
+          <KakaoAPI long={content?.mapX} lati={content?.mapY} marginH={10} />
         </Main>
       </Body>
       <Footer />
@@ -63,10 +59,18 @@ const Body = styled.div`
 const Main = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc(100vw - 22vw * 2);
   height: auto;
-  margin: 0vw 22vw;
   align-items: center;
+
+  @media (max-width: 900px) {
+    min-width: 300px;
+    margin: 0vw 5vw;
+  }
+
+  @media (min-width: 900px) {
+    width: calc(100vw - 22vw * 2);
+    margin: 0vw 22vw;
+  }
 `;
 
 const Title = styled.div`
@@ -84,4 +88,4 @@ const Location = styled.div`
   margin: 10px 0px;
 `;
 
-export default content;
+export default Content;
