@@ -9,9 +9,10 @@ const transitionTime = 500;
 const transitionStyle = `${transitionTime}ms ease 0s`;
 
 const Slider = ({ imgs = [], width = 10 }) => {
-  const [sliderNo, setSliderNo] = useState(0);
-  const [imgsLength, setImgsLength] = useState(1);
+  // imgs + 양옆 2개
   const [infiniteImgs, setInfiniteImgs] = useState([]);
+  // imgs의 크기
+  const [imgsLength, setImgsLength] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [transition, setTransition] = useState("");
 
@@ -22,8 +23,8 @@ const Slider = ({ imgs = [], width = 10 }) => {
     }, transitionTime);
   }
 
-  function leftHandleSwipe(direction) {
-    let index = currentIndex + direction;
+  function clickLeft() {
+    let index = currentIndex - 1;
     setCurrentIndex(index);
     if (index < 2) {
       index += imgsLength;
@@ -31,8 +32,9 @@ const Slider = ({ imgs = [], width = 10 }) => {
     }
     setTransition(transitionStyle);
   }
-  function rightHandleSwipe(direction) {
-    let index = currentIndex + direction;
+
+  function clickRight() {
+    let index = currentIndex + 1;
     setCurrentIndex(index);
     if (index >= imgsLength) {
       index -= imgsLength;
@@ -49,11 +51,6 @@ const Slider = ({ imgs = [], width = 10 }) => {
     infinite.push(imgs[0]);
     setInfiniteImgs(infinite);
   }, [imgs]);
-
-  console.log(currentIndex, transitionStyle);
-
-  const clickLeft = () => leftHandleSwipe(-1);
-  const clickRight = () => rightHandleSwipe(+1);
 
   return (
     <SliderContainer width={width}>
@@ -77,8 +74,6 @@ const Slider = ({ imgs = [], width = 10 }) => {
     </SliderContainer>
   );
 };
-
-console.log();
 
 const Img = styled.img`
   transition: ${({ transitionStyle }) => transitionStyle};
