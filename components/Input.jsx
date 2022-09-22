@@ -18,6 +18,7 @@ const Input = ({
   const router = useRouter();
   const inputRef = useRef();
   const [idx, setIdx] = useState(-1);
+
   const debounce = (e) => {
     if (timer) {
       clearTimeout(timer); // 0.5초 미만으로 입력이 주어질 경우 해당 timer를 clear(없앤다)한다.
@@ -60,11 +61,11 @@ const Input = ({
 
   return (
     <InputContainer
+      searchArr={searchArr}
+      isSearching={isSearching}
       width={width}
       height={height}
       borderRadius={borderRadius}
-      searchArr={searchArr}
-      isSearching={isSearching}
     >
       <InputTagContainer>
         <ImSearch />
@@ -128,7 +129,7 @@ const InputContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  border-radius: ${({ borderRadius, searchArr, isSearching }) =>
+  border-radius: ${({ borderRadius, isSearching }) =>
     isSearching
       ? ` ${borderRadius}px ${borderRadius}px 0px 0px`
       : `${borderRadius}px`};

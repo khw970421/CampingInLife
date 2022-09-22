@@ -103,7 +103,7 @@ export default function Home() {
     }
   };
 
-  const checkSearchPressEnter = ({ target, key }, idx, facltNm, contentId) => {
+  const checkSearchPressEnter = ({ target }, idx, facltNm, contentId) => {
     if (idx === -1) {
       searchList(1, target.value);
       setSearchArr([]);
@@ -149,10 +149,10 @@ export default function Home() {
     <div>
       <Header
         searchArr={searchArr}
+        isSearching={isSearching}
         changeInputValue={changeSearchValue}
         checkSearchPressEnter={checkSearchPressEnter}
         clearSearchArr={clearSearchArr}
-        isSearching={isSearching}
       />
       <Body id="backgroundLightGray">
         <Main>

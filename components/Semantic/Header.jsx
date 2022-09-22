@@ -19,10 +19,10 @@ const Header = ({
       </ImgContainer>
       <Input
         searchArr={searchArr}
+        isSearching={isSearching}
         changeInputValue={changeInputValue}
         checkSearchPressEnter={checkSearchPressEnter}
         clearSearchArr={clearSearchArr}
-        isSearching={isSearching}
       ></Input>
       <HamburgerContainer>
         <GiHamburgerMenu size="50" />
