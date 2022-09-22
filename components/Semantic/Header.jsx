@@ -1,17 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import { useEffect, useState, useRef } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Input from "@/components/Input";
 import { useRouter } from "next/router";
 
 const Header = ({
-  isInputExist = false,
   searchArr = [],
+  isSearching,
   changeInputValue,
   checkSearchPressEnter,
   clearSearchArr,
-  isSearching,
 }) => {
   const router = useRouter();
   return (
@@ -19,15 +17,13 @@ const Header = ({
       <ImgContainer onClick={() => router.push("/")}>
         <Img src="/mainlogo.png"></Img>
       </ImgContainer>
-      {isInputExist && (
-        <Input
-          searchArr={searchArr}
-          changeInputValue={changeInputValue}
-          checkSearchPressEnter={checkSearchPressEnter}
-          clearSearchArr={clearSearchArr}
-          isSearching={isSearching}
-        ></Input>
-      )}
+      <Input
+        searchArr={searchArr}
+        changeInputValue={changeInputValue}
+        checkSearchPressEnter={checkSearchPressEnter}
+        clearSearchArr={clearSearchArr}
+        isSearching={isSearching}
+      ></Input>
       <HamburgerContainer>
         <GiHamburgerMenu size="50" />
       </HamburgerContainer>

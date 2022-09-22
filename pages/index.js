@@ -148,7 +148,6 @@ export default function Home() {
   return (
     <div>
       <Header
-        isInputExist={true}
         searchArr={searchArr}
         changeInputValue={changeSearchValue}
         checkSearchPressEnter={checkSearchPressEnter}
