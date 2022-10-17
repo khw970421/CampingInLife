@@ -30,6 +30,7 @@ const getSearchList = async (pageNo = 1, keyword = "화성") => {
   const unFilteredData = await axios.get(
     `/api/searchList?${essentialParams}&pageNo=${pageNo}&keyword=${keyword}`
   );
+
   const filteredData = filtering(unFilteredData);
   return filteredData !== undefined ? filteredData : [];
 };
@@ -42,4 +43,29 @@ const getImageList = async (pageNo = 1, contentId = 3429) => {
   return filteredData;
 };
 
-export { getBasedList, getLocationBasedList, getSearchList, getImageList };
+const getServerSideSearchList = async (pageNo = 1, keyword = "화성") => {
+  const unFilteredData = await axios.get(
+    `http://api.visitkorea.or.kr/openapi/service/rest/GoCamping/searchList?${essentialParams}&pageNo=${pageNo}&keyword=${encodeURI(
+      keyword
+    )}`
+  );
+  const filteredData = filtering(unFilteredData);
+  return filteredData !== undefined ? filteredData : [];
+};
+
+const getServerSideImageList = async (pageNo = 1, contentId = 3429) => {
+  const unFilteredData = await axios.get(
+    `http://api.visitkorea.or.kr/openapi/service/rest/GoCamping/imageList?${essentialParams}&pageNo=${pageNo}&contentId=${contentId}`
+  );
+  const filteredData = filteringUrl(unFilteredData) || [];
+  return filteredData;
+};
+
+export {
+  getBasedList,
+  getLocationBasedList,
+  getSearchList,
+  getImageList,
+  getServerSideSearchList,
+  getServerSideImageList,
+};

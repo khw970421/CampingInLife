@@ -1,33 +1,28 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/dist/client/router";
-import { getSearchList, getImageList } from "@/core/api/axios";
+import {
+  getServerSideImageList,
+  getServerSideSearchList,
+} from "@/core/api/axios";
 import styled from "styled-components";
 import Slider from "@/components/Slider";
 import Intro from "@/components/Intro";
 import KakaoAPI from "@/components/KakaoAPI";
 import Footer from "@/components/Semantic/Footer";
 import Header from "@/components/Semantic/Header";
+import axios from "axios";
 
-const Content = () => {
-  const router = useRouter();
+const Content = ({
+  content: serverSierContent,
+  imageLists: serverSideImageLists,
+}) => {
   const [content, setContent] = useState([]);
   const [imageLists, setImageLists] = useState([]);
 
   useEffect(() => {
-    if (!router.isReady) return;
-    searchList(1, router.query.keyword);
-    imageList(1, router.query.id);
-  }, [router.isReady]);
-
-  async function searchList(pageNo = 1, keyword) {
-    const data = await getSearchList(pageNo, keyword);
-    setContent(data[0]);
-  }
-
-  async function imageList(pageNo = 1, contentId) {
-    const data = await getImageList(pageNo, contentId);
-    setImageLists(data);
-  }
+    setContent(serverSierContent);
+    setImageLists(serverSideImageLists);
+  }, []);
 
   return (
     <>
@@ -51,6 +46,24 @@ const Content = () => {
   );
 };
 
+// 여기 데이터로 먼저 API 호출 진행
+export async function getServerSideProps({ query }) {
+  let content, imageLists;
+  async function searchList(pageNo = 1, keyword) {
+    const data = await getServerSideSearchList(pageNo, keyword);
+    content = data[0];
+  }
+
+  async function imageList(pageNo = 1, contentId) {
+    const data = await getServerSideImageList(pageNo, contentId);
+    imageLists = data;
+  }
+  await searchList(1, query.keyword);
+  await imageList(1, query.id);
+
+  return { props: { content, imageLists } };
+}
+
 const Body = styled.div`
   width: 100%;
   min-height: 100vh;
@@ -62,12 +75,12 @@ const Main = styled.div`
   height: auto;
   align-items: center;
 
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     min-width: 300px;
     margin: 0vw 5vw;
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: 900px) {
     width: calc(100vw - 22vw * 2);
     margin: 0vw 22vw;
   }
