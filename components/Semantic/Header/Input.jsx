@@ -1,123 +1,124 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, memo } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { ImSearch } from "react-icons/im";
 
-const Input = ({
-  searchArr = [],
-  isSearching,
-  changeInputValue,
-  checkSearchPressEnter,
-  clearSearchArr,
-  width = 20,
-  height = 50,
-  borderRadius = 20,
-  placeholder,
-}) => {
-  let timer;
-  const router = useRouter();
-  const inputRef = useRef();
-  const [idx, setIdx] = useState(-1);
-  const debounce = (e) => {
-    if (timer) {
-      clearTimeout(timer); // 0.5초 미만으로 입력이 주어질 경우 해당 timer를 clear(없앤다)한다.
-    }
-    timer = setTimeout(() => {
-      changeInputValue(e);
-    }, 500);
-  };
-
-  function keyUp(e) {
-    if (searchArr.length !== 0) {
-      if (e.key === "ArrowDown") {
-        const nIdx = (idx + 1) % searchArr.length;
-        setIdx(nIdx);
-      } else if (e.key === "ArrowUp") {
-        const nIdx = (idx - 1) % searchArr.length;
-        setIdx(nIdx < 0 ? nIdx + searchArr.length : nIdx);
-      } else if (e.key === "Enter") {
-        if (idx === -1) {
-          checkSearchPressEnter(e, idx);
-        } else {
-          checkSearchPressEnter(
-            e,
-            idx,
-            searchArr[idx].facltNm,
-            searchArr[idx].contentId
-          );
+const Input = memo(
+  ({
+    searchArr = [],
+    isSearching,
+    changeInputValue,
+    checkSearchPressEnter,
+    clearSearchArr,
+    width = 20,
+    height = 50,
+    borderRadius = 20,
+    placeholder,
+  }) => {
+    let timer;
+    const router = useRouter();
+    const inputRef = useRef();
+    const [idx, setIdx] = useState(-1);
+    const debounce = (e) => {
+      if (timer) {
+        clearTimeout(timer); // 0.5초 미만으로 입력이 주어질 경우 해당 timer를 clear(없앤다)한다.
+      }
+      timer = setTimeout(() => {
+        changeInputValue(e);
+      }, 500);
+    };
+    function keyUp(e) {
+      if (searchArr.length !== 0) {
+        if (e.key === "ArrowDown") {
+          const nIdx = (idx + 1) % searchArr.length;
+          setIdx(nIdx);
+        } else if (e.key === "ArrowUp") {
+          const nIdx = (idx - 1) % searchArr.length;
+          setIdx(nIdx < 0 ? nIdx + searchArr.length : nIdx);
+        } else if (e.key === "Enter") {
+          if (idx === -1) {
+            checkSearchPressEnter(e, idx);
+          } else {
+            checkSearchPressEnter(
+              e,
+              idx,
+              searchArr[idx].facltNm,
+              searchArr[idx].contentId
+            );
+          }
         }
       }
     }
+
+    const clickSearch = ({ contentId, facltNm }) => {
+      router.push(`/content/${contentId}?keyword=${facltNm}`);
+    };
+
+    useEffect(() => {
+      setIdx(-1);
+    }, [searchArr]);
+
+    return (
+      <InputContainer
+        width={width}
+        height={height}
+        borderRadius={borderRadius}
+        searchArr={searchArr}
+        isSearching={isSearching}
+      >
+        <InputTagContainer>
+          <ImSearch />
+          <InputTag
+            ref={inputRef}
+            onChange={debounce}
+            onBlur={clearSearchArr}
+            width={width}
+            height={height}
+            borderRadius={borderRadius}
+            searchArr={searchArr}
+            onKeyUp={keyUp}
+          ></InputTag>
+        </InputTagContainer>
+        {isSearching &&
+          (searchArr.length !== 0 ? (
+            <Ul width={width} height={height} borderRadius={borderRadius}>
+              {searchArr.map(({ facltNm, contentId }, liIdx) => {
+                return (
+                  <Li
+                    key={contentId}
+                    onMouseDown={() => clickSearch({ contentId, facltNm })}
+                    width={width}
+                    height={height}
+                    isFocus={idx == liIdx}
+                  >
+                    {facltNm}
+                  </Li>
+                );
+              })}
+              <Li
+                id="backgroundWhite"
+                width={width}
+                height={5}
+                borderRadius={borderRadius}
+              ></Li>
+            </Ul>
+          ) : (
+            <Ul width={width} height={height} borderRadius={borderRadius}>
+              <Li id="backgroundWhite" width={width} height={height}>
+                검색결과 없음
+              </Li>
+              <Li
+                id="backgroundWhite"
+                width={width}
+                height={5}
+                borderRadius={borderRadius}
+              ></Li>
+            </Ul>
+          ))}
+      </InputContainer>
+    );
   }
-
-  const clickSearch = ({ contentId, facltNm }) => {
-    router.push(`/content/${contentId}?keyword=${facltNm}`);
-  };
-
-  useEffect(() => {
-    setIdx(-1);
-  }, [searchArr]);
-
-  return (
-    <InputContainer
-      width={width}
-      height={height}
-      borderRadius={borderRadius}
-      searchArr={searchArr}
-      isSearching={isSearching}
-    >
-      <InputTagContainer>
-        <ImSearch />
-        <InputTag
-          ref={inputRef}
-          onChange={debounce}
-          onBlur={clearSearchArr}
-          width={width}
-          height={height}
-          borderRadius={borderRadius}
-          searchArr={searchArr}
-          onKeyUp={keyUp}
-        ></InputTag>
-      </InputTagContainer>
-      {isSearching &&
-        (searchArr.length !== 0 ? (
-          <Ul width={width} height={height} borderRadius={borderRadius}>
-            {searchArr.map(({ facltNm, contentId }, liIdx) => {
-              return (
-                <Li
-                  key={contentId}
-                  onMouseDown={() => clickSearch({ contentId, facltNm })}
-                  width={width}
-                  height={height}
-                  isFocus={idx == liIdx}
-                >
-                  {facltNm}
-                </Li>
-              );
-            })}
-            <Li
-              id="backgroundWhite"
-              width={width}
-              height={5}
-              borderRadius={borderRadius}
-            ></Li>
-          </Ul>
-        ) : (
-          <Ul width={width} height={height} borderRadius={borderRadius}>
-            <Li id="backgroundWhite" width={width} height={height}>
-              검색결과 없음
-            </Li>
-            <Li
-              id="backgroundWhite"
-              width={width}
-              height={5}
-              borderRadius={borderRadius}
-            ></Li>
-          </Ul>
-        ))}
-    </InputContainer>
-  );
-};
+);
 
 const InputContainer = styled.div`
   box-sizing: border-box;

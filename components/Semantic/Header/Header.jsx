@@ -22,10 +22,10 @@ const Header = ({
       {isInputExist && (
         <Input
           searchArr={searchArr}
+          isSearching={isSearching}
           changeInputValue={changeInputValue}
           checkSearchPressEnter={checkSearchPressEnter}
           clearSearchArr={clearSearchArr}
-          isSearching={isSearching}
         ></Input>
       )}
       <HamburgerContainer>
