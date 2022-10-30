@@ -8,11 +8,14 @@ import {
 import { useRouter } from "next/router";
 
 import { returnTitle, getLocation } from "@/core/utils/mainPage";
-import Button from "@/components/Button";
-import SelectBox from "@/components/SelectBox";
-import CampContainer from "@/components/CampContainer";
-import Footer from "@/components/Semantic/Footer";
-import Header from "@/components/Semantic/Header";
+
+import {
+  Header,
+  CampTile,
+  Button,
+  SelectBox,
+  Footer,
+} from "@/components/index.js";
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState("nogps");
@@ -146,7 +149,7 @@ export default function Home() {
     setIsSearching(false);
   };
   return (
-    <div>
+    <>
       <Header
         isInputExist={true}
         searchArr={searchArr}
@@ -169,7 +172,7 @@ export default function Home() {
               />
             )}
           </Title>
-          <CampContainer campData={campData} isHoverActive={!isSearching} />
+          <CampTile campData={campData} isHoverActive={!isSearching} />
           {campData.length !== 0 ? (
             <Button
               id={"backgroundLightMainColor"}
@@ -185,7 +188,7 @@ export default function Home() {
         </Main>
       </Body>
       <Footer />
-    </div>
+    </>
   );
 }
 

@@ -1,16 +1,11 @@
 import { useState, useEffect } from "react";
-import { useRouter } from "next/dist/client/router";
 import {
   getServerSideImageList,
   getServerSideSearchList,
 } from "@/core/api/axios";
 import styled from "styled-components";
-import Slider from "@/components/Slider";
-import Intro from "@/components/Intro";
-import KakaoAPI from "@/components/KakaoAPI";
-import Footer from "@/components/Semantic/Footer";
-import Header from "@/components/Semantic/Header";
-import axios from "axios";
+
+import { Header, Footer, Slider, Intro, KakaoAPI } from "@/components/index.js";
 
 const Content = ({
   content: serverSierContent,
