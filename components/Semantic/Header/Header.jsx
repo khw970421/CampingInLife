@@ -21,8 +21,8 @@ const Header = ({
       </ImgContainer>
       {isInputExist && (
         <Input
-          // searchArr={searchArr}
-          // isSearching={isSearching}
+          searchArr={searchArr}
+          isSearching={isSearching}
           changeInputValue={changeInputValue}
           checkSearchPressEnter={checkSearchPressEnter}
           clearSearchArr={clearSearchArr}
