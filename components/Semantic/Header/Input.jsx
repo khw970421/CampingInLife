@@ -27,7 +27,6 @@ const Input = memo(
         changeInputValue(e);
       }, 500);
     };
-    console.log("!!!");
     function keyUp(e) {
       if (searchArr.length !== 0) {
         if (e.key === "ArrowDown") {
