@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import {
   getBasedList,
   getLocationBasedList,
@@ -46,6 +46,44 @@ export default function Home() {
     }
   }, [gpsData]);
 
+  // Header 검색 기능
+  const changeSearchValue = useCallback(async ({ target }) => {
+    if (target.value !== "") {
+      const list = await getSearchList(1, target.value);
+      const filterList = list.map(({ facltNm, contentId, mapX, mapY }) => ({
+        facltNm,
+        contentId,
+        mapX,
+        mapY,
+      }));
+
+      setIsSearching(true);
+      setSearchArr(filterList);
+    } else {
+      setIsSearching(false);
+      setSearchArr([]);
+    }
+  }, []);
+
+  const checkSearchPressEnter = useCallback(
+    ({ target, key }, idx, facltNm, contentId) => {
+      if (idx === -1) {
+        searchList(1, target.value);
+        setSearchArr([]);
+        setIsSearching(false);
+      } else {
+        router.push(`/content/${contentId}?keyword=${facltNm}`);
+      }
+    },
+    []
+  );
+
+  const clearSearchArr = useCallback(() => {
+    setSearchArr([]);
+    setIsSearching(false);
+  }, []);
+
+  // API 기능 : basedList
   async function basedList(pageNo = 1) {
     const data = await getBasedList(pageNo);
     setTitleTag("nogps");
@@ -55,6 +93,7 @@ export default function Home() {
     } else if (data !== undefined) setCampData([...campData, ...data]);
   }
 
+  // API 기능 : locationBasedList
   async function locationBasedList(pageNo = 1) {
     const gpsInfo = {
       mapX: gpsData.long,
@@ -72,6 +111,7 @@ export default function Home() {
     } else setCampData([...campData, ...data]);
   }
 
+  // API 기능 : searchList
   async function searchList(pageNo, value) {
     const list = await getSearchList(pageNo, value);
     setTitleTag("searchKey");
@@ -86,35 +126,6 @@ export default function Home() {
       alert("더보기 캠핑 목록이 없습니다.");
     } else setCampData([...campData, ...list]);
   }
-
-  // Header 검색 기능
-  const changeSearchValue = async ({ target }) => {
-    if (target.value !== "") {
-      const list = await getSearchList(1, target.value);
-      const filterList = list.map(({ facltNm, contentId, mapX, mapY }) => ({
-        facltNm,
-        contentId,
-        mapX,
-        mapY,
-      }));
-
-      setIsSearching(true);
-      setSearchArr(filterList);
-    } else {
-      setIsSearching(false);
-      setSearchArr([]);
-    }
-  };
-
-  const checkSearchPressEnter = ({ target, key }, idx, facltNm, contentId) => {
-    if (idx === -1) {
-      searchList(1, target.value);
-      setSearchArr([]);
-      setIsSearching(false);
-    } else {
-      router.push(`/content/${contentId}?keyword=${facltNm}`);
-    }
-  };
 
   // 더보기 기능
   const clickBtn = () => {
@@ -144,10 +155,6 @@ export default function Home() {
     locationBasedList(pageNo.current);
   };
 
-  const clearSearchArr = () => {
-    setSearchArr([]);
-    setIsSearching(false);
-  };
   return (
     <>
       <Header
