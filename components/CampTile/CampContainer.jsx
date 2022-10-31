@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Camp from "./Camp";
+import logo from "@/public/logo.png";
 
 const CampContainer = ({
   campData = [],
@@ -8,7 +9,7 @@ const CampContainer = ({
   containerWidth = 223,
   containerHeight = 300,
 }) => {
-  const returnImageSrc = (url) => (url !== "" ? url : "logo.png");
+  const returnImageSrc = (url) => (url !== "" ? url : logo);
 
   return (
     <Container containerWidth={containerWidth}>

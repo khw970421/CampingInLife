@@ -12,6 +12,9 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    domains: ["gocamping.or.kr"],
+  },
 };
 
 module.exports = nextConfig;
