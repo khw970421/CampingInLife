@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 const Camp = ({
   title = "제목",
   address = "주소",
-  imgSrc = "logo.png",
+  imgSrc,
   contentId,
   isHoverActive,
   containerWidth = 223,
