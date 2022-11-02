@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { useEffect, useState, useRef } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
-import Input from "@/components/Semantic/Header/Input";
+import Input from "@/components/Semantic/Header/js/Input";
 import { useRouter } from "next/router";
 
 const Header = ({
