@@ -3,7 +3,21 @@ import styled from "styled-components";
 import Picture from "./Picture";
 import { useRouter } from "next/router";
 
-const Camp = ({
+interface CampContainerStyled {
+  isHoverActive: boolean;
+  containerWidth: number;
+  containerHeight: number;
+  borderRadius?: number;
+}
+
+interface CampProps extends CampContainerStyled {
+  title: string;
+  address: string;
+  imgSrc: string;
+  contentId: string;
+}
+
+export default function Camp({
   title = "제목",
   address = "주소",
   imgSrc,
@@ -12,7 +26,7 @@ const Camp = ({
   containerWidth = 223,
   containerHeight = 300,
   borderRadius = 30,
-}) => {
+}: CampProps) {
   const router = useRouter();
   const clickCamp = () => {
     router.push(`/content/${contentId}?keyword=${title}`);
@@ -40,9 +54,9 @@ const Camp = ({
       </TAContainer>
     </CampContainer>
   );
-};
+}
 
-const CampContainer = styled.div`
+const CampContainer = styled.div<CampContainerStyled>`
   width: ${({ containerWidth }) => `${containerWidth}px`};
   height: ${({ containerHeight }) => `${containerHeight}px`};
   border: 1px solid;
@@ -83,5 +97,3 @@ const Address = styled.div`
   white-space: nowrap; // 아래줄로 내려가는 것을 막기위해
   word-break: break-all;
 `;
-
-export default Camp;
