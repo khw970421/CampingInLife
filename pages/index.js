@@ -37,12 +37,11 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (isMounted.current) {
-      // GPS Data 여부에 따라 API 분기 실행
-      if (Object.keys(gpsData).length !== 0) locationBasedList();
-      else basedList();
+    // GPS Data 여부에 따라 API 분기 실행
+    if (Object.keys(gpsData).length !== 0) {
+      locationBasedList();
     } else {
-      isMounted.current = true;
+      basedList();
     }
   }, [gpsData]);
 
