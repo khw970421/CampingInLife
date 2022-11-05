@@ -169,6 +169,8 @@ const InputContainer = styled.div<InputContainerStyled>`
   width: ${({ width }) => `${width + 5}vw`};
   height: auto;
   min-width: 200px;
+
+  z-index: 10;
 `;
 
 const InputTagContainer = styled.div`
