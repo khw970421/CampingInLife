@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   BsFillArrowLeftCircleFill,
   BsFillArrowRightCircleFill,
-} from "react-icons/Bs";
+} from "react-icons/bs";
 import styled from "styled-components";
 
 interface SliderContainerStyled {
