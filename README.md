@@ -1,5 +1,5 @@
 
-# ⛺️ [Camping In Life](https://camping-in-life.vercel.app/)
+# ⛺️ Camping In Life
 > 공공데이터를 활용한 캠핑장 검색 
 
 <div align="center">
@@ -12,6 +12,11 @@
 ![](public/mainlogo.png)
 
 주변 캠핑장과 캠핑장을 검색하여 캠핑장에 대한 정보를 알 수 있는 플랫폼
+
+## 관련 링크 모음 
+### [배포](https://camping-in-life.vercel.app/)
+### [Figma 레이아웃](https://www.figma.com/file/n1vB6phFEAa1mZlNCVYG5Z/%EC%BA%A1%EC%8A%A4%ED%86%A42-team-library?node-id=0%3A1&t=Y96Ni78uicYmEyZp-1)
+### [프로젝트 관련 정보 계획 Notion](https://khw970421.notion.site/Camping-In-Life-a139b980c66744ddb43193669deb209d)
 
 <!--
 ## 설치 방법
