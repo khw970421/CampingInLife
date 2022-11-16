@@ -1,34 +1,58 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# ⛺️ [Camping In Life](https://camping-in-life.vercel.app/)
+> 공공데이터를 활용한 캠핑장 검색 
 
-First, run the development server:
+<div align="center">
+<img src="https://img.shields.io/badge/next-12.2.3-red.svg"/> <img src="https://img.shields.io/badge/react-18.2.0-6BDAFC.svg"/>
+<img src="https://img.shields.io/badge/react_kakao_maps_sdk-^1.1.3-F9DC3E.svg"/>
+<img src="https://img.shields.io/badge/styled_components-^5.3.5-DB7093.svg"/>
+</div>
 
-```bash
-npm run dev
-# or
-yarn dev
+
+![](public/mainlogo.png)
+
+주변 캠핑장과 캠핑장을 검색하여 캠핑장에 대한 정보를 알 수 있는 플랫폼
+
+<!--
+## 설치 방법
+
+OS X & 리눅스:
+
+```sh
+npm install my-crazy-module --save
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+윈도우:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```sh
+edit autoexec.bat
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## 사용 예제
 
-## Learn More
+스크린 샷과 코드 예제를 통해 사용 방법을 자세히 설명합니다.
 
-To learn more about Next.js, take a look at the following resources:
+_더 많은 예제와 사용법은 [Wiki][wiki]를 참고하세요._
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 개발 환경 설정
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+모든 개발 의존성 설치 방법과 자동 테스트 슈트 실행 방법을 운영체제 별로 작성합니다.
 
-## Deploy on Vercel
+```sh
+make install
+npm test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+-->
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 🌲 기능구현 
+1. GPS를 활용한 주변 캠핑장 검색
+2. 주변 캠핑장 범위 조절 
+3. 캠핑장 검색 
+  1. 디바운싱 - 검색어 관련 캠핑장 출력
+  2. mouseUp mouseDown 관련 검색어 처리
+4. 상세 페이지 무한 슬라이더 구현 
+5. KakaoAPI로 상세 페이지 캠핑장 위치 출력
+
+
