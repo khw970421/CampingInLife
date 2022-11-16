@@ -39,6 +39,10 @@ interface InputProps {
   placeholder?: string;
 }
 
+interface LeftPaddingStyled {
+  borderRadius: number;
+}
+
 export default memo(function Input({
   searchArr = [],
   isSearching,
@@ -101,7 +105,9 @@ export default memo(function Input({
       isSearching={isSearching}
     >
       <InputTagContainer>
-        <ImSearch />
+        <ImSearchContainer>
+          <ImSearch />
+        </ImSearchContainer>
         <InputTag
           ref={inputRef}
           onChange={debounce}
@@ -110,6 +116,7 @@ export default memo(function Input({
           height={height}
           onKeyUp={keyUp}
         ></InputTag>
+        <LeftPadding borderRadius={borderRadius}></LeftPadding>
       </InputTagContainer>
       {isSearching &&
         (searchArr.length !== 0 ? (
@@ -171,18 +178,31 @@ const InputContainer = styled.div<InputContainerStyled>`
   min-width: 200px;
 
   z-index: 10;
+  position: relative;
+`;
+
+const LeftPadding = styled.div<LeftPaddingStyled>`
+  width: ${({ borderRadius }) => `${borderRadius}px`};
+  height: ${({ borderRadius }) => `${borderRadius}px`};
+`;
+
+const ImSearchContainer = styled.div`
+  position: relative;
+  left: 10px;
+  padding: 0px 10px 0px 0px;
 `;
 
 const InputTagContainer = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
 `;
 
 const InputTag = styled.input`
   border: 0px;
 
   padding: 0px 10px;
-  width: ${({ width }) => `${width}vw`};
+  width: 100%;
   height: ${({ height }) => `${height}px`};
 
   :focus {

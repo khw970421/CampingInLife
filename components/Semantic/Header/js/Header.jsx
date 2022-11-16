@@ -42,7 +42,7 @@ const HeaderContainer = styled.div`
 
 const ImgContainer = styled.div`
   width: 10vw;
-  min-width: 100px;
+  min-width: 50px;
   margin: 20px;
   cursor: pointer;
 `;
