@@ -215,9 +215,9 @@ const Main = styled.div`
   height: auto;
   margin: 0vw 22vw;
   align-items: center;
-  @media (max-width: 500px) {
-    width: calc(100vw);
-    margin: 0vw;
+  @media (max-width: 400px) {
+    width: calc(100vw - 5vw * 2);
+    margin: 5vw;
   }
 `;
 
