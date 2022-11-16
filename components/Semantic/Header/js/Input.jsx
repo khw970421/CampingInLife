@@ -67,7 +67,9 @@ const Input = memo(
         isSearching={isSearching}
       >
         <InputTagContainer>
-          <ImSearch />
+          <ImSearchContainer>
+            <ImSearch />
+          </ImSearchContainer>
           <InputTag
             ref={inputRef}
             onChange={debounce}
@@ -78,6 +80,7 @@ const Input = memo(
             searchArr={searchArr}
             onKeyUp={keyUp}
           ></InputTag>
+          <LeftPadding borderRadius={borderRadius}></LeftPadding>
         </InputTagContainer>
         {isSearching &&
           (searchArr.length !== 0 ? (
@@ -142,16 +145,28 @@ const InputContainer = styled.div`
   z-index: 10;
 `;
 
+const LeftPadding = styled.div`
+  width: ${({ borderRadius }) => `${borderRadius}px`};
+  height: ${({ borderRadius }) => `${borderRadius}px`};
+`;
+
+const ImSearchContainer = styled.div`
+  position: relative;
+  left: 10px;
+  padding: 0px 10px 0px 0px;
+`;
+
 const InputTagContainer = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
 `;
 
 const InputTag = styled.input`
   border: 0px;
 
   padding: 0px 10px;
-  width: ${({ width }) => `${width}vw`};
+  width: 100%;
   height: ${({ height }) => `${height}px`};
 
   :focus {

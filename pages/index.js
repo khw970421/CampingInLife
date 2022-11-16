@@ -215,6 +215,10 @@ const Main = styled.div`
   height: auto;
   margin: 0vw 22vw;
   align-items: center;
+  @media (max-width: 400px) {
+    width: calc(100vw - 5vw * 2);
+    margin: 5vw;
+  }
 `;
 
 const Title = styled.div`
