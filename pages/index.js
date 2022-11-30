@@ -21,7 +21,6 @@ export default function Home() {
   const [titleTag, setTitleTag] = useState("nogps");
   const [campData, setCampData] = useState([]);
   const pageNo = useRef(1);
-
   const [gpsData, setGpsData] = useState({});
   const gpsRange = useRef(10000);
 
@@ -39,8 +38,10 @@ export default function Home() {
   useEffect(() => {
     // GPS Data 여부에 따라 API 분기 실행
     if (Object.keys(gpsData).length !== 0) {
+      console.log("GPS 실행");
       locationBasedList();
     } else {
+      console.log("GPS 실행X");
       basedList();
     }
   }, [gpsData]);

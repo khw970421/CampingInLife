@@ -9,7 +9,7 @@ const filteringUrl = (target) =>
 
 const getBasedList = async (pageNo = 1) => {
   const unFilteredData = await axios.get(
-    `/api/basedList?${essentialParams}&pageNo=${pageNo}`
+    `/api/basedList?&pageNo=${pageNo}`
   );
   const filteredData = filtering(unFilteredData);
   return filteredData;
@@ -20,7 +20,7 @@ const getLocationBasedList = async (
   { mapX = 127, mapY = 37, radius = 1000 }
 ) => {
   const unFilteredData = await axios.get(
-    `/api/locationBasedList?${essentialParams}&pageNo=${pageNo}&mapX=${mapX}&mapY=${mapY}&radius=${radius}`
+    `/api/locationBasedList?&pageNo=${pageNo}&mapX=${mapX}&mapY=${mapY}&radius=${radius}`
   );
   const filteredData = filtering(unFilteredData);
   return filteredData !== undefined ? filteredData : [];
