@@ -1,24 +1,20 @@
 import { useState, useEffect } from "react";
 import {
-  getServerSideImageList,
   getServerSideSearchList,
+  getServerSideImageList,
 } from "@/core/api/axios";
 import styled from "styled-components";
 
 import { Header, Footer, Slider, Intro, KakaoAPI } from "@/components/index.js";
+import { useRouter } from "next/router";
 
-const Content = ({
-  content: serverSierContent,
-  imageLists: serverSideImageLists,
-}) => {
+const Content = ({ serverImage, serverContent }) => {
   const [content, setContent] = useState([]);
   const [imageLists, setImageLists] = useState([]);
-
   useEffect(() => {
-    setContent(serverSierContent);
-    setImageLists(serverSideImageLists);
+    setContent(serverContent);
+    setImageLists(serverImage);
   }, []);
-
   return (
     <>
       <Header />
@@ -41,22 +37,13 @@ const Content = ({
   );
 };
 
-// 여기 데이터로 먼저 API 호출 진행
-export async function getServerSideProps({ query }) {
-  let content, imageLists;
-  async function searchList(pageNo = 1, keyword) {
-    const data = await getServerSideSearchList(pageNo, keyword);
-    content = data[0];
-  }
-
-  async function imageList(pageNo = 1, contentId) {
-    const data = await getServerSideImageList(pageNo, contentId);
-    imageLists = data;
-  }
-  await searchList(1, query.keyword);
-  await imageList(1, query.id);
-
-  return { props: { content, imageLists } };
+export async function getServerSideProps(context) {
+  const { id, keyword } = context.query;
+  const image = await getServerSideImageList(1, id);
+  const content = await getServerSideSearchList(1, keyword);
+  return {
+    props: { serverContent: content[0], serverImage: image },
+  };
 }
 
 const Body = styled.div`
