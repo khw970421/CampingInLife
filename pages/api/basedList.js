@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     .map(([key, value]) => `&${key}=${value}`)
     .join("");
   try {
-    result = await axios.get(`${getURL('basedList')}${queryStr}`);
+    result = await axios.get(`${getURL("basedList")}${queryStr}`);
     res.status(200).json(result.data);
   } catch (err) {
     res.status(500).json({ error: "failed to load data" });

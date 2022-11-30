@@ -47,7 +47,6 @@ const getServerSideSearchList = async (pageNo = 1, keyword = "화성") => {
       process.env.SERVICE_TYPE
     }&pageNo=${pageNo}&keyword=${encodeURI(keyword)}`
   );
-  console.log(unFilteredData);
   const filteredData = filtering(unFilteredData);
   return filteredData !== undefined ? filteredData : [];
 };
