@@ -1,35 +1,30 @@
-import { useState, useEffect } from "react";
 import {
   getServerSideSearchList,
   getServerSideImageList,
 } from "@/core/api/axios";
 import styled from "styled-components";
-
 import { Header, Footer, Slider, Intro, KakaoAPI } from "@/components/index.js";
-import { useRouter } from "next/router";
 
 const Content = ({ serverImage, serverContent }) => {
-  const [content, setContent] = useState([]);
-  const [imageLists, setImageLists] = useState([]);
-  useEffect(() => {
-    setContent(serverContent);
-    setImageLists(serverImage);
-  }, []);
   return (
     <>
       <Header />
       <Body id="backgroundLightGray">
         <Main>
-          <Title id="titleText">🏕️ {content?.facltNm}</Title>
-          {imageLists.length !== 0 && <Slider imgs={imageLists} width={40} />}
+          <Title id="titleText">🏕️ {serverContent?.facltNm}</Title>
+          {serverImage.length !== 0 && <Slider imgs={serverImage} width={40} />}
           <IntroContainer>
-            <Intro introText={content?.intro} />
+            <Intro introText={serverContent?.intro} />
           </IntroContainer>
           <Location>
             <div id="titleText">위치</div>
-            <div id="subText">{content?.addr1}</div>
+            <div id="subText">{serverContent?.addr1}</div>
           </Location>
-          <KakaoAPI long={content?.mapX} lati={content?.mapY} marginH={10} />
+          <KakaoAPI
+            long={serverContent?.mapX}
+            lati={serverContent?.mapY}
+            marginH={10}
+          />
         </Main>
       </Body>
       <Footer />
