@@ -60,4 +60,20 @@ npm test
 4. 상세 페이지 무한 슬라이더 구현 
 5. KakaoAPI로 상세 페이지 캠핑장 위치 출력
 
+## API Key 숨기기 
+### 메인페이지 - API Routing Response
+Client의 GPS의 유무가 확인된 후 API를 호출해야하므로 SSR로는 불가능하다. 
+이때 API Key를 숨기는 것은 API Routing을 통해 진행한다.
+[API Routing Response](https://nextjs.org/docs/api-routes/response-helpers)
+
+<img width="639" alt="image" src="https://user-images.githubusercontent.com/59253551/205036282-5b7da437-9134-4da4-bd38-b01f80747afd.png">
+
+
+### 상세페이지 - getServerSideProps 
+url에 따라 필요한 API 데이터를 미리 요청하기가 가능하므로 SSR이 가능하다. 
+이때 API Key를 숨기는 것은 getServerSideProps를 이용해 서버에서 API를 미리 요청하므로 Client에서는 
+해당 API url에서의 API Key를 숨길 수 있다. 
+
+<img width="640" alt="image" src="https://user-images.githubusercontent.com/59253551/205036538-dac7eebe-0a96-465a-aeab-e1c2ddce1da5.png">
+
 
