@@ -7,7 +7,7 @@ const returnTitle = (titleTag, searchKey = "") => {
   return "🏕️ " + titleCase[titleTag];
 };
 
-function getLocation(setData) {
+function getLocation(setData, gpsCheck) {
   if (navigator.geolocation) {
     // GPS를 지원하면
     navigator.geolocation.getCurrentPosition(
@@ -16,8 +16,10 @@ function getLocation(setData) {
           lati: position.coords.latitude,
           long: position.coords.longitude,
         });
+        gpsCheck.current = true;
       },
       function (error) {
+        gpsCheck.current = true;
         console.error(error);
       },
       {

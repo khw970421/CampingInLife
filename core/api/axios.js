@@ -8,9 +8,7 @@ const filteringUrl = (target) =>
   target?.data?.response?.body?.items?.item?.map(({ imageUrl }) => imageUrl);
 
 const getBasedList = async (pageNo = 1) => {
-  const unFilteredData = await axios.get(
-    `/api/basedList?${essentialParams}&pageNo=${pageNo}`
-  );
+  const unFilteredData = await axios.get(`/api/basedList?&pageNo=${pageNo}`);
   const filteredData = filtering(unFilteredData);
   return filteredData;
 };
@@ -20,7 +18,7 @@ const getLocationBasedList = async (
   { mapX = 127, mapY = 37, radius = 1000 }
 ) => {
   const unFilteredData = await axios.get(
-    `/api/locationBasedList?${essentialParams}&pageNo=${pageNo}&mapX=${mapX}&mapY=${mapY}&radius=${radius}`
+    `/api/locationBasedList?&pageNo=${pageNo}&mapX=${mapX}&mapY=${mapY}&radius=${radius}`
   );
   const filteredData = filtering(unFilteredData);
   return filteredData !== undefined ? filteredData : [];
@@ -28,7 +26,7 @@ const getLocationBasedList = async (
 
 const getSearchList = async (pageNo = 1, keyword = "화성") => {
   const unFilteredData = await axios.get(
-    `/api/searchList?${essentialParams}&pageNo=${pageNo}&keyword=${keyword}`
+    `/api/searchList?&pageNo=${pageNo}&keyword=${encodeURI(keyword)}`
   );
 
   const filteredData = filtering(unFilteredData);
@@ -37,7 +35,7 @@ const getSearchList = async (pageNo = 1, keyword = "화성") => {
 
 const getImageList = async (pageNo = 1, contentId = 3429) => {
   const unFilteredData = await axios.get(
-    `/api/imageList?${essentialParams}&pageNo=${pageNo}&contentId=${contentId}`
+    `/api/imageList?&pageNo=${pageNo}&contentId=${contentId}`
   );
   const filteredData = filteringUrl(unFilteredData) || [];
   return filteredData;
@@ -45,9 +43,9 @@ const getImageList = async (pageNo = 1, contentId = 3429) => {
 
 const getServerSideSearchList = async (pageNo = 1, keyword = "화성") => {
   const unFilteredData = await axios.get(
-    `http://api.visitkorea.or.kr/openapi/service/rest/GoCamping/searchList?${essentialParams}&pageNo=${pageNo}&keyword=${encodeURI(
-      keyword
-    )}`
+    `http://api.visitkorea.or.kr/openapi/service/rest/GoCamping/searchList?${essentialParams}&${
+      process.env.SERVICE_TYPE
+    }&pageNo=${pageNo}&keyword=${encodeURI(keyword)}`
   );
   const filteredData = filtering(unFilteredData);
   return filteredData !== undefined ? filteredData : [];
@@ -55,7 +53,7 @@ const getServerSideSearchList = async (pageNo = 1, keyword = "화성") => {
 
 const getServerSideImageList = async (pageNo = 1, contentId = 3429) => {
   const unFilteredData = await axios.get(
-    `http://api.visitkorea.or.kr/openapi/service/rest/GoCamping/imageList?${essentialParams}&pageNo=${pageNo}&contentId=${contentId}`
+    `http://api.visitkorea.or.kr/openapi/service/rest/GoCamping/imageList?${essentialParams}&${process.env.SERVICE_TYPE}&pageNo=${pageNo}&contentId=${contentId}`
   );
   const filteredData = filteringUrl(unFilteredData) || [];
   return filteredData;
