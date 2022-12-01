@@ -15,6 +15,7 @@ const nextConfig = {
   images: {
     domains: ["gocamping.or.kr"],
   },
+  reactStrictMode: false,
 };
 
 module.exports = nextConfig;

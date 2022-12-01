@@ -23,6 +23,7 @@ export default function Home() {
   const pageNo = useRef(1);
   const [gpsData, setGpsData] = useState({});
   const gpsRange = useRef(10000);
+  const gpsCheck = useRef(false);
 
   const [searchArr, setSearchArr] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -32,17 +33,14 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    getLocation(setGpsData);
+    getLocation(setGpsData, gpsCheck);
   }, []);
-
   useEffect(() => {
     // GPS Data 여부에 따라 API 분기 실행
-    if (Object.keys(gpsData).length !== 0) {
-      console.log("GPS 실행");
-      locationBasedList();
-    } else {
-      console.log("GPS 실행X");
+    if (Object.keys(gpsData).length === 0 && gpsCheck.current) {
       basedList();
+    } else if (Object.keys(gpsData).length !== 0 && gpsCheck.current) {
+      locationBasedList();
     }
   }, [gpsData]);
 
