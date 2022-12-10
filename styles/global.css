@@ -51,16 +51,6 @@ a {
   background-color: #f7f6fb;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: red;
-  }
-}
-
 @media (max-width: 700px) {
   #displayMax700 {
     display: none;
