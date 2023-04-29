@@ -12,8 +12,8 @@ export default function SelectBox({
   changeSelectBoxOption,
 }: SelectBoxProps) {
   return (
-    <select onChange={changeSelectBoxOption} value={optionsTitle}>
-      <option value={optionsTitle} disabled>
+    <select onChange={changeSelectBoxOption}>
+      <option value={optionsTitle} disabled selected>
         {optionsTitle}
       </option>
       {options.map((option) => (
