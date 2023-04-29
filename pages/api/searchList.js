@@ -4,8 +4,8 @@ let result;
 export default async function handler(req, res) {
   const { query } = req;
   const queryStr = Object.entries(query)
-    .map(([key, value]) => `&${key}=${value}`)
-    .join("");
+    .map(([key, value]) => `&${key}=${encodeURI(value)}`)
+    .join(""); 
   try {
     result = await axios.get(`${getURL("searchList")}${queryStr}`);
     res.status(200).json(result.data);
