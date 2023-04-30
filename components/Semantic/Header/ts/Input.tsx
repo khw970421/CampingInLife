@@ -23,6 +23,7 @@ interface InputContainerStyled extends UlStyled {
 }
 
 interface InputProps {
+  id: string;
   searchArr: SearchArrInner[];
   isSearching: boolean;
   changeInputValue: (event: React.ChangeEvent) => void;
@@ -52,6 +53,7 @@ export default memo(function Input({
   width = 20,
   height = 50,
   borderRadius = 20,
+  id,
   placeholder,
 }: InputProps) {
   let timer;
@@ -109,6 +111,7 @@ export default memo(function Input({
           <ImSearch />
         </ImSearchContainer>
         <InputTag
+          id={id}
           ref={inputRef}
           onChange={debounce}
           onBlur={clearSearchArr}
