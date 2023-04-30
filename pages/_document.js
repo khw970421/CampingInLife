@@ -5,6 +5,11 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <meta name="description"  content="Camping In Life is a site that provides information to visit nearby camping sites using gps."></meta>
+        <link rel="manifest" href="/icons/manifest.json" />
+        <meta name="msapplication-TileColor" content="#ffffff" />
+        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
+        <meta name="theme-color" content="#ffffff" />
         <link
           rel="apple-touch-icon"
           sizes="57x57"
@@ -74,10 +79,6 @@ export default function Document() {
           sizes="16x16"
           href="/icons/favicon-16x16.png"
         />
-        <link rel="manifest" href="/icons/manifest.json" />
-        <meta name="msapplication-TileColor" content="#ffffff" />
-        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
-        <meta name="theme-color" content="#ffffff" />
       </Head>
       <body>
         <Main />
