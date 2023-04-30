@@ -34,10 +34,6 @@ export default function Header({
 }: HeaderProps) {
   const router = useRouter();
   return (
-    <>
-      <Head>
-        <title>Camping In Life</title>
-      </Head>
     <HeaderContainer>
       <ImgContainer onClick={() => router.push("/")}>
         <label htmlFor="search">
@@ -58,7 +54,6 @@ export default function Header({
         <GiHamburgerMenu size="50" />
       </HamburgerContainer>
     </HeaderContainer>
-    </>
   );
 }
 
