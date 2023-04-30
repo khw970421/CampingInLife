@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Input from "@/components/Semantic/Header/ts/Input";
 import { useRouter } from "next/router";
-
+import Image from "next/image";
+import Head from 'next/head'
 interface SearchArrInner {
   facltNm: string;
   contentId: string;
@@ -33,12 +34,19 @@ export default function Header({
 }: HeaderProps) {
   const router = useRouter();
   return (
+    <>
+      <Head>
+        <title>Camping In Life</title>
+      </Head>
     <HeaderContainer>
       <ImgContainer onClick={() => router.push("/")}>
-        <Img src="/mainlogo.png"></Img>
+        <label htmlFor="search">
+          <Image src="/mainlogo.png" alt="main image" width={200} height={100} objectFit="contain"></Image>
+        </label>
       </ImgContainer>
       {isInputExist && (
         <Input
+          id="search"
           searchArr={searchArr}
           isSearching={isSearching}
           changeInputValue={changeInputValue}
@@ -50,6 +58,7 @@ export default function Header({
         <GiHamburgerMenu size="50" />
       </HamburgerContainer>
     </HeaderContainer>
+    </>
   );
 }
 
@@ -64,6 +73,8 @@ const ImgContainer = styled.div`
   min-width: 50px;
   margin: 20px;
   cursor: pointer;
+  height:100px;
+  overflow: hidden;
 `;
 
 const Img = styled.img`
