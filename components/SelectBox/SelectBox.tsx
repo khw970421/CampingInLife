@@ -1,26 +1,20 @@
 import React from "react";
 
 interface SelectBoxProps {
-  optionsTitle: string;
+  defaultValue: string;
+  placeholder: string;
   options: string[];
-  changeSelectBoxOption: (event: React.ChangeEvent) => void;
+  handleChangeOptions: (event: React.ChangeEvent) => void;
 }
 
 export default function SelectBox({
-  optionsTitle = "optionsTitle",
+  defaultValue,
+  placeholder,
   options = [],
-  changeSelectBoxOption,
+  handleChangeOptions,
 }: SelectBoxProps) {
-  return (
-    <select onChange={changeSelectBoxOption} value={optionsTitle}>
-      <option value={optionsTitle} disabled>
-        {optionsTitle}
-      </option>
-      {options.map((option) => (
-        <option value={option} key={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-  );
+  return <select defaultValue={defaultValue ? defaultValue : 'placeholder'} onChange={handleChangeOptions}>
+    {!defaultValue && <option value='placeholder' key={'placeholder'} disabled hidden>{placeholder}</option>}
+    {options.map(option => <option key={option} value={option}>{option}</option>)}
+  </select>
 }
