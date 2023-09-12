@@ -203,7 +203,7 @@ const TitleText = styled.div`
   min-width: 150px;
 `
 
-const Body = styled.div`
+const Body = styled.main`
   width: 100%;
   min-height: 100vh;
 `
