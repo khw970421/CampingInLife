@@ -31,6 +31,7 @@ export default function Picture({
         width={containerWidth}
         height={containerWidth}
         style={{ overflow: "hidden" }}
+        objectFit="cover"
       />
     </ImageWrap>
   );
