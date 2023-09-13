@@ -6,6 +6,10 @@
 .pnp.js
 .env
 
+# .yarn
+/.yarn/unplugged
+/.yarn/install-state.gz
+
 # testing
 /coverage
 
@@ -31,3 +35,5 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# .yarn
