@@ -31,7 +31,7 @@ const FooterContainer = styled.footer`
 `;
 
 const CopyRight = styled.p``
-const Information = styled.p`
+const Information = styled.div`
   display:flex;
   flex-direction:column;
 `
