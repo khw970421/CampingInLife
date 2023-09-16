@@ -11,7 +11,7 @@ import { returnTitle, getLocation } from '@/core/utils/mainPage'
 
 import {
   Header,
-  CampTile,
+  CampingBoxGroup,
   Button,
   SelectBox,
   Footer,
@@ -178,7 +178,7 @@ export default function Home() {
               />
             )}
           </Title>
-          <CampTile campData={campData} isHoverActive={!isSearching} />
+          <CampingBoxGroup campData={campData} isHoverActive={!isSearching} />
           {campData.length !== 0 ? (
             <Button
               id={'backgroundLightMainColor'}
