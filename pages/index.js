@@ -11,11 +11,11 @@ import { returnTitle, getLocation } from '@/core/utils/mainPage'
 
 import {
   Header,
-  CampTile,
+  CampingBoxGroup,
   Button,
   SelectBox,
   Footer,
-} from '@/components/index.js'
+} from '@/components/index.ts'
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState('nogps')
@@ -178,7 +178,7 @@ export default function Home() {
               />
             )}
           </Title>
-          <CampTile campData={campData} isHoverActive={!isSearching} />
+          <CampingBoxGroup campData={campData} isHoverActive={!isSearching} />
           {campData.length !== 0 ? (
             <Button
               id={'backgroundLightMainColor'}

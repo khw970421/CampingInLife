@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Camp from "./Camp";
+import Camp from "./CampingBox";
 import logo from "@/public/logo.png";
 
 interface CampDataObj {
@@ -91,19 +91,19 @@ interface ContainerStyled {
   containerWidth: number;
 }
 
-interface CampContainerProps extends ContainerStyled {
+interface CampingBoxGroupProps extends ContainerStyled {
   campData: CampDataObj[];
   isHoverActive: boolean;
   containerWidth: number;
   containerHeight: number;
 }
 
-export default function CampContainer({
+export default function CampingBoxGroup({
   campData = [],
   isHoverActive = true,
   containerWidth = 223,
   containerHeight = 300,
-}: CampContainerProps) {
+}: CampingBoxGroupProps) {
   const returnImageSrc = (url) => (url !== "" ? url : logo);
   return (
     <Container containerWidth={containerWidth}>

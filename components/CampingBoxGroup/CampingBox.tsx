@@ -3,21 +3,21 @@ import styled from "styled-components";
 import Picture from "./Picture";
 import { useRouter } from "next/router";
 
-interface CampContainerStyled {
+interface CampingBoxStyled {
   isHoverActive: boolean;
   containerWidth: number;
   containerHeight: number;
   borderRadius?: number;
 }
 
-interface CampProps extends CampContainerStyled {
+interface CampingBoxProps extends CampingBoxStyled {
   title: string;
   address: string;
   imgSrc: string;
   contentId: string;
 }
 
-export default function Camp({
+export default function CampingBox({
   title = "제목",
   address = "주소",
   imgSrc,
@@ -26,14 +26,14 @@ export default function Camp({
   containerWidth = 223,
   containerHeight = 300,
   borderRadius = 30,
-}: CampProps) {
+}: CampingBoxProps) {
   const router = useRouter();
   const clickCamp = () => {
     router.push(`/content/${contentId}?keyword=${title}`);
   };
 
   return (
-    <CampContainer
+    <CampingCard
       onClick={clickCamp}
       isHoverActive={isHoverActive}
       containerWidth={containerWidth}
@@ -52,11 +52,11 @@ export default function Camp({
         <Title>{title}</Title>
         <Address>{address}</Address>
       </TAContainer>
-    </CampContainer>
+    </CampingCard>
   );
 }
 
-const CampContainer = styled.div<CampContainerStyled>`
+const CampingCard = styled.div<CampingBoxStyled>`
   width: ${({ containerWidth }) => `${containerWidth}px`};
   height: ${({ containerHeight }) => `${containerHeight}px`};
   border: 1px solid;
@@ -70,7 +70,7 @@ const CampContainer = styled.div<CampContainerStyled>`
   :hover {
     transform: ${({ isHoverActive }) => isHoverActive && `translateY(-5px)`};
     box-shadow: ${({ isHoverActive }) =>
-      isHoverActive && ` 0px 10px 20px 2px rgba(0, 0, 0, 0.25)`};
+    isHoverActive && ` 0px 10px 20px 2px rgba(0, 0, 0, 0.25)`};
   }
 `;
 
