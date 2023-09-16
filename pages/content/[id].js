@@ -1,9 +1,9 @@
 import {
   getServerSideSearchList,
   getServerSideImageList,
-} from "@/core/api/axios";
-import styled from "styled-components";
-import { Header, Footer, Slider, Intro, KakaoAPI } from "@/components/index.js";
+} from '@/core/api/axios'
+import styled from 'styled-components'
+import { Header, Footer, Slider, Intro, KakaoAPI } from '@/components/index.ts'
 
 const Content = ({ serverImage, serverContent }) => {
   return (
@@ -29,22 +29,22 @@ const Content = ({ serverImage, serverContent }) => {
       </Body>
       <Footer />
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps(context) {
-  const { id, keyword } = context.query;
-  const image = await getServerSideImageList(1, id);
-  const content = await getServerSideSearchList(1, keyword);
+  const { id, keyword } = context.query
+  const image = await getServerSideImageList(1, id)
+  const content = await getServerSideSearchList(1, keyword)
   return {
     props: { serverContent: content[0], serverImage: image },
-  };
+  }
 }
 
 const Body = styled.div`
   width: 100%;
   min-height: 100vh;
-`;
+`
 
 const Main = styled.div`
   display: flex;
@@ -61,21 +61,21 @@ const Main = styled.div`
     width: calc(100vw - 22vw * 2);
     margin: 0vw 22vw;
   }
-`;
+`
 
 const Title = styled.div`
   width: 100%;
   margin: 10px 0px;
-`;
+`
 
 const IntroContainer = styled.div`
   width: 100%;
   margin: 10px 0px;
-`;
+`
 
 const Location = styled.div`
   width: 100%;
   margin: 10px 0px;
-`;
+`
 
-export default Content;
+export default Content
