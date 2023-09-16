@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { GiHamburgerMenu } from "react-icons/gi";
-import Input from "@/components/Semantic/Header/ts/Input";
+import Input from "@/components/Semantic/Header/Input";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Head from 'next/head'

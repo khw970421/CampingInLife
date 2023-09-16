@@ -15,7 +15,7 @@ import {
   Button,
   SelectBox,
   Footer,
-} from '@/components/index.js'
+} from '@/components/index.ts'
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState('nogps')
