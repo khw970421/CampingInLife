@@ -9,14 +9,14 @@ interface ContainerStyled {
 }
 
 interface CampingBoxGroupProps extends ContainerStyled {
-  CampingInfo: CampingInfo[];
+  campingInfo: CampingInfo[];
   isHoverActive: boolean;
   containerWidth?: number;
   containerHeight?: number;
 }
 
 export default function CampingBoxGroup({
-  CampingInfo = [],
+  campingInfo = [],
   isHoverActive = true,
   containerWidth = 223,
   containerHeight = 300,
@@ -24,7 +24,7 @@ export default function CampingBoxGroup({
   const returnImageSrc = (url) => (url !== "" ? url : logo);
   return (
     <Container containerWidth={containerWidth}>
-      {CampingInfo.map(({ facltNm, addr1, firstImageUrl, contentId }) => (
+      {campingInfo.map(({ facltNm, addr1, firstImageUrl, contentId }) => (
         <CampingBox
           key={contentId}
           title={facltNm}
