@@ -21,7 +21,7 @@ interface HeaderProps {
     facltNm?: string,
     contentId?: string
   ) => void;
-  clearSearchArr: () => void;
+  handleClearSearchData: () => void;
 }
 
 export default function Header({
@@ -29,7 +29,7 @@ export default function Header({
   searchArr = [],
   changeInputValue,
   checkSearchPressEnter,
-  clearSearchArr,
+  handleClearSearchData,
   isSearching,
 }: HeaderProps) {
   const router = useRouter();
@@ -47,7 +47,7 @@ export default function Header({
           isSearching={isSearching}
           changeInputValue={changeInputValue}
           checkSearchPressEnter={checkSearchPressEnter}
-          clearSearchArr={clearSearchArr}
+          handleClearSearchData={handleClearSearchData}
         ></Input>
       )}
       <HamburgerContainer>

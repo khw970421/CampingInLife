@@ -78,7 +78,7 @@ export default function Home() {
     []
   )
 
-  const clearSearchArr = useCallback(() => {
+  const handleClearSearchData = useCallback(() => {
     setSearchArr([])
     setIsSearching(false)
   }, [])
@@ -163,7 +163,7 @@ export default function Home() {
         searchArr={searchArr}
         changeInputValue={changeSearchValue}
         checkSearchPressEnter={checkSearchPressEnter}
-        clearSearchArr={clearSearchArr}
+        handleClearSearchData={handleClearSearchData}
         isSearching={isSearching}
       />
       <Body id="backgroundLightGray">
