@@ -87,7 +87,7 @@ export default function Home() {
   const changeSearchValue = useCallback(async ({ target }) => {
     if (target.value !== '') {
       pageNo.current = 1
-      const list = await getSearchList(target.value)
+      const list = await getSearchList(pageNo.current, target.value)
       const filterList = list.map(({ facltNm, contentId, mapX, mapY }) => ({
         facltNm,
         contentId,
