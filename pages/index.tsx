@@ -8,7 +8,7 @@ import {
   getSearchList,
 } from '@/core/api/axios'
 import { returnTitle, getLocation } from '@/core/utils/mainPage'
-import { TitleTag, CampingInfo, GpsData, SearchCamping } from '@/core/utils/types'
+import { TitleTag, CampingInfo, GpsData, SearchCamping } from '@/core/utils/types.d'
 import {
   Header,
   CampingBoxGroup,
@@ -121,7 +121,7 @@ export default function Home() {
   }
 
   // 더보기 기능
-  const clickBtn = () => {
+  const addCampingInfo = () => {
     pageNo.current++
 
     switch (titleTag) {
@@ -182,7 +182,7 @@ export default function Home() {
               height={60}
               marginH={20}
               btnText={'더보기'}
-              clickBtn={clickBtn}
+              clickBtn={addCampingInfo}
             ></Button>
           ) : (
             <div> 검색 결과가 없습니다. </div>

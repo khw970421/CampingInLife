@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import CampingBox from "./CampingBox";
 import logo from "@/public/logo.png";
-import { CampingInfo } from "@/core/utils/types";
+import { CampingInfo } from "@/core/utils/types.d";
 
 interface ContainerStyled {
   containerWidth?: number;

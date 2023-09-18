@@ -4,7 +4,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Input from "@/components/Semantic/Header/Input";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { SearchCamping } from "@/core/utils/types";
+import { SearchCamping } from "@/core/utils/types.d";
 
 
 interface HeaderProps {
