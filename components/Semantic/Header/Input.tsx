@@ -33,7 +33,7 @@ interface InputProps {
     facltNm?: string,
     contentId?: string
   ) => void;
-  clearSearchArr: () => void;
+  handleClearSearchData: () => void;
   width?: number;
   height?: number;
   borderRadius?: number;
@@ -49,7 +49,7 @@ export default memo(function Input({
   isSearching,
   changeInputValue,
   checkSearchPressEnter,
-  clearSearchArr,
+  handleClearSearchData,
   width = 20,
   height = 50,
   borderRadius = 20,
@@ -60,7 +60,7 @@ export default memo(function Input({
   const router = useRouter();
   const inputRef = useRef();
   const [idx, setIdx] = useState(-1);
-  const debounce = (e) => {
+  const handleDebounce = (e) => {
     if (timer) {
       clearTimeout(timer); // 0.5초 미만으로 입력이 주어질 경우 해당 timer를 clear(없앤다)한다.
     }
@@ -68,26 +68,20 @@ export default memo(function Input({
       changeInputValue(e);
     }, 500);
   };
-  function keyUp(e) {
-    if (searchArr.length !== 0) {
-      if (e.key === "ArrowDown") {
-        const nIdx = (idx + 1) % searchArr.length;
-        setIdx(nIdx);
-      } else if (e.key === "ArrowUp") {
-        const nIdx = (idx - 1) % searchArr.length;
-        setIdx(nIdx < 0 ? nIdx + searchArr.length : nIdx);
-      } else if (e.key === "Enter") {
-        if (idx === -1) {
-          checkSearchPressEnter(e, idx);
-        } else {
-          checkSearchPressEnter(
-            e,
-            idx,
-            searchArr[idx].facltNm,
-            searchArr[idx].contentId
-          );
-        }
-      }
+  function handleCheckKeyUp(e) {
+    if (e.key === "ArrowDown" && searchArr.length !== 0) {
+      const nIdx = (idx + 1) % searchArr.length;
+      setIdx(nIdx);
+    } else if (e.key === "ArrowUp" && searchArr.length !== 0) {
+      const nIdx = (idx - 1) % searchArr.length;
+      setIdx(nIdx < 0 ? nIdx + searchArr.length : nIdx);
+    } else if (e.key === "Enter") {
+      checkSearchPressEnter(
+        e,
+        idx,
+        searchArr[idx]?.facltNm,
+        searchArr[idx]?.contentId
+      );
     }
   }
 
@@ -113,11 +107,11 @@ export default memo(function Input({
         <InputTag
           id={id}
           ref={inputRef}
-          onChange={debounce}
-          onBlur={clearSearchArr}
+          onChange={handleDebounce}
+          onBlur={handleClearSearchData}
           width={width}
           height={height}
-          onKeyUp={keyUp}
+          onKeyUp={handleCheckKeyUp}
         ></InputTag>
         <LeftPadding borderRadius={borderRadius}></LeftPadding>
       </InputTagContainer>

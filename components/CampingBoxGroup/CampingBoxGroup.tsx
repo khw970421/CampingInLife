@@ -88,14 +88,14 @@ interface CampDataObj {
 }
 
 interface ContainerStyled {
-  containerWidth: number;
+  containerWidth?: number;
 }
 
 interface CampingBoxGroupProps extends ContainerStyled {
   campData: CampDataObj[];
   isHoverActive: boolean;
-  containerWidth: number;
-  containerHeight: number;
+  containerWidth?: number;
+  containerHeight?: number;
 }
 
 export default function CampingBoxGroup({

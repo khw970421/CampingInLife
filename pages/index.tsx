@@ -15,32 +15,34 @@ import {
   Button,
   SelectBox,
   Footer,
-} from '@/components/index.ts'
+} from '@/components/index'
+
+interface GpsData {
+  gpsRange: number
+  isGpsCheck: boolean
+  lati?: number
+  long?: number
+}
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState('nogps')
   const [campData, setCampData] = useState([])
   const pageNo = useRef(1)
-  const [gpsData, setGpsData] = useState({})
-  const gpsRange = useRef(10000)
-  const gpsCheck = useRef(false)
+  const [gpsData, setGpsData] = useState<GpsData>({ gpsRange: 10000, isGpsCheck: false })
 
   const [searchArr, setSearchArr] = useState([])
   const [isSearching, setIsSearching] = useState(false)
   const searchKey = useRef('')
 
-  const isMounted = useRef(false)
   const router = useRouter()
 
   useEffect(() => {
-    getLocation(setGpsData, gpsCheck)
+    getLocation(setGpsData)
   }, [])
+
   useEffect(() => {
-    // GPS Data 여부에 따라 API 분기 실행
-    if (Object.keys(gpsData).length === 0 && gpsCheck.current) {
-      basedList()
-    } else if (Object.keys(gpsData).length !== 0 && gpsCheck.current) {
-      locationBasedList()
+    if (gpsData.isGpsCheck) {
+      gpsData.lati && gpsData.long ? locationBasedList() : basedList()
     }
   }, [gpsData])
 
@@ -64,7 +66,7 @@ export default function Home() {
   }, [])
 
   const checkSearchPressEnter = useCallback(
-    ({ target, key }, idx, facltNm, contentId) => {
+    ({ target }, idx, facltNm, contentId) => {
       if (idx === -1) {
         searchList(1, target.value)
         setSearchArr([])
@@ -76,7 +78,7 @@ export default function Home() {
     []
   )
 
-  const clearSearchArr = useCallback(() => {
+  const handleClearSearchData = useCallback(() => {
     setSearchArr([])
     setIsSearching(false)
   }, [])
@@ -96,7 +98,7 @@ export default function Home() {
     const gpsInfo = {
       mapX: gpsData.long,
       mapY: gpsData.lati,
-      radius: gpsRange.current,
+      radius: gpsData.gpsRange,
     }
 
     const data = await getLocationBasedList(pageNo, gpsInfo)
@@ -148,7 +150,8 @@ export default function Home() {
 
   // GPS 범위 기능
   const handleChangeOptions = ({ target }) => {
-    gpsRange.current = parseInt(target.value) * 1000
+    const newGpsRange = parseInt(target.value) * 1000
+    setGpsData((data) => ({ ...data, gpsRange: newGpsRange }))
     pageNo.current = 1
     locationBasedList(pageNo.current)
   }
@@ -160,13 +163,13 @@ export default function Home() {
         searchArr={searchArr}
         changeInputValue={changeSearchValue}
         checkSearchPressEnter={checkSearchPressEnter}
-        clearSearchArr={clearSearchArr}
+        handleClearSearchData={handleClearSearchData}
         isSearching={isSearching}
       />
       <Body id="backgroundLightGray">
         <Main>
           <Title>
-            <TitleText width={15} height={30}>
+            <TitleText>
               {returnTitle(titleTag, searchKey.current)}
             </TitleText>
             {titleTag === 'gps' && (
