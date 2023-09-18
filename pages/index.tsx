@@ -29,48 +29,47 @@ export default function Home() {
 
   const router = useRouter()
 
-  // API 기능 : basedList
-  const basedList = useCallback(async (pageNo = 1) => {
-    const newCampingInfo = await getBasedList(pageNo)
-    setTitleTag('nogps')
-    // 요청받은 API는 없고 pageNo는 첫번째 페이지가 아닐때
-    if (!!newCampingInfo && pageNo !== 1) {
+  const updateCampingInfo = (campingInfo: CampingInfo[], newCampingInfo: CampingInfo[], pageNo: number) => {
+    if (!newCampingInfo) {
       alert('더보기 캠핑 목록이 없습니다.')
-    } else if (!newCampingInfo) setCampingInfo([...campingInfo, ...newCampingInfo])
+      return
+    }
+
+    const updatedCampingInfo = pageNo === 1 ? newCampingInfo : [...campingInfo, ...newCampingInfo]
+    setCampingInfo(updatedCampingInfo)
+  }
+
+  // API 기능 : basedList
+  const basedList = useCallback(async () => {
+    const newCampingInfo = await getBasedList(pageNo.current)
+    setTitleTag('nogps')
+
+    updateCampingInfo(campingInfo, newCampingInfo, pageNo.current)
   }, [campingInfo])
 
   // API 기능 : locationBasedList
-  const locationBasedList = useCallback(async (gpsData, pageNo = 1) => {
+  const locationBasedList = useCallback(async (gpsData) => {
     const gpsInfo = {
       mapX: gpsData.long,
       mapY: gpsData.lati,
       radius: gpsData.gpsRange,
     }
 
-    const data = await getLocationBasedList(pageNo, gpsInfo)
+    const newCampingInfo = await getLocationBasedList(pageNo.current, gpsInfo)
     setTitleTag('gps')
 
-    if (pageNo === 1) {
-      setCampingInfo(data)
-    } else if (data.length === 0 && pageNo !== 1) {
-      alert('더보기 캠핑 목록이 없습니다.')
-    } else setCampingInfo([...campingInfo, ...data])
+    updateCampingInfo(campingInfo, newCampingInfo, pageNo.current)
   }, [campingInfo])
 
   // API 기능 : searchList
-  const searchList = useCallback(async (pageNo, value) => {
-    const list = await getSearchList(pageNo, value)
+  const searchList = useCallback(async (value) => {
+    const newCampingInfo = await getSearchList(pageNo.current, value)
     setTitleTag('searchKey')
 
     searchKey.current = value
-    // Todo : 검색이 좀 더 빠를때 searchCamping 수정이 안된다. (useEffect로 처리할 필요 있다.)
     setSearchCamping([])
 
-    if (pageNo === 1) {
-      setCampingInfo(list)
-    } else if (list.length === 0 && pageNo !== 1) {
-      alert('더보기 캠핑 목록이 없습니다.')
-    } else setCampingInfo([...campingInfo, ...list])
+    updateCampingInfo(campingInfo, newCampingInfo, pageNo.current)
   }, [campingInfo])
 
   useEffect(() => {
@@ -86,7 +85,8 @@ export default function Home() {
   // Header 검색 기능
   const changeSearchValue = useCallback(async ({ target }) => {
     if (target.value !== '') {
-      const list = await getSearchList(1, target.value)
+      pageNo.current = 1
+      const list = await getSearchList(target.value)
       const filterList = list.map(({ facltNm, contentId, mapX, mapY }) => ({
         facltNm,
         contentId,
@@ -105,7 +105,8 @@ export default function Home() {
   const checkSearchPressEnter = useCallback(
     ({ target }, idx, facltNm, contentId) => {
       if (idx === -1) {
-        searchList(1, target.value)
+        pageNo.current = 1
+        searchList(target.value)
         setSearchCamping([])
         setIsSearching(false)
       } else {
@@ -126,13 +127,13 @@ export default function Home() {
 
     switch (titleTag) {
       case 'nogps':
-        basedList(pageNo.current)
+        basedList()
         break
       case 'gps':
-        locationBasedList(pageNo.current)
+        locationBasedList(gpsData)
         break
       case 'searchKey':
-        searchList(pageNo.current, searchKey.current)
+        searchList(searchKey.current)
         break
       default:
         alert(`더보기 기능에 문제가 발생했습니다.`)
@@ -145,7 +146,7 @@ export default function Home() {
     const newGpsRange = parseInt(target.value) * 1000
     setGpsData((data) => ({ ...data, gpsRange: newGpsRange }))
     pageNo.current = 1
-    locationBasedList(pageNo.current)
+    locationBasedList(gpsData)
   }
 
   return (
