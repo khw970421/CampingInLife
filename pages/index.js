@@ -21,26 +21,21 @@ export default function Home() {
   const [titleTag, setTitleTag] = useState('nogps')
   const [campData, setCampData] = useState([])
   const pageNo = useRef(1)
-  const [gpsData, setGpsData] = useState({})
-  const gpsRange = useRef(10000)
-  const gpsCheck = useRef(false)
+  const [gpsData, setGpsData] = useState({ gpsRange: 10000, isGpsCheck: false })
 
   const [searchArr, setSearchArr] = useState([])
   const [isSearching, setIsSearching] = useState(false)
   const searchKey = useRef('')
 
-  const isMounted = useRef(false)
   const router = useRouter()
 
   useEffect(() => {
-    getLocation(setGpsData, gpsCheck)
+    getLocation(setGpsData)
   }, [])
+
   useEffect(() => {
-    // GPS Data 여부에 따라 API 분기 실행
-    if (Object.keys(gpsData).length === 0 && gpsCheck.current) {
-      basedList()
-    } else if (Object.keys(gpsData).length !== 0 && gpsCheck.current) {
-      locationBasedList()
+    if (gpsData.isGpsCheck) {
+      gpsData.lati && gpsData.long ? locationBasedList() : basedList()
     }
   }, [gpsData])
 
@@ -96,7 +91,7 @@ export default function Home() {
     const gpsInfo = {
       mapX: gpsData.long,
       mapY: gpsData.lati,
-      radius: gpsRange.current,
+      radius: gpsData.gpsRange,
     }
 
     const data = await getLocationBasedList(pageNo, gpsInfo)
@@ -148,7 +143,8 @@ export default function Home() {
 
   // GPS 범위 기능
   const handleChangeOptions = ({ target }) => {
-    gpsRange.current = parseInt(target.value) * 1000
+    const newGpsRange = parseInt(target.value) * 1000
+    setGpsData((data) => ({ ...data, gpsRange: newGpsRange }))
     pageNo.current = 1
     locationBasedList(pageNo.current)
   }
