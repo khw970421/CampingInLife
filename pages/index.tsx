@@ -29,23 +29,25 @@ export default function Home() {
 
   const router = useRouter()
 
-  const updateCampingInfo = (campingInfo: CampingInfo[], newCampingInfo: CampingInfo[], pageNo: number) => {
+  const updateCampingInfo = useCallback((newCampingInfo: CampingInfo[], pageNo: number) => {
     if (!newCampingInfo) {
       alert('더보기 캠핑 목록이 없습니다.')
       return
     }
 
-    const updatedCampingInfo = pageNo === 1 ? newCampingInfo : [...campingInfo, ...newCampingInfo]
-    setCampingInfo(updatedCampingInfo)
-  }
+    setCampingInfo((campingInfo) => {
+      const updatedCampingInfo = pageNo === 1 ? newCampingInfo : [...campingInfo, ...newCampingInfo]
+      return updatedCampingInfo
+    })
+  }, [])
 
   // API 기능 : basedList
   const basedList = useCallback(async () => {
     const newCampingInfo = await getBasedList(pageNo.current)
     setTitleTag('nogps')
 
-    updateCampingInfo(campingInfo, newCampingInfo, pageNo.current)
-  }, [campingInfo])
+    updateCampingInfo(newCampingInfo, pageNo.current)
+  }, [updateCampingInfo])
 
   // API 기능 : locationBasedList
   const locationBasedList = useCallback(async (gpsData) => {
@@ -58,8 +60,8 @@ export default function Home() {
     const newCampingInfo = await getLocationBasedList(pageNo.current, gpsInfo)
     setTitleTag('gps')
 
-    updateCampingInfo(campingInfo, newCampingInfo, pageNo.current)
-  }, [campingInfo])
+    updateCampingInfo(newCampingInfo, pageNo.current)
+  }, [updateCampingInfo])
 
   // API 기능 : searchList
   const searchList = useCallback(async (value) => {
@@ -69,13 +71,12 @@ export default function Home() {
     searchKey.current = value
     setSearchCamping([])
 
-    updateCampingInfo(campingInfo, newCampingInfo, pageNo.current)
-  }, [campingInfo])
+    updateCampingInfo(newCampingInfo, pageNo.current)
+  }, [updateCampingInfo])
 
   useEffect(() => {
     getLocation(setGpsData)
   }, [])
-
   useEffect(() => {
     if (gpsData.isGpsCheck) {
       gpsData.lati && gpsData.long ? locationBasedList(gpsData) : basedList()
