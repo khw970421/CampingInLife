@@ -19,7 +19,7 @@ import {
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState<TitleTag>('nogps')
-  const [CampingInfo, setCampingInfo] = useState<CampingInfo[] | null>(null)
+  const [campingInfo, setCampingInfo] = useState<CampingInfo[] | null>(null)
   const [gpsData, setGpsData] = useState<GpsData>({ gpsRange: 10000, isGpsCheck: false })
   const pageNo = useRef(1)
 
@@ -29,15 +29,59 @@ export default function Home() {
 
   const router = useRouter()
 
+  // API 기능 : basedList
+  const basedList = useCallback(async (pageNo = 1) => {
+    const newCampingInfo = await getBasedList(pageNo)
+    setTitleTag('nogps')
+    // 요청받은 API는 없고 pageNo는 첫번째 페이지가 아닐때
+    if (!!newCampingInfo && pageNo !== 1) {
+      alert('더보기 캠핑 목록이 없습니다.')
+    } else if (!newCampingInfo) setCampingInfo([...campingInfo, ...newCampingInfo])
+  }, [campingInfo])
+
+  // API 기능 : locationBasedList
+  const locationBasedList = useCallback(async (gpsData, pageNo = 1) => {
+    const gpsInfo = {
+      mapX: gpsData.long,
+      mapY: gpsData.lati,
+      radius: gpsData.gpsRange,
+    }
+
+    const data = await getLocationBasedList(pageNo, gpsInfo)
+    setTitleTag('gps')
+
+    if (pageNo === 1) {
+      setCampingInfo(data)
+    } else if (data.length === 0 && pageNo !== 1) {
+      alert('더보기 캠핑 목록이 없습니다.')
+    } else setCampingInfo([...campingInfo, ...data])
+  }, [campingInfo])
+
+  // API 기능 : searchList
+  const searchList = useCallback(async (pageNo, value) => {
+    const list = await getSearchList(pageNo, value)
+    setTitleTag('searchKey')
+
+    searchKey.current = value
+    // Todo : 검색이 좀 더 빠를때 searchCamping 수정이 안된다. (useEffect로 처리할 필요 있다.)
+    setSearchCamping([])
+
+    if (pageNo === 1) {
+      setCampingInfo(list)
+    } else if (list.length === 0 && pageNo !== 1) {
+      alert('더보기 캠핑 목록이 없습니다.')
+    } else setCampingInfo([...campingInfo, ...list])
+  }, [campingInfo])
+
   useEffect(() => {
     getLocation(setGpsData)
   }, [])
 
   useEffect(() => {
     if (gpsData.isGpsCheck) {
-      gpsData.lati && gpsData.long ? locationBasedList() : basedList()
+      gpsData.lati && gpsData.long ? locationBasedList(gpsData) : basedList()
     }
-  }, [gpsData])
+  }, [gpsData, locationBasedList, basedList])
 
   // Header 검색 기능
   const changeSearchValue = useCallback(async ({ target }) => {
@@ -68,57 +112,13 @@ export default function Home() {
         router.push(`/content/${contentId}?keyword=${facltNm}`)
       }
     },
-    []
+    [router, searchList]
   )
 
   const handleClearSearchData = useCallback(() => {
     setSearchCamping([])
     setIsSearching(false)
   }, [])
-
-  // API 기능 : basedList
-  async function basedList(pageNo = 1) {
-    const data = await getBasedList(pageNo)
-    setTitleTag('nogps')
-    // 요청받은 API는 없고 pageNo는 첫번째 페이지가 아닐때
-    if (data?.length === 0 && pageNo !== 1) {
-      alert('더보기 캠핑 목록이 없습니다.')
-    } else if (data !== undefined) setCampingInfo([...CampingInfo, ...data])
-  }
-
-  // API 기능 : locationBasedList
-  async function locationBasedList(pageNo = 1) {
-    const gpsInfo = {
-      mapX: gpsData.long,
-      mapY: gpsData.lati,
-      radius: gpsData.gpsRange,
-    }
-
-    const data = await getLocationBasedList(pageNo, gpsInfo)
-    setTitleTag('gps')
-
-    if (pageNo === 1) {
-      setCampingInfo(data)
-    } else if (data.length === 0 && pageNo !== 1) {
-      alert('더보기 캠핑 목록이 없습니다.')
-    } else setCampingInfo([...CampingInfo, ...data])
-  }
-
-  // API 기능 : searchList
-  async function searchList(pageNo, value) {
-    const list = await getSearchList(pageNo, value)
-    setTitleTag('searchKey')
-
-    searchKey.current = value
-    // Todo : 검색이 좀 더 빠를때 searchCamping 수정이 안된다. (useEffect로 처리할 필요 있다.)
-    setSearchCamping([])
-
-    if (pageNo === 1) {
-      setCampingInfo(list)
-    } else if (list.length === 0 && pageNo !== 1) {
-      alert('더보기 캠핑 목록이 없습니다.')
-    } else setCampingInfo([...CampingInfo, ...list])
-  }
 
   // 더보기 기능
   const addCampingInfo = () => {
@@ -136,7 +136,6 @@ export default function Home() {
         break
       default:
         alert(`더보기 기능에 문제가 발생했습니다.`)
-        pageNo.current--
         break
     }
   }
@@ -174,8 +173,8 @@ export default function Home() {
               />
             )}
           </Title>
-          <CampingBoxGroup CampingInfo={CampingInfo || []} isHoverActive={!isSearching} />
-          {!!CampingInfo ? (
+          <CampingBoxGroup campingInfo={campingInfo || []} isHoverActive={!isSearching} />
+          {!!campingInfo ? (
             <Button
               id={'backgroundLightMainColor'}
               width={30}
