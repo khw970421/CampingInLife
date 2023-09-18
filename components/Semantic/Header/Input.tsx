@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, memo } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { ImSearch } from "react-icons/im";
-import { SearchCamping } from "@/core/utils/types";
+import { SearchCamping } from "@/core/utils/types.d";
 
 interface UlStyled {
   width: number;
