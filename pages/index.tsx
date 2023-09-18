@@ -15,13 +15,20 @@ import {
   Button,
   SelectBox,
   Footer,
-} from '@/components/index.ts'
+} from '@/components/index'
+
+interface GpsData {
+  gpsRange: number
+  isGpsCheck: boolean
+  lati?: number
+  long?: number
+}
 
 export default function Home() {
   const [titleTag, setTitleTag] = useState('nogps')
   const [campData, setCampData] = useState([])
   const pageNo = useRef(1)
-  const [gpsData, setGpsData] = useState({ gpsRange: 10000, isGpsCheck: false })
+  const [gpsData, setGpsData] = useState<GpsData>({ gpsRange: 10000, isGpsCheck: false })
 
   const [searchArr, setSearchArr] = useState([])
   const [isSearching, setIsSearching] = useState(false)
@@ -59,7 +66,7 @@ export default function Home() {
   }, [])
 
   const checkSearchPressEnter = useCallback(
-    ({ target, key }, idx, facltNm, contentId) => {
+    ({ target }, idx, facltNm, contentId) => {
       if (idx === -1) {
         searchList(1, target.value)
         setSearchArr([])
@@ -162,7 +169,7 @@ export default function Home() {
       <Body id="backgroundLightGray">
         <Main>
           <Title>
-            <TitleText width={15} height={30}>
+            <TitleText>
               {returnTitle(titleTag, searchKey.current)}
             </TitleText>
             {titleTag === 'gps' && (

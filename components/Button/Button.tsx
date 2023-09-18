@@ -4,18 +4,17 @@ import styled from "styled-components";
 interface BtnStyled {
   width: number;
   height: number;
-  borderRadius: number;
-  fSize: number;
-  marginH: number;
-  marginV: number;
-  paddingH: number;
-  paddingV: number;
+  borderRadius?: number;
+  fSize?: number;
+  marginH?: number;
+  marginV?: number;
+  paddingH?: number;
+  paddingV?: number;
 }
-
 interface BtnProps extends BtnStyled {
   id: string;
   clickBtn: () => void;
-  btnText: string;
+  btnText: string
 }
 
 export default function Button({
