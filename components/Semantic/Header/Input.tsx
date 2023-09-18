@@ -2,11 +2,7 @@ import { useRef, useEffect, useState, memo } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { ImSearch } from "react-icons/im";
-
-interface SearchArrInner {
-  facltNm: string;
-  contentId: string;
-}
+import { SearchCamping } from "@/core/utils/types";
 
 interface UlStyled {
   width: number;
@@ -24,7 +20,7 @@ interface InputContainerStyled extends UlStyled {
 
 interface InputProps {
   id: string;
-  searchArr: SearchArrInner[];
+  searchCamping: SearchCamping[];
   isSearching: boolean;
   changeInputValue: (event: React.ChangeEvent) => void;
   checkSearchPressEnter: (
@@ -45,7 +41,7 @@ interface LeftPaddingStyled {
 }
 
 export default memo(function Input({
-  searchArr = [],
+  searchCamping,
   isSearching,
   changeInputValue,
   checkSearchPressEnter,
@@ -69,18 +65,18 @@ export default memo(function Input({
     }, 500);
   };
   function handleCheckKeyUp(e) {
-    if (e.key === "ArrowDown" && searchArr.length !== 0) {
-      const nIdx = (idx + 1) % searchArr.length;
+    if (e.key === "ArrowDown" && searchCamping.length !== 0) {
+      const nIdx = (idx + 1) % searchCamping.length;
       setIdx(nIdx);
-    } else if (e.key === "ArrowUp" && searchArr.length !== 0) {
-      const nIdx = (idx - 1) % searchArr.length;
-      setIdx(nIdx < 0 ? nIdx + searchArr.length : nIdx);
+    } else if (e.key === "ArrowUp" && searchCamping.length !== 0) {
+      const nIdx = (idx - 1) % searchCamping.length;
+      setIdx(nIdx < 0 ? nIdx + searchCamping.length : nIdx);
     } else if (e.key === "Enter") {
       checkSearchPressEnter(
         e,
         idx,
-        searchArr[idx]?.facltNm,
-        searchArr[idx]?.contentId
+        searchCamping[idx]?.facltNm,
+        searchCamping[idx]?.contentId
       );
     }
   }
@@ -91,7 +87,7 @@ export default memo(function Input({
 
   useEffect(() => {
     setIdx(-1);
-  }, [searchArr]);
+  }, [searchCamping]);
 
   return (
     <InputContainer
@@ -116,9 +112,9 @@ export default memo(function Input({
         <LeftPadding borderRadius={borderRadius}></LeftPadding>
       </InputTagContainer>
       {isSearching &&
-        (searchArr.length !== 0 ? (
+        (!!searchCamping ? (
           <Ul width={width} height={height} borderRadius={borderRadius}>
-            {searchArr.map(({ facltNm, contentId }, liIdx) => {
+            {searchCamping.map(({ facltNm, contentId }, liIdx) => {
               return (
                 <Li
                   key={contentId}

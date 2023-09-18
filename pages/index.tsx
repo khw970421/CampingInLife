@@ -1,14 +1,14 @@
-import styled from 'styled-components'
 import { useEffect, useState, useRef, useCallback } from 'react'
+import { useRouter } from 'next/router'
+import styled from 'styled-components'
+
 import {
   getBasedList,
   getLocationBasedList,
   getSearchList,
 } from '@/core/api/axios'
-import { useRouter } from 'next/router'
-
 import { returnTitle, getLocation } from '@/core/utils/mainPage'
-
+import { TitleTag, CampingInfo, GpsData, SearchCamping } from '@/core/utils/types'
 import {
   Header,
   CampingBoxGroup,
@@ -17,20 +17,13 @@ import {
   Footer,
 } from '@/components/index'
 
-interface GpsData {
-  gpsRange: number
-  isGpsCheck: boolean
-  lati?: number
-  long?: number
-}
-
 export default function Home() {
-  const [titleTag, setTitleTag] = useState('nogps')
-  const [campData, setCampData] = useState([])
-  const pageNo = useRef(1)
+  const [titleTag, setTitleTag] = useState<TitleTag>('nogps')
+  const [CampingInfo, setCampingInfo] = useState<CampingInfo[] | null>(null)
   const [gpsData, setGpsData] = useState<GpsData>({ gpsRange: 10000, isGpsCheck: false })
+  const pageNo = useRef(1)
 
-  const [searchArr, setSearchArr] = useState([])
+  const [searchCamping, setSearchCamping] = useState<SearchCamping[] | null>(null)
   const [isSearching, setIsSearching] = useState(false)
   const searchKey = useRef('')
 
@@ -58,10 +51,10 @@ export default function Home() {
       }))
 
       setIsSearching(true)
-      setSearchArr(filterList)
+      setSearchCamping(filterList)
     } else {
       setIsSearching(false)
-      setSearchArr([])
+      setSearchCamping([])
     }
   }, [])
 
@@ -69,7 +62,7 @@ export default function Home() {
     ({ target }, idx, facltNm, contentId) => {
       if (idx === -1) {
         searchList(1, target.value)
-        setSearchArr([])
+        setSearchCamping([])
         setIsSearching(false)
       } else {
         router.push(`/content/${contentId}?keyword=${facltNm}`)
@@ -79,7 +72,7 @@ export default function Home() {
   )
 
   const handleClearSearchData = useCallback(() => {
-    setSearchArr([])
+    setSearchCamping([])
     setIsSearching(false)
   }, [])
 
@@ -90,7 +83,7 @@ export default function Home() {
     // 요청받은 API는 없고 pageNo는 첫번째 페이지가 아닐때
     if (data?.length === 0 && pageNo !== 1) {
       alert('더보기 캠핑 목록이 없습니다.')
-    } else if (data !== undefined) setCampData([...campData, ...data])
+    } else if (data !== undefined) setCampingInfo([...CampingInfo, ...data])
   }
 
   // API 기능 : locationBasedList
@@ -105,10 +98,10 @@ export default function Home() {
     setTitleTag('gps')
 
     if (pageNo === 1) {
-      setCampData(data)
+      setCampingInfo(data)
     } else if (data.length === 0 && pageNo !== 1) {
       alert('더보기 캠핑 목록이 없습니다.')
-    } else setCampData([...campData, ...data])
+    } else setCampingInfo([...CampingInfo, ...data])
   }
 
   // API 기능 : searchList
@@ -117,14 +110,14 @@ export default function Home() {
     setTitleTag('searchKey')
 
     searchKey.current = value
-    // Todo : 검색이 좀 더 빠를때 searchArr 수정이 안된다. (useEffect로 처리할 필요 있다.)
-    setSearchArr([])
+    // Todo : 검색이 좀 더 빠를때 searchCamping 수정이 안된다. (useEffect로 처리할 필요 있다.)
+    setSearchCamping([])
 
     if (pageNo === 1) {
-      setCampData(list)
+      setCampingInfo(list)
     } else if (list.length === 0 && pageNo !== 1) {
       alert('더보기 캠핑 목록이 없습니다.')
-    } else setCampData([...campData, ...list])
+    } else setCampingInfo([...CampingInfo, ...list])
   }
 
   // 더보기 기능
@@ -160,7 +153,7 @@ export default function Home() {
     <>
       <Header
         isInputExist={true}
-        searchArr={searchArr}
+        searchCamping={searchCamping}
         changeInputValue={changeSearchValue}
         checkSearchPressEnter={checkSearchPressEnter}
         handleClearSearchData={handleClearSearchData}
@@ -181,8 +174,8 @@ export default function Home() {
               />
             )}
           </Title>
-          <CampingBoxGroup campData={campData} isHoverActive={!isSearching} />
-          {campData.length !== 0 ? (
+          <CampingBoxGroup CampingInfo={CampingInfo || []} isHoverActive={!isSearching} />
+          {!!CampingInfo ? (
             <Button
               id={'backgroundLightMainColor'}
               width={30}
