@@ -4,15 +4,12 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Input from "@/components/Semantic/Header/Input";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import Head from 'next/head'
-interface SearchArrInner {
-  facltNm: string;
-  contentId: string;
-}
+import { SearchCamping } from "@/core/utils/types";
+
 
 interface HeaderProps {
   isInputExist: boolean;
-  searchArr: SearchArrInner[];
+  searchCamping: SearchCamping[];
   isSearching: boolean;
   changeInputValue: (event: React.ChangeEvent) => void;
   checkSearchPressEnter: (
@@ -26,7 +23,7 @@ interface HeaderProps {
 
 export default function Header({
   isInputExist = false,
-  searchArr = [],
+  searchCamping,
   changeInputValue,
   checkSearchPressEnter,
   handleClearSearchData,
@@ -43,7 +40,7 @@ export default function Header({
       {isInputExist && (
         <Input
           id="search"
-          searchArr={searchArr}
+          searchCamping={searchCamping}
           isSearching={isSearching}
           changeInputValue={changeInputValue}
           checkSearchPressEnter={checkSearchPressEnter}
