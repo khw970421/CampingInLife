@@ -8,7 +8,7 @@ import { Header, Footer, Slider, Intro, KakaoAPI } from '@/components/index.ts'
 const Content = ({ serverImage, serverContent }) => {
   return (
     <>
-      <Header />
+      <Header isPossibleSearch={false} />
       <Body id="backgroundLightGray">
         <Main>
           <Title id="titleText">🏕️ {serverContent?.facltNm}</Title>
