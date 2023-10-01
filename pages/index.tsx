@@ -160,7 +160,7 @@ export default function Home() {
         handleClearSearchData={handleClearSearchData}
         isSearching={isSearching}
       />
-      <Body id="backgroundLightGray">
+      <Body className="background-light-gray">
         <Main>
           <Title>
             <TitleText>
