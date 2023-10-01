@@ -59,10 +59,9 @@ a {
   background-color: #f7f6fb;
 }
 
-@media (max-width: 700px) {
-  #displayMax700 {
-    display: none;
-  }
+#campingSearchInputWrapper{
+  width:60%;
+  padding: 0 20%;
 }
 
 .title-text {
@@ -94,4 +93,21 @@ a {
   top:0px;
   left:0px;
   opacity:0.6
+}
+
+@media (max-width: 1023px) {
+  #campingSearchInputWrapper{
+    width:80%;
+    padding: 0 10%;
+  }
+}
+
+@media (max-width: 639px) {
+  #campingSearchInputWrapper{
+    width:90%;
+    padding: 0 5%;
+  }
+  #displayMax700 {
+    display: none;
+  }
 }

@@ -75,7 +75,7 @@ export default memo(function Input({
   }, [searchCamping]);
 
   return (
-    <InputWrapper className="z-index-5">
+    <InputWrapper id="campingSearchInputWrapper" className="z-index-5">
       <Button id="searchCloseBtn" btnText={<IoMdClose size="50" />} clickBtn={closeSearchBar} />
       <InputTagContainer>
         <ImSearchContainer>
@@ -111,9 +111,7 @@ const InputWrapper = styled.div`
   flex-direction:column;
   align-items:center;
 
-  width:60%;
   height:100vh;
-  padding: 0 20%;
   
   position:absolute;
   top:0;
@@ -124,7 +122,7 @@ const InputWrapper = styled.div`
 const InputTagContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 60%;
+  width: 80%;
   position:relative;
 `;
 
@@ -148,7 +146,7 @@ const InputTag = styled.input`
 `;
 
 const Ul = styled.ul`
-  width: 60%;
+  width: 80%;
   padding:0px;
 `;
 
