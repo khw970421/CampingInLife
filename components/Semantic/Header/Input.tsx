@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import { ImSearch } from "react-icons/im";
 import { SearchCamping } from "@/core/utils/types.d";
+import Button from "@/components/Button/Button";
 
 interface UlStyled {
   width: number;
@@ -12,10 +13,6 @@ interface UlStyled {
 
 interface LiStyled extends UlStyled {
   isFocus?: boolean;
-}
-
-interface InputContainerStyled extends UlStyled {
-  isSearching: boolean;
 }
 
 interface InputProps {
@@ -30,14 +27,11 @@ interface InputProps {
     contentId?: string
   ) => void;
   handleClearSearchData: () => void;
+  closeSearchBar: () => void;
   width?: number;
   height?: number;
   borderRadius?: number;
   placeholder?: string;
-}
-
-interface LeftPaddingStyled {
-  borderRadius: number;
 }
 
 export default memo(function Input({
@@ -50,12 +44,14 @@ export default memo(function Input({
   height = 50,
   borderRadius = 20,
   id,
+  closeSearchBar,
   placeholder,
 }: InputProps) {
   let timer;
   const router = useRouter();
   const inputRef = useRef();
   const [idx, setIdx] = useState(-1);
+
   const handleDebounce = (e) => {
     if (timer) {
       clearTimeout(timer); // 0.5초 미만으로 입력이 주어질 경우 해당 timer를 clear(없앤다)한다.
@@ -78,11 +74,13 @@ export default memo(function Input({
         searchCamping[idx]?.facltNm,
         searchCamping[idx]?.contentId
       );
+      closeSearchBar()
     }
   }
 
   const clickSearch = ({ contentId, facltNm }) => {
     router.push(`/content/${contentId}?keyword=${facltNm}`);
+    closeSearchBar()
   };
 
   useEffect(() => {
@@ -90,12 +88,8 @@ export default memo(function Input({
   }, [searchCamping]);
 
   return (
-    <InputContainer
-      width={width}
-      height={height}
-      borderRadius={borderRadius}
-      isSearching={isSearching}
-    >
+    <InputWrapper>
+      <Button btnText="X" clickBtn={closeSearchBar} id={"searchCloseBtn"} width={5} paddingH={0.5} paddingV={0.5} />
       <InputTagContainer>
         <ImSearchContainer>
           <ImSearch />
@@ -109,94 +103,67 @@ export default memo(function Input({
           height={height}
           onKeyUp={handleCheckKeyUp}
         ></InputTag>
-        <LeftPadding borderRadius={borderRadius}></LeftPadding>
       </InputTagContainer>
-      {isSearching &&
-        (!!searchCamping ? (
-          <Ul width={width} height={height} borderRadius={borderRadius}>
-            {searchCamping.map(({ facltNm, contentId }, liIdx) => {
-              return (
-                <Li
-                  key={contentId}
-                  onMouseDown={() => clickSearch({ contentId, facltNm })}
-                  width={width}
-                  height={height}
-                  isFocus={idx == liIdx}
-                >
-                  {facltNm}
-                </Li>
-              );
-            })}
+      <Ul width={width} height={height} borderRadius={borderRadius}>
+        {searchCamping?.map(({ facltNm, contentId }, liIdx) => {
+          return (
             <Li
-              id="backgroundWhite"
+              key={contentId}
+              onMouseDown={() => clickSearch({ contentId, facltNm })}
               width={width}
-              height={5}
-              borderRadius={borderRadius}
-            ></Li>
-          </Ul>
-        ) : (
-          <Ul width={width} height={height} borderRadius={borderRadius}>
-            <Li id="backgroundWhite" width={width} height={height}>
-              검색결과 없음
+              height={height}
+              isFocus={idx == liIdx}
+            >
+              {facltNm}
             </Li>
-            <Li
-              id="backgroundWhite"
-              width={width}
-              height={5}
-              borderRadius={borderRadius}
-            ></Li>
-          </Ul>
-        ))}
-    </InputContainer>
+          );
+        })}
+        <Li
+          width={width}
+          height={5}
+          borderRadius={borderRadius}
+        ></Li>
+      </Ul>
+    </InputWrapper>
   );
 });
 
-const InputContainer = styled.div<InputContainerStyled>`
-  box-sizing: border-box;
-  position: relative;
+const InputWrapper = styled.div`
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: ${({ borderRadius, isSearching }) =>
-    isSearching
-      ? ` ${borderRadius}px ${borderRadius}px 0px 0px`
-      : `${borderRadius}px`};
-  border: 1px solid;
-
-  width: ${({ width }) => `${width + 5}vw`};
-  height: auto;
-  min-width: 200px;
-
-  z-index: 10;
-  position: relative;
-`;
-
-const LeftPadding = styled.div<LeftPaddingStyled>`
-  width: ${({ borderRadius }) => `${borderRadius}px`};
-  height: ${({ borderRadius }) => `${borderRadius}px`};
-`;
-
-const ImSearchContainer = styled.div`
-  position: relative;
-  left: 10px;
-  padding: 0px 10px 0px 0px;
-`;
+  width:60%;
+  height:100vh;
+  padding: 0 20%;
+  
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:50;
+  background-color:white;
+  `
 
 const InputTagContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 60%;
+  position:relative;
+`;
+
+const ImSearchContainer = styled.div`
+  position: absolute;
+  left: 10px;
+  padding: 0px 10px 0px 0px;
 `;
 
 const InputTag = styled.input`
   border: 0px;
-
-  padding: 0px 10px;
   width: 100%;
+  border-radius: 999px;
+  border: 1px solid;
   height: ${({ height }) => `${height}px`};
+  padding: 0 2rem;
 
   :focus {
     outline: none;
@@ -204,36 +171,19 @@ const InputTag = styled.input`
 `;
 
 const Ul = styled.ul<UlStyled>`
-  box-sizing: border-box;
-  position: absolute;
-  top: ${({ height }) => `${height}px`};
-
-  padding: 0px;
-  margin: 0px;
-  min-width: 200px;
-  width: ${({ width }) => `${width + 5}vw`};
-
-  border-radius: ${({ borderRadius }) =>
-    `0px 0px ${borderRadius}px ${borderRadius}px`};
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-left-width: 1px;
-  border-left-style: solid;
-  border-right-width: 1px;
-  border-right-style: solid;
+  width: 60%;
+  padding:0px;
 `;
 
 const Li = styled.li<LiStyled>`
-  box-sizing: border-box;
   list-style: none;
-  padding: 10px;
+  box-sizing: border-box;
   font-size: 1em;
   background: ${({ isFocus }) => (isFocus ? "#d9d9d9" : "#fff")};
   cursor: pointer;
-  border-radius: ${({ borderRadius = 0 }) =>
-    `0px 0px ${borderRadius}px ${borderRadius}px`};
+  padding: 0.5rem 1rem;
 
-  width: ${({ width }) => `calc(${width + 5}vw - 2px)`};
-  min-width: 198px;
-  height: ${({ height }) => `${height}px`};
+  :hover{
+    background:#d9d9d9
+  }
 `;
