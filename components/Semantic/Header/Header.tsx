@@ -54,7 +54,6 @@ export default function Header({
 
       {isOpenSearchBar && (
         <Input
-          id="search"
           searchCamping={searchCamping}
           isSearching={isSearching}
           changeInputValue={changeInputValue}
