@@ -2,21 +2,15 @@ import { useRef, useEffect, useState, memo } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { ImSearch } from "react-icons/im";
+import { IoMdClose } from "react-icons/io";
 import { SearchCamping } from "@/core/utils/types.d";
 import Button from "@/components/Button/Button";
 
-interface UlStyled {
-  width: number;
-  height: number;
-  borderRadius?: number;
-}
-
-interface LiStyled extends UlStyled {
-  isFocus?: boolean;
+interface LiStyled {
+  isFocus: boolean;
 }
 
 interface InputProps {
-  id: string;
   searchCamping: SearchCamping[];
   isSearching: boolean;
   changeInputValue: (event: React.ChangeEvent) => void;
@@ -28,9 +22,6 @@ interface InputProps {
   ) => void;
   handleClearSearchData: () => void;
   closeSearchBar: () => void;
-  width?: number;
-  height?: number;
-  borderRadius?: number;
   placeholder?: string;
 }
 
@@ -40,10 +31,6 @@ export default memo(function Input({
   changeInputValue,
   checkSearchPressEnter,
   handleClearSearchData,
-  width = 20,
-  height = 50,
-  borderRadius = 20,
-  id,
   closeSearchBar,
   placeholder,
 }: InputProps) {
@@ -88,41 +75,32 @@ export default memo(function Input({
   }, [searchCamping]);
 
   return (
-    <InputWrapper>
-      <Button btnText="X" clickBtn={closeSearchBar} id={"searchCloseBtn"} width={5} paddingH={0.5} paddingV={0.5} />
+    <InputWrapper className="z-index-5">
+      <Button id="searchCloseBtn" btnText={<IoMdClose size="50" />} clickBtn={closeSearchBar} />
       <InputTagContainer>
         <ImSearchContainer>
           <ImSearch />
         </ImSearchContainer>
         <InputTag
-          id={id}
           ref={inputRef}
           onChange={handleDebounce}
           onBlur={handleClearSearchData}
-          width={width}
-          height={height}
           onKeyUp={handleCheckKeyUp}
+          placeholder={placeholder}
         ></InputTag>
       </InputTagContainer>
-      <Ul width={width} height={height} borderRadius={borderRadius}>
+      <Ul>
         {searchCamping?.map(({ facltNm, contentId }, liIdx) => {
           return (
             <Li
               key={contentId}
               onMouseDown={() => clickSearch({ contentId, facltNm })}
-              width={width}
-              height={height}
               isFocus={idx == liIdx}
             >
               {facltNm}
             </Li>
           );
         })}
-        <Li
-          width={width}
-          height={5}
-          borderRadius={borderRadius}
-        ></Li>
       </Ul>
     </InputWrapper>
   );
@@ -140,7 +118,6 @@ const InputWrapper = styled.div`
   position:absolute;
   top:0;
   left:0;
-  z-index:50;
   background-color:white;
   `
 
@@ -158,19 +135,19 @@ const ImSearchContainer = styled.div`
 `;
 
 const InputTag = styled.input`
-  border: 0px;
   width: 100%;
   border-radius: 999px;
-  border: 1px solid;
-  height: ${({ height }) => `${height}px`};
+  height: 3rem;
   padding: 0 2rem;
+  border: 0px;
+  border: 1px solid;
 
   :focus {
     outline: none;
   }
 `;
 
-const Ul = styled.ul<UlStyled>`
+const Ul = styled.ul`
   width: 60%;
   padding:0px;
 `;
@@ -180,8 +157,8 @@ const Li = styled.li<LiStyled>`
   box-sizing: border-box;
   font-size: 1em;
   background: ${({ isFocus }) => (isFocus ? "#d9d9d9" : "#fff")};
-  cursor: pointer;
   padding: 0.5rem 1rem;
+  cursor: pointer;
 
   :hover{
     background:#d9d9d9
