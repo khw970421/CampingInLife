@@ -15,6 +15,14 @@ a {
   box-sizing: border-box;
 } */
 
+.z-index-5{
+  z-index:5
+}
+
+.z-index-10{
+  z-index:10
+}
+
 .main-color {
   color: #8bc53f;
 }
@@ -51,10 +59,9 @@ a {
   background-color: #f7f6fb;
 }
 
-@media (max-width: 700px) {
-  #displayMax700 {
-    display: none;
-  }
+#campingSearchInputWrapper{
+  width:60%;
+  padding: 0 20%;
 }
 
 .title-text {
@@ -67,6 +74,40 @@ a {
   font-size: 0.8rem;
 }
 
-#searchCloseBtn{
-  align-self:flex-end
+#searchCloseBtn {
+  align-self:flex-end;
+  background:transparent;
+  color:gray;
+  cursor:pointer;
+  position:relative;
+  border:0px;
+}
+
+#searchCloseBtn:hover::after{
+  content:"";
+  width: 100%;
+  aspect-ratio : 1 / 1;
+  border-radius:50%;
+  background-color:#f6f6f6;
+  position: absolute;
+  top:0px;
+  left:0px;
+  opacity:0.6
+}
+
+@media (max-width: 1023px) {
+  #campingSearchInputWrapper{
+    width:80%;
+    padding: 0 10%;
+  }
+}
+
+@media (max-width: 639px) {
+  #campingSearchInputWrapper{
+    width:90%;
+    padding: 0 5%;
+  }
+  #displayMax700 {
+    display: none;
+  }
 }
