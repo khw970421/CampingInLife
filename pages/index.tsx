@@ -160,7 +160,7 @@ export default function Home() {
         handleClearSearchData={handleClearSearchData}
         isSearching={isSearching}
       />
-      <Body id="backgroundLightGray">
+      <Body className="background-light-gray">
         <Main>
           <Title>
             <TitleText>
@@ -178,7 +178,8 @@ export default function Home() {
           <CampingBoxGroup campingInfo={campingInfo || []} isHoverActive={!isSearching} />
           {!!campingInfo ? (
             <Button
-              id={'backgroundLightMainColor'}
+              id={'campingInfoAddBtn'}
+              className={'background_light_main_color'}
               width={10}
               marginH={2}
               paddingH={2}

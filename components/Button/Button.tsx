@@ -12,12 +12,14 @@ interface BtnStyled {
 }
 interface BtnProps extends BtnStyled {
   id: string;
+  className?: string;
   clickBtn: () => void;
   btnText: string
 }
 
 export default function Button({
   id,
+  className,
   clickBtn,
   btnText,
   width,
@@ -31,6 +33,7 @@ export default function Button({
   return (
     <Btn
       id={id}
+      className={className}
       onClick={clickBtn}
       width={width}
       borderRadius={borderRadius}
