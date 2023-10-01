@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 interface BtnStyled {
   width: number;
-  height: number;
   borderRadius?: number;
   fSize?: number;
   marginH?: number;
@@ -22,7 +21,6 @@ export default function Button({
   clickBtn,
   btnText,
   width,
-  height,
   borderRadius = 20,
   fSize = 1,
   marginH = 0,
@@ -35,7 +33,6 @@ export default function Button({
       id={id}
       onClick={clickBtn}
       width={width}
-      height={height}
       borderRadius={borderRadius}
       fSize={fSize}
       marginH={marginH}
@@ -49,10 +46,9 @@ export default function Button({
 }
 
 const Btn = styled.button<BtnStyled>`
-  width: ${({ width }) => `${width}vw`};
-  height: ${({ height }) => `${height}px`};
-  border-radius: ${({ borderRadius }) => `${borderRadius}px`};
+  width: ${({ width }) => `${width}rem`};
+  border-radius: ${({ borderRadius }) => `${borderRadius}rem`};
   font-size: ${({ fSize }) => `${fSize}em`};
-  margin: ${({ marginH, marginV }) => `${marginH}px ${marginV}px`};
-  padding: ${({ paddingH, paddingV }) => `${paddingH}px ${paddingV}px`};
+  margin: ${({ marginH, marginV }) => `${marginH}rem ${marginV}rem`};
+  padding: ${({ paddingH, paddingV }) => `${paddingH}rem ${paddingV}rem`};
 `;
