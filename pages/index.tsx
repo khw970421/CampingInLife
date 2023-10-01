@@ -179,11 +179,12 @@ export default function Home() {
           {!!campingInfo ? (
             <Button
               id={'backgroundLightMainColor'}
-              width={30}
-              height={60}
-              marginH={20}
+              width={10}
+              marginH={2}
+              paddingH={2}
               btnText={'더보기'}
               clickBtn={addCampingInfo}
+              fSize={1.5}
             ></Button>
           ) : (
             <div> 검색 결과가 없습니다. </div>
