@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 
 interface BtnStyled {
-  width: number;
+  width?: number;
   borderRadius?: number;
   fSize?: number;
   marginH?: number;
@@ -14,7 +14,7 @@ interface BtnProps extends BtnStyled {
   id: string;
   className?: string;
   clickBtn: () => void;
-  btnText: string
+  btnText: string | ReactNode
 }
 
 export default function Button({
@@ -49,7 +49,7 @@ export default function Button({
 }
 
 const Btn = styled.button<BtnStyled>`
-  width: ${({ width }) => `${width}rem`};
+  width: ${({ width }) => width ? `${width}rem` : "auto"};
   border-radius: ${({ borderRadius }) => `${borderRadius}rem`};
   font-size: ${({ fSize }) => `${fSize}em`};
   margin: ${({ marginH, marginV }) => `${marginH}rem ${marginV}rem`};
