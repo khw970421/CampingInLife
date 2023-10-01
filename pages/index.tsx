@@ -153,7 +153,6 @@ export default function Home() {
   return (
     <>
       <Header
-        isInputExist={true}
         searchCamping={searchCamping}
         changeInputValue={changeSearchValue}
         checkSearchPressEnter={checkSearchPressEnter}
