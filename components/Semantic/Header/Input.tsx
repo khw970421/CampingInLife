@@ -58,6 +58,7 @@ export default memo(function Input({
       const facltNm = searchCamping ? searchCamping[idx]?.facltNm : null;
       const contentId = searchCamping ? searchCamping[idx]?.contentId : null;
 
+      clearTimeout(timer)
       checkSearchPressEnter(
         e,
         idx,
