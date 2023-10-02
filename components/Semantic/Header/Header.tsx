@@ -94,6 +94,10 @@ const Menu = styled.div`
   display:flex;
   align-items:center;
   gap:1rem;
+
+  & > *{
+    cursor:pointer
+  }
 `
 
 const ImSearchContainer = styled.div`
