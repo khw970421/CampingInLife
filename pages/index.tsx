@@ -29,7 +29,7 @@ export default function Home() {
 
   const router = useRouter()
 
-  // updateCampingInfo, basedList, locationBasedList는 직접 실행 X -> useEffect에 의해 실행 
+  // GPS의 변화를 제외하고는 직접 실행  
   const updateCampingInfo = useCallback((newCampingInfo: CampingInfo[], pageNo: number) => {
     if (!newCampingInfo.length && pageNo !== 1) {
       alert('더보기 캠핑 목록이 없습니다.')
@@ -46,7 +46,6 @@ export default function Home() {
   const basedList = useCallback(async () => {
     const newCampingInfo = await getBasedList(pageNo.current)
     setTitleTag('nogps')
-
     updateCampingInfo(newCampingInfo, pageNo.current)
   }, [updateCampingInfo])
 
@@ -67,11 +66,10 @@ export default function Home() {
   const searchList = useCallback(async (value) => {
     const newCampingInfo = await getSearchList(pageNo.current, value)
     setTitleTag('searchKey')
+    updateCampingInfo(newCampingInfo, pageNo.current)
 
     searchKey.current = value
     setSearchCamping([])
-
-    updateCampingInfo(newCampingInfo, pageNo.current)
   }, [updateCampingInfo])
 
   useEffect(() => {
@@ -149,6 +147,10 @@ export default function Home() {
     pageNo.current = 1
   }
 
+  const quitSearch = () => {
+    setTitleTag(gpsData.isGpsCheck ? 'gps' : 'nogps')
+    setGpsData(gps => ({ ...gps }))
+  }
   return (
     <>
       <Header
@@ -158,7 +160,7 @@ export default function Home() {
         handleClearSearchData={handleClearSearchData}
         isSearching={isSearching}
       />
-      <Body className="background-light-gray">
+      <Body className="background_light_gray">
         <Main>
           <Title>
             <TitleText>
@@ -172,6 +174,14 @@ export default function Home() {
                 handleChangeOptions={handleChangeOptions}
               />
             )}
+            {titleTag === 'searchKey' && <Button
+              id={'searchQuitBtn'}
+              className={'background_light_main_color'} width={6}
+              marginH={1}
+              paddingH={1}
+              btnText={'검색종료'}
+              clickBtn={quitSearch}
+            />}
           </Title>
           <CampingBoxGroup campingInfo={campingInfo || []} isHoverActive={!isSearching} />
           {!!campingInfo ? (
