@@ -11,6 +11,11 @@ a {
   text-decoration: none;
 }
 
+button{
+  border: 0;
+  background-color: transparent;
+}
+
 /* * {
   box-sizing: border-box;
 } */
@@ -43,19 +48,19 @@ a {
   color: #d9d9d9;
 }
 
-.light-gray {
+.light_gray {
   color: #f7f6fb;
 }
 
-.background-light-main-color {
+.background_light_main_color {
   background-color: #8bc53f50;
 }
 
-.background-white {
+.background_white {
   background-color: #ffffff;
 }
 
-.background-light-gray {
+.background_light_gray {
   background-color: #f7f6fb;
 }
 
@@ -64,12 +69,12 @@ a {
   padding: 0 20%;
 }
 
-.title-text {
+.title_text {
   font-weight: bold;
   font-size: 1rem;
 }
 
-.sub-text {
+.sub_text {
   font-weight: bold;
   font-size: 0.8rem;
 }
