@@ -17,8 +17,8 @@ interface InputProps {
   checkSearchPressEnter: (
     event: React.MouseEvent,
     idx: number,
-    facltNm?: string,
-    contentId?: string
+    facltNm: string | null,
+    contentId: string | null
   ) => void;
   handleClearSearchData: () => void;
   closeSearchBar: () => void;
@@ -55,11 +55,15 @@ export default memo(function Input({
       const nIdx = (idx - 1) % searchCamping.length;
       setIdx(nIdx < 0 ? nIdx + searchCamping.length : nIdx);
     } else if (e.key === "Enter") {
+      const facltNm = searchCamping ? searchCamping[idx]?.facltNm : null;
+      const contentId = searchCamping ? searchCamping[idx]?.contentId : null;
+
+      clearTimeout(timer)
       checkSearchPressEnter(
         e,
         idx,
-        searchCamping[idx]?.facltNm,
-        searchCamping[idx]?.contentId
+        facltNm,
+        contentId
       );
       closeSearchBar()
     }
