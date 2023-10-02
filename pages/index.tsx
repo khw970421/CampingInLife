@@ -29,8 +29,9 @@ export default function Home() {
 
   const router = useRouter()
 
+  // updateCampingInfo, basedList, locationBasedList는 직접 실행 X -> useEffect에 의해 실행 
   const updateCampingInfo = useCallback((newCampingInfo: CampingInfo[], pageNo: number) => {
-    if (!newCampingInfo) {
+    if (!newCampingInfo.length && pageNo !== 1) {
       alert('더보기 캠핑 목록이 없습니다.')
       return
     }
@@ -59,7 +60,6 @@ export default function Home() {
 
     const newCampingInfo = await getLocationBasedList(pageNo.current, gpsInfo)
     setTitleTag('gps')
-
     updateCampingInfo(newCampingInfo, pageNo.current)
   }, [updateCampingInfo])
 
@@ -147,7 +147,6 @@ export default function Home() {
     const newGpsRange = parseInt(target.value) * 1000
     setGpsData((data) => ({ ...data, gpsRange: newGpsRange }))
     pageNo.current = 1
-    locationBasedList(gpsData)
   }
 
   return (
