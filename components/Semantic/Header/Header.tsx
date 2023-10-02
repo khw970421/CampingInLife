@@ -15,8 +15,8 @@ interface HeaderProps {
   checkSearchPressEnter: (
     event: React.MouseEvent,
     idx: number,
-    facltNm?: string,
-    contentId?: string
+    facltNm: string | null,
+    contentId: string | null
   ) => void;
   handleClearSearchData: () => void;
 }
