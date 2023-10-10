@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 interface ImageWrapStyled {
   topBorderRadius: number;
@@ -8,17 +8,15 @@ interface ImageWrapStyled {
 }
 
 interface PictureProps extends ImageWrapStyled {
-  imgSrc: string;
-  containerWidth: number;
-  containerHeight: number;
+  imgSrc: string | StaticImageData;
+  size: number;
 }
 
 export default function Picture({
   imgSrc,
   topBorderRadius = 0,
   bottomBorderRadius = 0,
-  containerWidth = 0,
-  containerHeight = 0,
+  size = 0,
 }: PictureProps) {
   return (
     <ImageWrap
@@ -28,8 +26,8 @@ export default function Picture({
       <Image
         src={imgSrc}
         alt="Picture of me"
-        width={containerWidth}
-        height={containerWidth}
+        width={size}
+        height={size}
         style={{ overflow: "hidden" }}
         objectFit="cover"
       />

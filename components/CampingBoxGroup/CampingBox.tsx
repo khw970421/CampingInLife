@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Picture from "./Picture";
 import { useRouter } from "next/router";
+import { StaticImageData } from "next/image";
+import Picture from "./Picture";
 
 interface CampingBoxStyled {
   isHoverActive: boolean;
@@ -13,7 +14,7 @@ interface CampingBoxStyled {
 interface CampingBoxProps extends CampingBoxStyled {
   title: string;
   address: string;
-  imgSrc: string;
+  imgSrc: string | StaticImageData;
   contentId: string;
 }
 
@@ -23,8 +24,8 @@ export default function CampingBox({
   imgSrc,
   contentId,
   isHoverActive,
-  containerWidth = 223,
-  containerHeight = 300,
+  containerWidth,
+  containerHeight,
   borderRadius = 30,
 }: CampingBoxProps) {
   const router = useRouter();
@@ -43,8 +44,7 @@ export default function CampingBox({
       <PictureContainer>
         <Picture
           imgSrc={imgSrc}
-          containerWidth={containerWidth}
-          containerHeight={containerHeight}
+          size={containerWidth}
           topBorderRadius={borderRadius}
         ></Picture>
       </PictureContainer>
