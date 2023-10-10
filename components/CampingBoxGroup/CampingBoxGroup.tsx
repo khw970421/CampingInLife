@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import CampingBox from "./CampingBox";
 import logo from "@/public/logo.png";
 import { CampingInfo } from "@/core/utils/types.d";
+import CampingBox from "./CampingBox";
 
 interface ContainerStyled {
   containerWidth?: number;
@@ -21,7 +21,6 @@ export default function CampingBoxGroup({
   containerWidth = 223,
   containerHeight = 300,
 }: CampingBoxGroupProps) {
-  const returnImageSrc = (url) => (url !== "" ? url : logo);
   return (
     <Container containerWidth={containerWidth}>
       {campingInfo.map(({ facltNm, addr1, firstImageUrl, contentId }) => (
@@ -29,7 +28,7 @@ export default function CampingBoxGroup({
           key={contentId}
           title={facltNm}
           address={addr1}
-          imgSrc={returnImageSrc(firstImageUrl)}
+          imgSrc={firstImageUrl || logo}
           contentId={contentId}
           isHoverActive={isHoverActive}
           containerWidth={containerWidth}
