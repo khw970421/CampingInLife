@@ -93,6 +93,7 @@ npm test
 ### 상세페이지 - getServerSideProps 
 * url에 상세 캠핑장의 Id와 이름의 정보를 통해 필요한 API 데이터를 미리 요청하기가 가능하므로 SSR이 가능하다. 
 <img width="989" alt="2 1" src="https://github.com/khw970421/CampingInLife/assets/59253551/698e2501-4947-41fa-93a2-4f2ea8f62f8f">
+
 * 받아온 HTML이 상세 캠핑장의 데이터가 채워진 형태로 가져와서 Client에서 상세 캠핑장에 대한 API 정보 요청을 할 필요가 없다.  
 
 이때 API Key를 숨기는 것은 getServerSideProps를 이용해 서버에서 API를 미리 요청하므로 Client에서는 
